@@ -1,0 +1,110 @@
+[versions]
+kotlin = "2.1.20"
+spring-boot = "3.4.4"
+spring-dependency-management = "1.1.7"
+jooq = "3.20.4"
+detekt = "1.23.8"
+expediagroup-graphql = "8.7.0"
+flyway = "11.8.2"
+valiktor = "0.12.0"
+netty-resolver = "4.2.1.Final"
+graphql-java-extended-scalars = "22.0"
+jakarta-servlet = "6.1.0"
+r2dbc-mysql = "1.4.1"
+r2dbc-pool = "1.0.2.RELEASE"
+mysql-connector = "9.3.0"
+aws-jdbc = "2.5.6"
+awaitility = "4.3.0"
+jackson-datatype = "2.19.0"
+kotest-runner = "5.9.1"
+kotest-extensions-spring = "1.3.0"
+kotest-extensions-mockserver = "1.3.0"
+springmockk = "4.0.2"
+mockk = "1.14.0"
+aws-sdk-core = "2.31.30"
+aws-sdk-services = "2.31.41"
+aws-sdk-cloudfront = "2.31.21"
+aws-sdk-s3 = "2.31.46"
+logstash-encoder = "8.1"
+arrow-core = "1.2.4"
+arrow-fx = "2.1.0"
+jcasbin = "1.81.0"
+jcasbin-jdbc-adapter = "2.10.0"
+jcasbin-jdbc-adapter-mysql = "9.3.0"
+mysql = "8.3.0"
+spring-dep-mgmt = "1.1.7"
+dgs-codegen = "7.0.3"
+asciidoctor = "3.3.2"
+jackson = "2.15.3"
+
+[libraries]
+# Kotlin
+kotlin-reflect = { module = "org.jetbrains.kotlin:kotlin-reflect", version.ref = "kotlin" }
+
+# GraphQL
+graphql-kotlin-spring-server = { module = "com.expediagroup:graphql-kotlin-spring-server", version.ref = "expediagroup-graphql" }
+graphql-kotlin-schema-generator = { module = "com.expediagroup:graphql-kotlin-schema-generator", version.ref = "expediagroup-graphql" }
+graphql-kotlin-hooks-provider = { module = "com.expediagroup:graphql-kotlin-hooks-provider", version.ref = "expediagroup-graphql" }
+graphql-java-extended-scalars = { module = "com.graphql-java:graphql-java-extended-scalars", version.ref = "graphql-java-extended-scalars" }
+
+# Spring Boot Starters
+spring-boot-jooq = { module = "org.springframework.boot:spring-boot-starter-jooq", version.ref = "spring-boot" }
+spring-boot-starter-graphql = { module = "org.springframework.boot:spring-boot-starter-graphql", version.ref = "spring-boot" }
+spring-boot-starter-integration = { module = "org.springframework.boot:spring-boot-starter-integration", version.ref = "spring-boot" }
+spring-boot-starter-security = { module = "org.springframework.boot:spring-boot-starter-security", version.ref = "spring-boot" }
+spring-boot-starter-validation = { module = "org.springframework.boot:spring-boot-starter-validation", version.ref = "spring-boot" }
+spring-boot-starter-web = { module = "org.springframework.boot:spring-boot-starter-web", version.ref = "spring-boot" }
+spring-boot-docker-compose = { module = "org.springframework.boot:spring-boot-docker-compose", version.ref = "spring-boot" }
+spring-boot-starter-data-jdbc = { module = "org.springframework.boot:spring-boot-starter-data-jdbc", version.ref = "spring-boot" }
+spring-boot-starter-batch = { module = "org.springframework.boot:spring-boot-starter-batch", version.ref = "spring-boot" }
+spring-boot-starter-mail = { module = "org.springframework.boot:spring-boot-starter-mail", version.ref = "spring-boot" }
+
+# Spring Other
+spring-security-messaging = { module = "org.springframework.security:spring-security-messaging", version.ref = "spring-boot" }
+spring-integration-http = { module = "org.springframework.integration:spring-integration-http", version.ref = "spring-boot" }
+spring-integration-mail = { module = "org.springframework.integration:spring-integration-mail", version.ref = "spring-boot" }
+spring-integration-jdbc = { module = "org.springframework.integration:spring-integration-jdbc", version.ref = "spring-boot" }
+
+# Flyway
+flyway-core = { module = "org.flywaydb:flyway-core", version.ref = "flyway" }
+flyway-mysql = { module = "org.flywaydb:flyway-mysql", version.ref = "flyway" }
+
+# MySQL
+mysql-connector = { module = "com.mysql:mysql-connector-j", version.ref = "mysql" }
+
+# JOOQ
+jooq-kotlin = { module = "org.jooq:jooq-kotlin", version.ref = "jooq" }
+jooq-kotlin-coroutines = { module = "org.jooq:jooq-kotlin-coroutines", version.ref = "jooq" }
+jooq-reactor-extensions = { module = "org.jooq:jooq-reactor-extensions", version.ref = "jooq" }
+jooq-core = { module = "org.jooq:jooq", version.ref = "jooq" }
+jooq-meta = { module = "org.jooq:jooq-meta", version.ref = "jooq" }
+jooq-codegen = { module = "org.jooq:jooq-codegen", version.ref = "jooq" }
+
+# Util
+arrow-core = { module = "io.arrow-kt:arrow-core", version.ref = "arrow-core" }
+arrow-fx-coroutines = { module = "io.arrow-kt:arrow-fx-coroutines", version.ref = "arrow-fx" }
+detekt-formatting = { module = "io.gitlab.arturbosch.detekt:detekt-formatting", version.ref = "detekt" }
+
+# Jackson
+jackson-datatype-jsr310 = { module = "com.fasterxml.jackson.datatype:jackson-datatype-jsr310", version.ref = "jackson" }
+jackson-module-kotlin = { module = "com.fasterxml.jackson.module:jackson-module-kotlin", version = "2.17.0" }
+
+# Test
+spring-boot-starter-test = { module = "org.springframework.boot:spring-boot-starter-test", version.ref = "spring-boot" }
+kotlin-test-junit5 = { module = "org.jetbrains.kotlin:kotlin-test-junit5", version.ref = "kotlin" }
+spring-batch-test = { module = "org.springframework.batch:spring-batch-test", version.ref = "spring-boot" }
+spring-graphql-test = { module = "org.springframework.graphql:spring-graphql-test", version.ref = "spring-boot" }
+spring-integration-test = { module = "org.springframework.integration:spring-integration-test", version.ref = "spring-boot" }
+spring-restdocs-mockmvc = { module = "org.springframework.restdocs:spring-restdocs-mockmvc", version.ref = "spring-boot" }
+spring-security-test = { module = "org.springframework.security:spring-security-test", version.ref = "spring-boot" }
+junit-platform-launcher = { module = "org.junit.platform:junit-platform-launcher", version = "1.10.2" }
+
+[plugins]
+kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
+kotlin-spring = { id = "org.jetbrains.kotlin.plugin.spring", version.ref = "kotlin" }
+spring-boot = { id = "org.springframework.boot", version.ref = "spring-boot" }
+spring-dependency-management = { id = "io.spring.dependency-management", version.ref = "spring-dep-mgmt" }
+dgs-codegen = { id = "com.netflix.dgs.codegen", version.ref = "dgs-codegen" }
+asciidoctor = { id = "org.asciidoctor.jvm.convert", version.ref = "asciidoctor" }
+jooq = { id = "org.jooq.jooq-codegen-gradle", version.ref = "jooq" }
+flyway = { id = "org.flywaydb.flyway", version.ref = "flyway" }
