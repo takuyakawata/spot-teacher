@@ -1,0 +1,19 @@
+graphql:
+  packages:
+    - "com.spotteacher"
+  sdl:
+    enabled: false
+  graphiql:
+    enabled: false
+spring:
+  application:
+    name: "user"
+  profiles:
+    active: local  # デフォルトプロファイルを指定
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health, info
+casbin:
+  hostname: localhost

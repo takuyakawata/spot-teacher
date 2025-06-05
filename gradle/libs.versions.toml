@@ -1,6 +1,11 @@
 [versions]
 kotlin = "2.1.20"
 spring-boot = "3.4.4"
+spring-batch = "5.1.1"
+spring-integration = "6.2.1"
+spring-graphql = "1.2.3"
+spring-restdocs = "3.0.1"
+spring-security = "6.2.2"
 spring-dependency-management = "1.1.7"
 jooq = "3.20.4"
 detekt = "1.23.8"
@@ -40,30 +45,45 @@ jackson = "2.15.3"
 [libraries]
 # Kotlin
 kotlin-reflect = { module = "org.jetbrains.kotlin:kotlin-reflect", version.ref = "kotlin" }
+kotlin-coroutines-reactor = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-reactor" }
+reactor-kotlin-extensions = { module = "io.projectreactor.kotlin:reactor-kotlin-extensions" }
+
+# Spring Boot Starters
+spring-boot-webflux = { module = "org.springframework.boot:spring-boot-starter-webflux" }
+spring-boot-aop = { module = "org.springframework.boot:spring-boot-starter-aop" }
+spring-boot-data-r2dbc = { module = "org.springframework.boot:spring-boot-starter-data-r2dbc" }
+spring-boot-thymeleaf = { module = "org.springframework.boot:spring-boot-starter-thymeleaf" }
+spring-boot-security = { module = "org.springframework.boot:spring-boot-starter-security" }
+spring-boot-oauth2-resource-server = { module = "org.springframework.boot:spring-boot-starter-oauth2-resource-server" }
+spring-security-oauth2-jose = { module = "org.springframework.security:spring-security-oauth2-jose" }
+spring-boot-actuator = { module = "org.springframework.boot:spring-boot-starter-actuator" }
+spring-boot-jooq = { module = "org.springframework.boot:spring-boot-starter-jooq" }
+spring-boot-test = { module = "org.springframework.boot:spring-boot-starter-test" }
+spring-security-test = { module = "org.springframework.security:spring-security-test" }
+spring-security-oauth2-client = { module = "org.springframework.security:spring-security-oauth2-client" }
+
+
+spring-boot-starter-validation = { module = "org.springframework.boot:spring-boot-starter-validation", version.ref = "spring-boot" }
+spring-boot-starter-web = { module = "org.springframework.boot:spring-boot-starter-web", version.ref = "spring-boot" }
+spring-boot-starter-data-jdbc = { module = "org.springframework.boot:spring-boot-starter-data-jdbc", version.ref = "spring-boot" }
+spring-boot-starter-batch = { module = "org.springframework.boot:spring-boot-starter-batch", version.ref = "spring-boot" }
+spring-boot-starter-mail = { module = "org.springframework.boot:spring-boot-starter-mail", version.ref = "spring-boot" }
+
+# Spring Other
+spring-boot-docker-compose = { module = "org.springframework.boot:spring-boot-docker-compose", version.ref = "spring-boot" }
+
+# valiktor
+valiktor-core = { module = "org.valiktor:valiktor-core", version.ref = "valiktor" }
+
+# Jakarta
+jakarta-servlet-api = { module = "jakarta.servlet:jakarta.servlet-api", version.ref = "jakarta-servlet" }
+
 
 # GraphQL
 graphql-kotlin-spring-server = { module = "com.expediagroup:graphql-kotlin-spring-server", version.ref = "expediagroup-graphql" }
 graphql-kotlin-schema-generator = { module = "com.expediagroup:graphql-kotlin-schema-generator", version.ref = "expediagroup-graphql" }
 graphql-kotlin-hooks-provider = { module = "com.expediagroup:graphql-kotlin-hooks-provider", version.ref = "expediagroup-graphql" }
 graphql-java-extended-scalars = { module = "com.graphql-java:graphql-java-extended-scalars", version.ref = "graphql-java-extended-scalars" }
-
-# Spring Boot Starters
-spring-boot-jooq = { module = "org.springframework.boot:spring-boot-starter-jooq", version.ref = "spring-boot" }
-spring-boot-starter-graphql = { module = "org.springframework.boot:spring-boot-starter-graphql", version.ref = "spring-boot" }
-spring-boot-starter-integration = { module = "org.springframework.boot:spring-boot-starter-integration", version.ref = "spring-boot" }
-spring-boot-starter-security = { module = "org.springframework.boot:spring-boot-starter-security", version.ref = "spring-boot" }
-spring-boot-starter-validation = { module = "org.springframework.boot:spring-boot-starter-validation", version.ref = "spring-boot" }
-spring-boot-starter-web = { module = "org.springframework.boot:spring-boot-starter-web", version.ref = "spring-boot" }
-spring-boot-docker-compose = { module = "org.springframework.boot:spring-boot-docker-compose", version.ref = "spring-boot" }
-spring-boot-starter-data-jdbc = { module = "org.springframework.boot:spring-boot-starter-data-jdbc", version.ref = "spring-boot" }
-spring-boot-starter-batch = { module = "org.springframework.boot:spring-boot-starter-batch", version.ref = "spring-boot" }
-spring-boot-starter-mail = { module = "org.springframework.boot:spring-boot-starter-mail", version.ref = "spring-boot" }
-
-# Spring Other
-spring-security-messaging = { module = "org.springframework.security:spring-security-messaging", version.ref = "spring-boot" }
-spring-integration-http = { module = "org.springframework.integration:spring-integration-http", version.ref = "spring-boot" }
-spring-integration-mail = { module = "org.springframework.integration:spring-integration-mail", version.ref = "spring-boot" }
-spring-integration-jdbc = { module = "org.springframework.integration:spring-integration-jdbc", version.ref = "spring-boot" }
 
 # Flyway
 flyway-core = { module = "org.flywaydb:flyway-core", version.ref = "flyway" }
@@ -80,31 +100,49 @@ jooq-core = { module = "org.jooq:jooq", version.ref = "jooq" }
 jooq-meta = { module = "org.jooq:jooq-meta", version.ref = "jooq" }
 jooq-codegen = { module = "org.jooq:jooq-codegen", version.ref = "jooq" }
 
+# R2DBC
+r2dbc-mysql = { module = "io.asyncer:r2dbc-mysql", version.ref = "r2dbc-mysql" }
+r2dbc-pool = { module = "io.r2dbc:r2dbc-pool", version.ref = "r2dbc-pool" }
+
 # Util
 arrow-core = { module = "io.arrow-kt:arrow-core", version.ref = "arrow-core" }
 arrow-fx-coroutines = { module = "io.arrow-kt:arrow-fx-coroutines", version.ref = "arrow-fx" }
 detekt-formatting = { module = "io.gitlab.arturbosch.detekt:detekt-formatting", version.ref = "detekt" }
 
-# Jackson
-jackson-datatype-jsr310 = { module = "com.fasterxml.jackson.datatype:jackson-datatype-jsr310", version.ref = "jackson" }
-jackson-module-kotlin = { module = "com.fasterxml.jackson.module:jackson-module-kotlin", version = "2.17.0" }
+# AWS SDK
+aws-sdk-core = { module = "software.amazon.awssdk:core", version.ref = "aws-sdk-core" }
+aws-sdk-sesv2 = { module = "software.amazon.awssdk:sesv2", version.ref = "aws-sdk-services" }
+aws-sdk-cognito = { module = "software.amazon.awssdk:cognitoidentityprovider", version.ref = "aws-sdk-services" }
+aws-sdk-cloudfront = { module = "software.amazon.awssdk:cloudfront", version.ref = "aws-sdk-cloudfront" }
+aws-sdk-s3 = { module = "software.amazon.awssdk:s3", version.ref = "aws-sdk-s3" }
 
-# Test
-spring-boot-starter-test = { module = "org.springframework.boot:spring-boot-starter-test", version.ref = "spring-boot" }
-kotlin-test-junit5 = { module = "org.jetbrains.kotlin:kotlin-test-junit5", version.ref = "kotlin" }
-spring-batch-test = { module = "org.springframework.batch:spring-batch-test", version.ref = "spring-boot" }
-spring-graphql-test = { module = "org.springframework.graphql:spring-graphql-test", version.ref = "spring-boot" }
-spring-integration-test = { module = "org.springframework.integration:spring-integration-test", version.ref = "spring-boot" }
-spring-restdocs-mockmvc = { module = "org.springframework.restdocs:spring-restdocs-mockmvc", version.ref = "spring-boot" }
-spring-security-test = { module = "org.springframework.security:spring-security-test", version.ref = "spring-boot" }
-junit-platform-launcher = { module = "org.junit.platform:junit-platform-launcher", version = "1.10.2" }
+# Logging
+logstash-encoder = { module = "net.logstash.logback:logstash-logback-encoder", version.ref = "logstash-encoder" }
+
+# Jackson
+jackson-kotlin = { module = "com.fasterxml.jackson.module:jackson-module-kotlin" }
+jackson-datatype-jsr310 = { module = "com.fasterxml.jackson.datatype:jackson-datatype-jsr310", version.ref = "jackson-datatype" }
+
+# Testing
+awaitility = { module = "org.awaitility:awaitility", version.ref = "awaitility" }
+kotlin-compiler-embeddable = { module = "org.jetbrains.kotlin:kotlin-compiler-embeddable" }
+
+# Kotest
+kotest-runner-junit5 = { module = "io.kotest:kotest-runner-junit5", version.ref = "kotest-runner" }
+kotest-framework-datatest = { module = "io.kotest:kotest-framework-datatest", version.ref = "kotest-runner" }
+kotest-extensions-spring = { module = "io.kotest.extensions:kotest-extensions-spring", version.ref = "kotest-extensions-spring" }
+kotest-extensions-mockserver = { module = "io.kotest.extensions:kotest-extensions-mockserver", version.ref = "kotest-extensions-mockserver" }
+springmockk = { module = "com.ninja-squad:springmockk", version.ref = "springmockk" }
+
+# Mockk
+mockk = { module = "io.mockk:mockk", version.ref = "mockk" }
 
 [plugins]
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 kotlin-spring = { id = "org.jetbrains.kotlin.plugin.spring", version.ref = "kotlin" }
 spring-boot = { id = "org.springframework.boot", version.ref = "spring-boot" }
-spring-dependency-management = { id = "io.spring.dependency-management", version.ref = "spring-dep-mgmt" }
-dgs-codegen = { id = "com.netflix.dgs.codegen", version.ref = "dgs-codegen" }
-asciidoctor = { id = "org.asciidoctor.jvm.convert", version.ref = "asciidoctor" }
+spring-dependency-management = { id = "io.spring.dependency-management", version.ref = "spring-dependency-management" }
 jooq = { id = "org.jooq.jooq-codegen-gradle", version.ref = "jooq" }
-flyway = { id = "org.flywaydb.flyway", version.ref = "flyway" }
+detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
+expediagroup-graphql = { id = "com.expediagroup.graphql", version.ref = "expediagroup-graphql" }
+flyway = { id = "org.flywaydb.flyway", version = "11.8.1" }

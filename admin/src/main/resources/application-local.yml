@@ -1,0 +1,23 @@
+server:
+  port: 8080
+spring:
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          jwk-set-uri: jwt
+          issuer-uri: issue
+
+logging:
+  level:
+    com.backend: DEBUG # ローカルでは詳細なログ
+
+aurora:
+  writer:
+    url: "r2dbc:pool:mysql://localhost:3306/spot_teacher?autoReconnect=true&useSSL=false&allowPublicKeyRetrieval=true" # ここをspot_teacherに修正
+    username: "user"
+    password: "password"
+  reader:
+    url: "r2dbc:pool:mysql://localhost:3306/spot_teacher?autoReconnect=true&useSSL=false&allowPublicKeyRetrieval=true" # ここをspot_teacherに修正
+    username: "root" # または user
+    password: "root" # または password

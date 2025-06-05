@@ -38,3 +38,20 @@ out/
 
 ### Kotlin ###
 .kotlin
+
+# Ignore Gradle build output directory
+build
+
+/local-db/mysql/
+/.idea/*
+/.idea
+.idea/*
+:q
+:
+:::
+.DS_Store
+**/build
+backend/**/bin
+.envrc
+local-db/minio/**
+/local-db/mysql/
