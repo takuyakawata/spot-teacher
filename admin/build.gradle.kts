@@ -75,6 +75,8 @@ dependencies {
     implementation(libs.r2dbc.mysql)
     runtimeOnly(libs.r2dbc.pool)
 
+    implementation(project(":shared"))
+
     // test
     testImplementation(libs.spring.boot.test)
     testImplementation(libs.spring.security.test)

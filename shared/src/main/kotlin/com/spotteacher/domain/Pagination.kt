@@ -1,6 +1,6 @@
 package com.spotteacher.domain
 
-import com.spotteacher.admin.shared.util.StringUtil.camelToSnakeCase
+import com.spotteacher.util.StringUtil.camelToSnakeCase
 import kotlin.reflect.KProperty1
 
 enum class SortOrder {
