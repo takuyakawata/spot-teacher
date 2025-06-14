@@ -43,7 +43,13 @@ dependencies {
     implementation(libs.reactor.kotlin.extensions)
 
     // spring
+    implementation(libs.spring.boot.webflux)
     implementation(libs.spring.boot.aop)
+    implementation(libs.spring.boot.security)
+
+    // auth
+    implementation(libs.spring.boot.oauth2.resource.server)
+    implementation(libs.spring.security.oauth2.jose)
 
     // validation
     implementation(libs.valiktor.core)
