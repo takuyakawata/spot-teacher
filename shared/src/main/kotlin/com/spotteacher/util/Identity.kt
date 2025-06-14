@@ -1,8 +1,4 @@
-package com.spotteacher.admin.shared
-
-import kotlin.hashCode
-import kotlin.jvm.java
-import kotlin.toString
+package com.spotteacher.util
 
 open class Identity<T> (
     open val value: T
