@@ -102,11 +102,17 @@ kotlin {
     }
 }
 
-val graphqlGenerateSDL by tasks.getting(com.expediagroup.graphql.plugin.gradle.tasks.GraphQLGenerateSDLTask::class) {
-    packages.set(listOf("com.spotteacher.admin"))
-    schemaFile.set(file("${project.projectDir}/graphql/schema.graphql"))
+graphql {
+    schema {
+        packages = listOf("com.spotteacher")
+    }
 }
 
+val graphqlGenerateSDL by tasks.getting(GraphQLGenerateSDLTask::class) {
+    packages.set(listOf("com.spotteacher.admin"))
+
+    schemaFile.set(file("${project.projectDir}/graphql/schema.graphql"))
+}
 
 tasks.withType<Test> {
     useJUnitPlatform()
