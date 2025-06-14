@@ -1,5 +1,6 @@
-package com.spotteacher.admin.feature
+package com.spotteacher.admin.feature.product.domain
 
+import com.spotteacher.admin.shared.Identity
 
 
 data class Product(

@@ -45,6 +45,9 @@ dependencies {
     // spring
     implementation(libs.spring.boot.aop)
 
+    // validation
+    implementation(libs.valiktor.core)
+
     // r2dbcの設定
     implementation(libs.spring.boot.data.r2dbc)
 
