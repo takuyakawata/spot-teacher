@@ -1,6 +1,5 @@
 import com.expediagroup.graphql.plugin.gradle.graphql
 import com.expediagroup.graphql.plugin.gradle.tasks.GraphQLGenerateSDLTask
-import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
     alias(libs.plugins.expediagroup.graphql)
@@ -43,7 +42,13 @@ dependencies {
     implementation(libs.reactor.kotlin.extensions)
 
     // spring
+    implementation(libs.spring.boot.webflux)
     implementation(libs.spring.boot.aop)
+    implementation(libs.spring.boot.security)
+
+    // auth
+    implementation(libs.spring.boot.oauth2.resource.server)
+    implementation(libs.spring.security.oauth2.jose)
 
     // validation
     implementation(libs.valiktor.core)
@@ -60,6 +65,10 @@ dependencies {
     implementation(libs.graphql.kotlin.hooks.provider)
     implementation(libs.graphql.java.extended.scalars)
 
+    // flyway
+    implementation(libs.flyway.core)
+    runtimeOnly(libs.flyway.mysql)
+
     // jooq
     implementation(libs.spring.boot.jooq)
     implementation(libs.jooq.kotlin)
@@ -74,6 +83,8 @@ dependencies {
     //  R2DBC
     implementation(libs.r2dbc.mysql)
     runtimeOnly(libs.r2dbc.pool)
+
+    implementation(project(":shared"))
 
     // test
     testImplementation(libs.spring.boot.test)

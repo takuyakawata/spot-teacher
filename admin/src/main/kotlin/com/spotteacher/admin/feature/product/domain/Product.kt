@@ -1,7 +1,6 @@
 package com.spotteacher.admin.feature.product.domain
 
-import com.spotteacher.admin.shared.Identity
-
+import com.spotteacher.util.Identity
 
 data class Product(
     val id: ProductId,

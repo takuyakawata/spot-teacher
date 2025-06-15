@@ -1,6 +1,7 @@
 package com.spotteacher.admin.shared.graphql
 
 import com.expediagroup.graphql.generator.hooks.SchemaGeneratorHooks
+import com.spotteacher.graphql.NonEmptyString
 import graphql.GraphQLContext
 import graphql.execution.CoercedVariables
 import graphql.language.IntValue

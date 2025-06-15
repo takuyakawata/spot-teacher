@@ -1,4 +1,4 @@
-package com.spotteacher.admin.shared.graphql
+package com.spotteacher.graphql
 
 import org.valiktor.functions.isNotBlank
 import org.valiktor.validate
