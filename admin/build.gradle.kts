@@ -1,6 +1,5 @@
 import com.expediagroup.graphql.plugin.gradle.graphql
 import com.expediagroup.graphql.plugin.gradle.tasks.GraphQLGenerateSDLTask
-import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
     alias(libs.plugins.expediagroup.graphql)
@@ -65,6 +64,10 @@ dependencies {
     implementation(libs.graphql.kotlin.schema.generator)
     implementation(libs.graphql.kotlin.hooks.provider)
     implementation(libs.graphql.java.extended.scalars)
+
+    // flyway
+    implementation(libs.flyway.core)
+    runtimeOnly(libs.flyway.mysql)
 
     // jooq
     implementation(libs.spring.boot.jooq)
