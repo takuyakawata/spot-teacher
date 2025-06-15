@@ -67,5 +67,5 @@ data class ProductError(
 )
 
 enum class ProductErrorCode {
-    NAME_DUPLICATED,
+    PRODUCT_NOT_FOUND,
 }
