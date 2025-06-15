@@ -1,4 +1,4 @@
-package com.spotteacher.admin.feature.product.handler
+package com.spotteacher.admin.feature.product.handler.query
 
 import com.expediagroup.graphql.server.operations.Query
 import org.springframework.stereotype.Component
