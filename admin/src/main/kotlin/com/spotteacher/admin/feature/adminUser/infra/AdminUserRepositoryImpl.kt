@@ -7,11 +7,11 @@ import org.springframework.stereotype.Component
 
 @Component
 class AdminUserRepositoryImpl : AdminUserRepository {
-    override suspend fun getAllUsers(): List<AdminUser> {
+    override suspend fun getAll(): List<AdminUser> {
         TODO("Not yet implemented")
     }
 
-    override suspend fun getUserById(id: AdminUserId): AdminUser? {
+    override suspend fun findById(id: AdminUserId): AdminUser? {
         TODO("Not yet implemented")
     }
 
