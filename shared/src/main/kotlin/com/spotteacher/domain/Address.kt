@@ -97,9 +97,20 @@ value class BuildingName(val value: String) {
 }
 
 /**
+ * 郵便番号
+ */
+@JvmInline
+value class PostCode(val value: String) {
+    companion object {
+        private const val MAX_LENGTH = 10
+    }
+}
+
+/**
  * 住所
  */
 data class Address(
+    val postCode : PostCode,
     val prefecture: Prefecture,
     val city: City,
     val streetAddress: StreetAddress,
