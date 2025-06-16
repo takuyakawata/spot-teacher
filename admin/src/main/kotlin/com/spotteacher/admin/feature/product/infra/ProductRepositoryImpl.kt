@@ -55,7 +55,7 @@ class ProductRepositoryImpl(private val dslContext: TransactionAwareDSLContext,)
     }
 
     override suspend fun create(product: Product):Product {
-        val id = dslContext.get().insertInto(
+        val id :Long = dslContext.get().insertInto(
             PRODUCTS,
             PRODUCTS.NAME,
             PRODUCTS.PRICE,
@@ -65,6 +65,7 @@ class ProductRepositoryImpl(private val dslContext: TransactionAwareDSLContext,)
             UInteger.valueOf(product.price.value),
             product.description?.value,
         ).returning(PRODUCTS.ID).awaitFirstOrNull()?.id!!
+
         return product.copy(id = ProductId(id))
     }
 
