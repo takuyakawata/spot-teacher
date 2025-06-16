@@ -34,11 +34,15 @@ union CompanyQueryOutput = CompanyQueryError | CompanyQuerySuccess
 
 union CreateCompanyMutationOutput = CreateCompanyMutationError | CreateCompanyMutationSuccess
 
+union DeleteCompanyMutationOutput = DeleteCompanyMutationError | DeleteCompanyMutationSuccess
+
 union DeleteProductMutationOutput = DeleteProductMutationError | DeleteProductMutationSuccess
 
 union FindProductQueryOutput = FindProductQueryError | FindProductQuerySuccess
 
 union FindProductsQueryOutput = FindProductsQueryError | FindProductsQuerySuccess
+
+union UpdateCompanyMutationOutput = UpdateCompanyMutationError | UpdateCompanyMutationSuccess
 
 union UpdateProductMutationOutput = UpdateProductMutationError | UpdateProductMutationSuccess
 
@@ -73,6 +77,15 @@ type CreateCompanyMutationSuccess {
   company: Company!
 }
 
+type DeleteCompanyMutationError {
+  code: CompanyErrorCode!
+  message: String!
+}
+
+type DeleteCompanyMutationSuccess {
+  result: Unit!
+}
+
 type DeleteProductMutationError {
   error: ProductError!
 }
@@ -100,8 +113,9 @@ type FindProductsQuerySuccess {
 type Mutation {
   createCompany(input: CreateCompanyMutationInput!): CreateCompanyMutationOutput!
   createProduct(input: CreateProductMutationInput!): Unit!
-  deleteCompany(id: ID!): Unit!
+  deleteCompany(id: ID!): DeleteCompanyMutationOutput!
   deleteProduct(input: DeleteProductMutationInput!): DeleteProductMutationOutput!
+  updateCompany(input: UpdateCompanyMutationInput!): UpdateCompanyMutationOutput!
   updateProduct(input: UpdateProductMutationInput!): UpdateProductMutationOutput!
 }
 
@@ -126,6 +140,15 @@ type Query {
   products(lastId: String, limit: Int!, sortOrder: String!): FindProductsQueryOutput!
 }
 
+type UpdateCompanyMutationError {
+  code: CompanyErrorCode!
+  message: String!
+}
+
+type UpdateCompanyMutationSuccess {
+  result: Unit!
+}
+
 type UpdateProductMutationError {
   error: ProductError!
 }
@@ -146,18 +169,21 @@ enum ProductErrorCode {
 "LocalDateTime"
 scalar LocalDateTime
 
+"String that is not empty"
+scalar NonEmptyString
+
 "meaningless value. Necessary just for graphql limitation. Only used for output."
 scalar Unit
 
 input CreateCompanyMutationInput {
-  buildingName: String
-  city: String!
-  name: String!
-  phoneNumber: String!
-  postalCode: String!
-  prefecture: String!
-  streetAddress: String!
-  url: String
+  buildingName: NonEmptyString
+  city: NonEmptyString!
+  name: NonEmptyString!
+  phoneNumber: NonEmptyString!
+  postalCode: NonEmptyString!
+  prefecture: NonEmptyString!
+  streetAddress: NonEmptyString!
+  url: NonEmptyString
 }
 
 input CreateProductMutationInput {
@@ -168,6 +194,18 @@ input CreateProductMutationInput {
 
 input DeleteProductMutationInput {
   id: ID!
+}
+
+input UpdateCompanyMutationInput {
+  buildingName: NonEmptyString
+  city: NonEmptyString
+  id: ID!
+  name: NonEmptyString
+  phoneNumber: NonEmptyString!
+  postalCode: NonEmptyString
+  prefecture: NonEmptyString
+  streetAddress: NonEmptyString
+  url: NonEmptyString
 }
 
 input UpdateProductMutationInput {
