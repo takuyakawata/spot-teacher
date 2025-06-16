@@ -39,14 +39,15 @@ class SecurityFilter : WebFilter {
                 val query = extractQuery(bodyString)
                 logInfo { "GraphQL Query: $query" }
 
-                // HMACの検証ロジック
-                val clientHmac = exchange.request.headers.getFirst("X-HMAC-Signature") ?: ""
-                if (clientHmac != generateHmac(query, secretKey)) {
-                    logWarn { "HMAC verification failed. Query: $query" }
-                    exchange.response.statusCode = HttpStatus.UNAUTHORIZED
-                    val buffer = exchange.response.bufferFactory().wrap("Invalid HMAC signature".toByteArray())
-                    return@flatMap exchange.response.writeWith(Mono.just(buffer))
-                }
+                // HMACの検証ロジックだが、サンプルなので実装していない
+                //　一旦不要なため、コメントアウト
+//                val clientHmac = exchange.request.headers.getFirst("X-HMAC-Signature") ?: ""
+//                if (clientHmac != generateHmac(query, secretKey)) {
+//                    logWarn { "HMAC verification failed. Query: $query" }
+//                    exchange.response.statusCode = HttpStatus.UNAUTHORIZED
+//                    val buffer = exchange.response.bufferFactory().wrap("Invalid HMAC signature".toByteArray())
+//                    return@flatMap exchange.response.writeWith(Mono.just(buffer))
+//                }
 
                 val cachedRequest = CachedBodyServerHttpRequest(exchange.request, bodyBytes, exchange)
                 val mutatedExchange = exchange.mutate().request(cachedRequest).build()
@@ -66,14 +67,14 @@ class SecurityFilter : WebFilter {
             ?: ""
     }
 
-    private fun generateHmac(query: String, secretKey: String): String {
-        val hmacSha256 = "HmacSHA256"
-        val secretKeySpec = SecretKeySpec(secretKey.toByteArray(), hmacSha256)
-        val mac = Mac.getInstance(hmacSha256)
-        mac.init(secretKeySpec)
-        val hmacBytes = mac.doFinal(query.toByteArray())
-        return Base64.getEncoder().encodeToString(hmacBytes)
-    }
+//    private fun generateHmac(query: String, secretKey: String): String {
+//        val hmacSha256 = "HmacSHA256"
+//        val secretKeySpec = SecretKeySpec(secretKey.toByteArray(), hmacSha256)
+//        val mac = Mac.getInstance(hmacSha256)
+//        mac.init(secretKeySpec)
+//        val hmacBytes = mac.doFinal(query.toByteArray())
+//        return Base64.getEncoder().encodeToString(hmacBytes)
+//    }
 }
 
 class CachedBodyServerHttpRequest(

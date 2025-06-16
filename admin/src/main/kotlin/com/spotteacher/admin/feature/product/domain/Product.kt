@@ -45,7 +45,7 @@ value class ProductPrice private constructor(val value: Int) {
         operator fun invoke(value: Int) = ProductPrice(value)
     }
     init {
-        require(value > 0) {
+        require(value >= 0) {
             "ProductPrice must be plus value"
         }
     }
