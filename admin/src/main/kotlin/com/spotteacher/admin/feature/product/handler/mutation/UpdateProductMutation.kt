@@ -7,6 +7,8 @@ import com.spotteacher.admin.feature.product.domain.ProductError
 import com.spotteacher.admin.feature.product.domain.ProductId
 import com.spotteacher.admin.feature.product.domain.ProductName
 import com.spotteacher.admin.feature.product.domain.ProductPrice
+import com.spotteacher.admin.feature.product.handler.ProductType
+import com.spotteacher.admin.feature.product.handler.toGraphQLID
 import com.spotteacher.admin.feature.product.usecase.UpdateProductUseCase
 import com.spotteacher.admin.feature.product.usecase.UpdateProductUseCaseInput
 import com.spotteacher.graphql.toDomainId

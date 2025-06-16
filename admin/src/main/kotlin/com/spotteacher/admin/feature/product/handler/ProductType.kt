@@ -1,4 +1,4 @@
-package com.spotteacher.admin.feature.product.handler.mutation
+package com.spotteacher.admin.feature.product.handler
 
 import com.expediagroup.graphql.generator.annotations.GraphQLName
 import com.expediagroup.graphql.generator.scalars.ID

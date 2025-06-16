@@ -4,8 +4,8 @@ import com.expediagroup.graphql.generator.scalars.ID
 import com.expediagroup.graphql.server.operations.Query
 import com.spotteacher.admin.feature.product.domain.ProductError
 import com.spotteacher.admin.feature.product.domain.ProductId
-import com.spotteacher.admin.feature.product.handler.mutation.ProductType
-import com.spotteacher.admin.feature.product.handler.mutation.toGraphQLID
+import com.spotteacher.admin.feature.product.handler.ProductType
+import com.spotteacher.admin.feature.product.handler.toGraphQLID
 import com.spotteacher.admin.feature.product.usecase.FindProductUseCase
 import com.spotteacher.admin.feature.product.usecase.FindProductUseCaseInput
 import com.spotteacher.admin.feature.product.usecase.FindProductsUseCase
@@ -32,7 +32,7 @@ class ProductQuery(
 
     suspend fun product(productId: ID) : FindProductQueryOutput {
         val result = findProductUseCase.call(
-            FindProductUseCaseInput(productId.toDomainId(::ProductId))
+            FindProductUseCaseInput(productId.toDomainId{ProductId(it)})
         ).result
 
         return result.fold(
