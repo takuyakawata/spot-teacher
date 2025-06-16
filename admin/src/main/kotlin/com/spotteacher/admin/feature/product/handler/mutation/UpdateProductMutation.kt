@@ -14,8 +14,8 @@ import org.springframework.stereotype.Component
 
 data class UpdateProductMutationInput(
     val id: ID,
-    val name: String,
-    val price: Int,
+    val name: String?,
+    val price: Int?,
     val description: String?
 )
 
@@ -32,8 +32,8 @@ class UpdateProductMutation(
         val result = usecase.call(
             UpdateProductUseCaseInput(
                 id = input.id.toDomainId(::ProductId),
-                name = ProductName(input.name),
-                price = ProductPrice(input.price),
+                name = input.name?.let{ProductName(it)},
+                price = input.price?.let{ProductPrice(it)},
                 description = input.description?.let { ProductDescription(it) }
             )
         ).result

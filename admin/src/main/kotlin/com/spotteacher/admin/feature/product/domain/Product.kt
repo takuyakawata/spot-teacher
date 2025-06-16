@@ -20,7 +20,20 @@ data class Product(
             description = description
         )
     }
+
+    fun update(
+        name: ProductName?,
+        price: ProductPrice?,
+        description: ProductDescription?
+    ) = Product(
+        id = this.id,
+        name = name ?: this.name,
+        price = price ?: this.price,
+        description = description ?: this.description
+    )
 }
+
+
 
 class ProductId(override val value: Long) : Identity<Long>(value)
 

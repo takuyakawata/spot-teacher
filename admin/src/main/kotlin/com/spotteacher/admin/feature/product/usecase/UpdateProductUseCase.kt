@@ -16,8 +16,8 @@ import com.spotteacher.usecase.UseCase
 
 data class UpdateProductUseCaseInput(
     val id: ProductId,
-    val name: ProductName,
-    val price: ProductPrice,
+    val name: ProductName?,
+    val price: ProductPrice?,
     val description: ProductDescription?
 )
 
@@ -39,14 +39,12 @@ class UpdateProductUseCase(
             ).left()
         )
 
-        // Create updated product
-        val updatedProduct = existingProduct.copy(
+        val updatedProduct = existingProduct.update(
             name = input.name,
             price = input.price,
-            description = input.description
+            description = input.description,
         )
 
-        // Update product in repository
         productRepository.update(updatedProduct)
 
         // Return success
