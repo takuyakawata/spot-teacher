@@ -6,4 +6,5 @@ interface CompanyRepository {
     suspend fun delete(companyId: CompanyId)
     suspend fun findById(companyId: CompanyId): Company?
     suspend fun getAll(): List<Company>
+    suspend fun findByName(name: CompanyName): Company?
 }
