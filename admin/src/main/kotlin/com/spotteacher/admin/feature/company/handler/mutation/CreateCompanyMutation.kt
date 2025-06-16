@@ -14,19 +14,19 @@ import com.spotteacher.domain.PhoneNumber
 import com.spotteacher.domain.PostCode
 import com.spotteacher.domain.Prefecture
 import com.spotteacher.domain.StreetAddress
+import com.spotteacher.graphql.NonEmptyString
 import org.springframework.stereotype.Component
 import java.net.URI
 
 data class CreateCompanyMutationInput(
-    val name: String,
-    val postalCode: String,
-    val prefecture: String,
-    val city: String,
-    val streetAddress: String,
-    val buildingName: String?,
-     val phoneNumber: String,
-     val url: String?
-
+    val name: NonEmptyString,
+    val postalCode:  NonEmptyString,
+    val prefecture:  NonEmptyString,
+    val city:  NonEmptyString,
+    val streetAddress:  NonEmptyString,
+    val buildingName:  NonEmptyString?,
+    val phoneNumber:  NonEmptyString,
+    val url:  NonEmptyString?,
 )
 
 sealed interface CreateCompanyMutationOutput {
@@ -44,20 +44,20 @@ class CreateCompanyMutation(
     suspend fun createCompany(input: CreateCompanyMutationInput): CreateCompanyMutationOutput {
         // Create address
         val address = Address(
-            postCode = PostCode(input.postalCode),
-            prefecture = Prefecture.valueOf(input.prefecture),
-            city = City(input.city),
-            streetAddress = StreetAddress(input.streetAddress),
-            buildingName = input.buildingName?.let { BuildingName(it) }
+            postCode = PostCode(input.postalCode.value),
+            prefecture = Prefecture.valueOf(input.prefecture.value),
+            city = City(input.city.value),
+            streetAddress = StreetAddress(input.streetAddress.value),
+            buildingName = input.buildingName?.value?.let { BuildingName(it) }
         )
 
         // Call use case
         val result = usecase.call(
             CreateCompanyUseCaseInput(
-                name = CompanyName(input.name),
+                name = CompanyName(input.name.value),
                 address = address,
-                phoneNumber = PhoneNumber(input.phoneNumber),
-                url = input.url?.let { URI(it) }
+                phoneNumber = PhoneNumber(input.phoneNumber.value),
+                url = input.url?.value?.let { URI(it) }
             )
         ).result
 
