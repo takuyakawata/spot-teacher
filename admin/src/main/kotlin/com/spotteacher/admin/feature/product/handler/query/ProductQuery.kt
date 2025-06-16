@@ -1,8 +1,5 @@
 package com.spotteacher.admin.feature.product.handler.query
 
-import arrow.core.Either
-import arrow.core.left
-import arrow.core.right
 import com.expediagroup.graphql.generator.scalars.ID
 import com.expediagroup.graphql.server.operations.Query
 import com.spotteacher.admin.feature.product.domain.ProductError
@@ -11,16 +8,26 @@ import com.spotteacher.admin.feature.product.handler.mutation.ProductType
 import com.spotteacher.admin.feature.product.handler.mutation.toGraphQLID
 import com.spotteacher.admin.feature.product.usecase.FindProductUseCase
 import com.spotteacher.admin.feature.product.usecase.FindProductUseCaseInput
+import com.spotteacher.admin.feature.product.usecase.FindProductsUseCase
+import com.spotteacher.admin.feature.product.usecase.FindProductsUseCaseInput
+import com.spotteacher.domain.SortOrder
 import com.spotteacher.graphql.toDomainId
 import org.springframework.stereotype.Component
 
-data class FindProductQueryOutput(
-    val result: Either<ProductError,ProductType>
-)
+sealed interface FindProductQueryOutput{
+    data class FindProductQuerySuccess(val product: ProductType) : FindProductQueryOutput
+    data class FindProductQueryError(val error: ProductError) : FindProductQueryOutput
+}
+
+sealed interface FindProductsQueryOutput{
+    data class FindProductsQuerySuccess(val products: List<ProductType>) : FindProductsQueryOutput
+    data class FindProductsQueryError(val error: ProductError) : FindProductsQueryOutput
+}
 
 @Component
 class ProductQuery(
-    private val findProductUseCase: FindProductUseCase
+    private val findProductUseCase: FindProductUseCase,
+    private val findProductsUseCase: FindProductsUseCase
 ) : Query {
 
     suspend fun product(productId: ID) : FindProductQueryOutput {
@@ -28,17 +35,51 @@ class ProductQuery(
             FindProductUseCaseInput(productId.toDomainId(::ProductId))
         ).result
 
-        // ラムダ式を使った改善案
         return result.fold(
-            ifLeft = { error -> FindProductQueryOutput(error.left()) },
+            ifLeft = { error -> FindProductQueryOutput.FindProductQueryError(error) },
             ifRight = { product ->
-                FindProductQueryOutput(
+                FindProductQueryOutput.FindProductQuerySuccess(
                     ProductType(
                         id = product.id.toGraphQLID(),
                         name = product.name.value,
                         price = product.price.value,
                         description = product.description?.value,
-                    ).right()
+                    )
+                )
+            }
+        )
+    }
+
+    suspend fun products(
+        limit: Int = 10,
+        lastId: String? = null,
+        sortOrder: String = "DESC"
+    ) : FindProductsQueryOutput {
+        val order = when (sortOrder.uppercase()) {
+            "ASC" -> SortOrder.ASC
+            else -> SortOrder.DESC
+        }
+
+        val result = findProductsUseCase.call(
+            FindProductsUseCaseInput(
+                limit = limit,
+                lastId = lastId?.toLongOrNull(),
+                sortOrder = order
+            )
+        ).result
+
+        return result.fold(
+            ifLeft = { error -> FindProductsQueryOutput.FindProductsQueryError(error)},
+            ifRight = { products ->
+                FindProductsQueryOutput.FindProductsQuerySuccess(
+                    products.map { product ->
+                        ProductType(
+                            id = product.id.toGraphQLID(),
+                            name = product.name.value,
+                            price = product.price.value,
+                            description = product.description?.value,
+                        )
+                    }
                 )
             }
         )

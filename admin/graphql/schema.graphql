@@ -1,5 +1,6 @@
 schema {
   query: Query
+  mutation: Mutation
 }
 
 "Marks the field, argument, input field or enum value as deprecated"
@@ -29,7 +30,58 @@ directive @specifiedBy(
     url: String!
   ) on SCALAR
 
+union FindProductQueryOutput = FindProductQueryError | FindProductQuerySuccess
+
+union FindProductsQueryOutput = FindProductsQueryError | FindProductsQuerySuccess
+
+type FindProductQueryError {
+  error: ProductError!
+}
+
+type FindProductQuerySuccess {
+  product: Product!
+}
+
+type FindProductsQueryError {
+  error: ProductError!
+}
+
+type FindProductsQuerySuccess {
+  products: [Product!]!
+}
+
+type Mutation {
+  createProduct(input: CreateProductMutationInput!): Unit!
+}
+
+type Product {
+  description: String
+  id: ID!
+  name: String!
+  price: Int!
+}
+
+type ProductError {
+  code: ProductErrorCode!
+  message: String!
+}
+
 type Query {
   hello(name: String): String!
   ping: String!
+  product(productId: ID!): FindProductQueryOutput!
+  products(lastId: String, limit: Int!, sortOrder: String!): FindProductsQueryOutput!
+}
+
+enum ProductErrorCode {
+  PRODUCT_NOT_FOUND
+}
+
+"meaningless value. Necessary just for graphql limitation. Only used for output."
+scalar Unit
+
+input CreateProductMutationInput {
+  description: String
+  name: String!
+  price: Int!
 }
