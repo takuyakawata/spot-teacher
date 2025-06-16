@@ -29,6 +29,20 @@ data class Company(
             createdAt = LocalDateTime.now()
         )
     }
+
+    fun update(
+        name: CompanyName?,
+        address: Address?,
+        phoneNumber: PhoneNumber?,
+        url: URI?
+    ) = Company(
+        id = this.id,
+        name = name ?: this.name,
+        address = address ?: this.address,
+        phoneNumber = phoneNumber ?: this.phoneNumber,
+        url = url ?: this.url,
+        createdAt = this.createdAt
+    )
 }
 
 class CompanyId(override val value:Long): Identity<Long>(value)

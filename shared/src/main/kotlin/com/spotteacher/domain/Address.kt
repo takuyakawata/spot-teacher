@@ -1,5 +1,7 @@
 package com.spotteacher.domain
 
+import com.spotteacher.graphql.NonEmptyString
+
 /**
  * 都道府県
  */
@@ -76,7 +78,6 @@ value class StreetAddress(val value: String) {
     }
 
     init {
-        require(value.isNotBlank()) { "Address detail must not be blank" }
         require(value.length <= MAX_LENGTH) { "Address detail must not be longer than $MAX_LENGTH characters" }
     }
 }
