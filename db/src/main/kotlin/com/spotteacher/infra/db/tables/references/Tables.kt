@@ -5,9 +5,15 @@
 package com.spotteacher.infra.db.tables.references
 
 
+import com.spotteacher.infra.db.tables.Companies
 import com.spotteacher.infra.db.tables.Products
 
 
+
+/**
+ * The table <code>companies</code>.
+ */
+val COMPANIES: Companies = Companies.COMPANIES
 
 /**
  * The table <code>products</code>.
