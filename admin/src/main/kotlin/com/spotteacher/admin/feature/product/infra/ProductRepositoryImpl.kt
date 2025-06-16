@@ -19,7 +19,6 @@ import kotlinx.coroutines.reactive.asFlow
 import kotlinx.coroutines.reactive.awaitFirstOrNull
 import kotlinx.coroutines.reactive.awaitLast
 import org.jooq.types.UInteger
-import org.jooq.types.ULong
 import org.springframework.stereotype.Component
 
 @Component
@@ -27,7 +26,7 @@ class ProductRepositoryImpl(private val dslContext: TransactionAwareDSLContext,)
     override suspend fun findById(id: ProductId): Product? {
         return dslContext.get().nonBlockingFetchOne(
             PRODUCTS,
-            PRODUCTS.ID.eq(ULong.valueOf(id.value))
+            PRODUCTS.ID.eq(id.value)
         )?.toEntity()
     }
 
@@ -55,7 +54,7 @@ class ProductRepositoryImpl(private val dslContext: TransactionAwareDSLContext,)
     }
 
     override suspend fun create(product: Product):Product {
-        val id :Long = dslContext.get().insertInto(
+        val id = dslContext.get().insertInto(
             PRODUCTS,
             PRODUCTS.NAME,
             PRODUCTS.PRICE,
@@ -73,16 +72,16 @@ class ProductRepositoryImpl(private val dslContext: TransactionAwareDSLContext,)
         dslContext.get().update(PRODUCTS).set(PRODUCTS.NAME, product.name.value)
             .set(PRODUCTS.PRICE, UInteger.valueOf(product.price.value))
             .set(PRODUCTS.DESCRIPTION, product.description?.value)
-            .where(PRODUCTS.ID.eq(ULong.valueOf(product.id.value))).awaitLast()
+            .where(PRODUCTS.ID.eq(product.id.value)).awaitLast()
     }
 
     override suspend fun delete(productId: ProductId) {
-        dslContext.get().deleteFrom(PRODUCTS).where(PRODUCTS.ID.eq(ULong.valueOf(productId.value))).awaitLast()
+        dslContext.get().deleteFrom(PRODUCTS).where(PRODUCTS.ID.eq(productId.value)).awaitLast()
     }
 
     private fun ProductsRecord.toEntity(): Product {
         return Product(
-            id = ProductId(id!!.toLong()),
+            id = ProductId(id!!),
             name = ProductName(name),
             price = ProductPrice(price.toInt()),
             description = description?.let { ProductDescription(it) },
