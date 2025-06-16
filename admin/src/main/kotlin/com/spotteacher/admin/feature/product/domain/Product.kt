@@ -20,7 +20,20 @@ data class Product(
             description = description
         )
     }
+
+    fun update(
+        name: ProductName?,
+        price: ProductPrice?,
+        description: ProductDescription?
+    ) = Product(
+        id = this.id,
+        name = name ?: this.name,
+        price = price ?: this.price,
+        description = description ?: this.description
+    )
 }
+
+
 
 class ProductId(override val value: Long) : Identity<Long>(value)
 
@@ -45,7 +58,7 @@ value class ProductPrice private constructor(val value: Int) {
         operator fun invoke(value: Int) = ProductPrice(value)
     }
     init {
-        require(value > 0) {
+        require(value >= 0) {
             "ProductPrice must be plus value"
         }
     }
@@ -67,5 +80,5 @@ data class ProductError(
 )
 
 enum class ProductErrorCode {
-    NAME_DUPLICATED,
+    PRODUCT_NOT_FOUND,
 }

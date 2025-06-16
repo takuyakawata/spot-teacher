@@ -31,7 +31,6 @@ import org.jooq.impl.Internal
 import org.jooq.impl.SQLDataType
 import org.jooq.impl.TableImpl
 import org.jooq.types.UInteger
-import org.jooq.types.ULong
 
 
 /**
@@ -74,7 +73,7 @@ open class Products(
     /**
      * The column <code>products.id</code>.
      */
-    val ID: TableField<ProductsRecord, ULong?> = createField(DSL.name("id"), SQLDataType.BIGINTUNSIGNED.nullable(false).identity(true), this, "")
+    val ID: TableField<ProductsRecord, Long?> = createField(DSL.name("id"), SQLDataType.BIGINT.nullable(false).identity(true), this, "")
 
     /**
      * The column <code>products.name</code>.
@@ -119,7 +118,7 @@ open class Products(
      * Create a <code>products</code> table reference
      */
     constructor(): this(DSL.name("products"), null)
-    override fun getIdentity(): Identity<ProductsRecord, ULong?> = super.getIdentity() as Identity<ProductsRecord, ULong?>
+    override fun getIdentity(): Identity<ProductsRecord, Long?> = super.getIdentity() as Identity<ProductsRecord, Long?>
     override fun getPrimaryKey(): UniqueKey<ProductsRecord> = Internal.createUniqueKey(Products.PRODUCTS, DSL.name("KEY_products_PRIMARY"), arrayOf(Products.PRODUCTS.ID), true)
     override fun `as`(alias: String): Products = Products(DSL.name(alias), this)
     override fun `as`(alias: Name): Products = Products(alias, this)

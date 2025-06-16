@@ -1,5 +1,6 @@
 schema {
   query: Query
+  mutation: Mutation
 }
 
 "Marks the field, argument, input field or enum value as deprecated"
@@ -29,7 +30,187 @@ directive @specifiedBy(
     url: String!
   ) on SCALAR
 
+union CompanyQueryOutput = CompanyQueryError | CompanyQuerySuccess
+
+union CreateCompanyMutationOutput = CreateCompanyMutationError | CreateCompanyMutationSuccess
+
+union DeleteCompanyMutationOutput = DeleteCompanyMutationError | DeleteCompanyMutationSuccess
+
+union DeleteProductMutationOutput = DeleteProductMutationError | DeleteProductMutationSuccess
+
+union FindProductQueryOutput = FindProductQueryError | FindProductQuerySuccess
+
+union FindProductsQueryOutput = FindProductsQueryError | FindProductsQuerySuccess
+
+union UpdateCompanyMutationOutput = UpdateCompanyMutationError | UpdateCompanyMutationSuccess
+
+union UpdateProductMutationOutput = UpdateProductMutationError | UpdateProductMutationSuccess
+
+type Company {
+  buildingName: String
+  city: String!
+  createdAt: LocalDateTime!
+  id: ID!
+  name: String!
+  phoneNumber: String
+  postalCode: String!
+  prefecture: String!
+  streetAddress: String!
+  url: String
+}
+
+type CompanyQueryError {
+  error: CompanyErrorCode!
+  message: String
+}
+
+type CompanyQuerySuccess {
+  company: Company!
+}
+
+type CreateCompanyMutationError {
+  code: CompanyErrorCode!
+  message: String!
+}
+
+type CreateCompanyMutationSuccess {
+  company: Company!
+}
+
+type DeleteCompanyMutationError {
+  code: CompanyErrorCode!
+  message: String!
+}
+
+type DeleteCompanyMutationSuccess {
+  result: Unit!
+}
+
+type DeleteProductMutationError {
+  error: ProductError!
+}
+
+type DeleteProductMutationSuccess {
+  success: Boolean!
+}
+
+type FindProductQueryError {
+  error: ProductError!
+}
+
+type FindProductQuerySuccess {
+  product: Product!
+}
+
+type FindProductsQueryError {
+  error: ProductError!
+}
+
+type FindProductsQuerySuccess {
+  products: [Product!]!
+}
+
+type Mutation {
+  createCompany(input: CreateCompanyMutationInput!): CreateCompanyMutationOutput!
+  createProduct(input: CreateProductMutationInput!): Unit!
+  deleteCompany(id: ID!): DeleteCompanyMutationOutput!
+  deleteProduct(input: DeleteProductMutationInput!): DeleteProductMutationOutput!
+  updateCompany(input: UpdateCompanyMutationInput!): UpdateCompanyMutationOutput!
+  updateProduct(input: UpdateProductMutationInput!): UpdateProductMutationOutput!
+}
+
+type Product {
+  description: String
+  id: ID!
+  name: String!
+  price: Int!
+}
+
+type ProductError {
+  code: ProductErrorCode!
+  message: String!
+}
+
 type Query {
+  companies: [Company!]!
+  company(id: ID!): CompanyQueryOutput!
   hello(name: String): String!
   ping: String!
+  product(productId: ID!): FindProductQueryOutput!
+  products(lastId: String, limit: Int!, sortOrder: String!): FindProductsQueryOutput!
+}
+
+type UpdateCompanyMutationError {
+  code: CompanyErrorCode!
+  message: String!
+}
+
+type UpdateCompanyMutationSuccess {
+  result: Unit!
+}
+
+type UpdateProductMutationError {
+  error: ProductError!
+}
+
+type UpdateProductMutationSuccess {
+  product: Product!
+}
+
+enum CompanyErrorCode {
+  COMPANY_ALREADY_EXISTS
+  COMPANY_NOT_FOUND
+}
+
+enum ProductErrorCode {
+  PRODUCT_NOT_FOUND
+}
+
+"LocalDateTime"
+scalar LocalDateTime
+
+"String that is not empty"
+scalar NonEmptyString
+
+"meaningless value. Necessary just for graphql limitation. Only used for output."
+scalar Unit
+
+input CreateCompanyMutationInput {
+  buildingName: NonEmptyString
+  city: NonEmptyString!
+  name: NonEmptyString!
+  phoneNumber: NonEmptyString!
+  postalCode: NonEmptyString!
+  prefecture: NonEmptyString!
+  streetAddress: NonEmptyString!
+  url: NonEmptyString
+}
+
+input CreateProductMutationInput {
+  description: String
+  name: String!
+  price: Int!
+}
+
+input DeleteProductMutationInput {
+  id: ID!
+}
+
+input UpdateCompanyMutationInput {
+  buildingName: NonEmptyString
+  city: NonEmptyString
+  id: ID!
+  name: NonEmptyString
+  phoneNumber: NonEmptyString!
+  postalCode: NonEmptyString
+  prefecture: NonEmptyString
+  streetAddress: NonEmptyString
+  url: NonEmptyString
+}
+
+input UpdateProductMutationInput {
+  description: String
+  id: ID!
+  name: String
+  price: Int
 }

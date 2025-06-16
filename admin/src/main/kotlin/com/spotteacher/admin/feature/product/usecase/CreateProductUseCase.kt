@@ -5,6 +5,7 @@ import com.spotteacher.admin.feature.product.domain.ProductDescription
 import com.spotteacher.admin.feature.product.domain.ProductName
 import com.spotteacher.admin.feature.product.domain.ProductPrice
 import com.spotteacher.admin.feature.product.domain.ProductRepository
+import com.spotteacher.admin.shared.infra.TransactionCoroutine
 import com.spotteacher.usecase.UseCase
 
 data class CreateProductUseCaseInput(
@@ -22,6 +23,7 @@ sealed interface CreateProductUseCaseOutput {
 class CreateProductUseCase(
     private val productRepository: ProductRepository
 ) {
+    @TransactionCoroutine
     suspend fun call(input: CreateProductUseCaseInput) : CreateProductUseCaseOutput{
         val newProduct = Product.create(
             name = input.name,

@@ -1,5 +1,7 @@
 package com.spotteacher.domain
 
+import com.spotteacher.graphql.NonEmptyString
+
 /**
  * 都道府県
  */
@@ -76,7 +78,6 @@ value class StreetAddress(val value: String) {
     }
 
     init {
-        require(value.isNotBlank()) { "Address detail must not be blank" }
         require(value.length <= MAX_LENGTH) { "Address detail must not be longer than $MAX_LENGTH characters" }
     }
 }
@@ -97,9 +98,20 @@ value class BuildingName(val value: String) {
 }
 
 /**
+ * 郵便番号
+ */
+@JvmInline
+value class PostCode(val value: String) {
+    companion object {
+        private const val MAX_LENGTH = 10
+    }
+}
+
+/**
  * 住所
  */
 data class Address(
+    val postCode : PostCode,
     val prefecture: Prefecture,
     val city: City,
     val streetAddress: StreetAddress,
