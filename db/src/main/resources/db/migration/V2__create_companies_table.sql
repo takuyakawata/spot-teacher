@@ -1,7 +1,7 @@
 create table if not exists companies (
      id bigint NOT NULL AUTO_INCREMENT PRIMARY KEY,
      name varchar(50) NOT NULL,
-     prefecture bigint NOT NULL,
+     prefecture varchar(50) NOT NULL,
      city varchar(255) NOT NULL,
      street varchar(255) NULL,
      post_code varchar(7) NOT NULL,

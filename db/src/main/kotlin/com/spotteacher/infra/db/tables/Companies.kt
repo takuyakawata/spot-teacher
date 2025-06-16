@@ -82,7 +82,7 @@ open class Companies(
     /**
      * The column <code>companies.prefecture</code>.
      */
-    val PREFECTURE: TableField<CompaniesRecord, Long?> = createField(DSL.name("prefecture"), SQLDataType.BIGINT.nullable(false), this, "")
+    val PREFECTURE: TableField<CompaniesRecord, String?> = createField(DSL.name("prefecture"), SQLDataType.VARCHAR(50).nullable(false), this, "")
 
     /**
      * The column <code>companies.city</code>.

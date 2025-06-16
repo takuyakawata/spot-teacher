@@ -26,9 +26,9 @@ open class CompaniesRecord private constructor() : UpdatableRecordImpl<Companies
         set(value): Unit = set(1, value)
         get(): String = get(1) as String
 
-    open var prefecture: Long
+    open var prefecture: String
         set(value): Unit = set(2, value)
-        get(): Long = get(2) as Long
+        get(): String = get(2) as String
 
     open var city: String
         set(value): Unit = set(3, value)
@@ -67,7 +67,7 @@ open class CompaniesRecord private constructor() : UpdatableRecordImpl<Companies
     /**
      * Create a detached, initialised CompaniesRecord
      */
-    constructor(id: Long? = null, name: String, prefecture: Long, city: String, street: String? = null, postCode: String, phoneNumber: String, url: String? = null, createdAt: LocalDateTime? = null, updatedAt: LocalDateTime? = null): this() {
+    constructor(id: Long? = null, name: String, prefecture: String, city: String, street: String? = null, postCode: String, phoneNumber: String, url: String? = null, createdAt: LocalDateTime? = null, updatedAt: LocalDateTime? = null): this() {
         this.id = id
         this.name = name
         this.prefecture = prefecture
