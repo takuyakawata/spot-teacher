@@ -20,8 +20,8 @@ data class UpdateProductMutationInput(
 )
 
 sealed interface UpdateProductMutationOutput {
-    data class Success(val product: ProductType) : UpdateProductMutationOutput
-    data class Error(val error: ProductError) : UpdateProductMutationOutput
+    data class UpdateProductMutationSuccess(val product: ProductType) : UpdateProductMutationOutput
+    data class UpdateProductMutationError(val error: ProductError) : UpdateProductMutationOutput
 }
 
 @Component
@@ -39,9 +39,9 @@ class UpdateProductMutation(
         ).result
 
         return result.fold(
-            ifLeft = { error -> UpdateProductMutationOutput.Error(error) },
+            ifLeft = { error -> UpdateProductMutationOutput.UpdateProductMutationError(error) },
             ifRight = { product ->
-                UpdateProductMutationOutput.Success(
+                UpdateProductMutationOutput.UpdateProductMutationSuccess(
                     ProductType(
                         id = product.id.toGraphQLID(),
                         name = product.name.value,
