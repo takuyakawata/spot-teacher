@@ -30,9 +30,56 @@ directive @specifiedBy(
     url: String!
   ) on SCALAR
 
+union CompanyQueryOutput = CompanyQueryError | CompanyQuerySuccess
+
+union CreateCompanyMutationOutput = CreateCompanyMutationError | CreateCompanyMutationSuccess
+
+union DeleteProductMutationOutput = DeleteProductMutationError | DeleteProductMutationSuccess
+
 union FindProductQueryOutput = FindProductQueryError | FindProductQuerySuccess
 
 union FindProductsQueryOutput = FindProductsQueryError | FindProductsQuerySuccess
+
+union UpdateProductMutationOutput = UpdateProductMutationError | UpdateProductMutationSuccess
+
+type Company {
+  buildingName: String
+  city: String!
+  createdAt: LocalDateTime!
+  id: ID!
+  name: String!
+  phoneNumber: String
+  postalCode: String!
+  prefecture: String!
+  streetAddress: String!
+  url: String
+}
+
+type CompanyQueryError {
+  error: CompanyErrorCode!
+  message: String
+}
+
+type CompanyQuerySuccess {
+  company: Company!
+}
+
+type CreateCompanyMutationError {
+  code: CompanyErrorCode!
+  message: String!
+}
+
+type CreateCompanyMutationSuccess {
+  company: Company!
+}
+
+type DeleteProductMutationError {
+  error: ProductError!
+}
+
+type DeleteProductMutationSuccess {
+  success: Boolean!
+}
 
 type FindProductQueryError {
   error: ProductError!
@@ -51,7 +98,11 @@ type FindProductsQuerySuccess {
 }
 
 type Mutation {
+  createCompany(input: CreateCompanyMutationInput!): CreateCompanyMutationOutput!
   createProduct(input: CreateProductMutationInput!): Unit!
+  deleteCompany(id: ID!): Unit!
+  deleteProduct(input: DeleteProductMutationInput!): DeleteProductMutationOutput!
+  updateProduct(input: UpdateProductMutationInput!): UpdateProductMutationOutput!
 }
 
 type Product {
@@ -67,21 +118,61 @@ type ProductError {
 }
 
 type Query {
+  companies: [Company!]!
+  company(id: ID!): CompanyQueryOutput!
   hello(name: String): String!
   ping: String!
   product(productId: ID!): FindProductQueryOutput!
   products(lastId: String, limit: Int!, sortOrder: String!): FindProductsQueryOutput!
 }
 
+type UpdateProductMutationError {
+  error: ProductError!
+}
+
+type UpdateProductMutationSuccess {
+  product: Product!
+}
+
+enum CompanyErrorCode {
+  COMPANY_ALREADY_EXISTS
+  COMPANY_NOT_FOUND
+}
+
 enum ProductErrorCode {
   PRODUCT_NOT_FOUND
 }
 
+"LocalDateTime"
+scalar LocalDateTime
+
 "meaningless value. Necessary just for graphql limitation. Only used for output."
 scalar Unit
+
+input CreateCompanyMutationInput {
+  buildingName: String
+  city: String!
+  name: String!
+  phoneNumber: String!
+  postalCode: String!
+  prefecture: String!
+  streetAddress: String!
+  url: String
+}
 
 input CreateProductMutationInput {
   description: String
   name: String!
   price: Int!
+}
+
+input DeleteProductMutationInput {
+  id: ID!
+}
+
+input UpdateProductMutationInput {
+  description: String
+  id: ID!
+  name: String
+  price: Int
 }
