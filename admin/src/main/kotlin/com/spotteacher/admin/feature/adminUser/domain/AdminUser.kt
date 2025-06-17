@@ -5,21 +5,21 @@ import com.spotteacher.util.Identity
 
 sealed interface AdminUser{
     val id: AdminUserId
-    val firstName: AdminName
-    val lastName: AdminName
+    val firstName: AdminUserName
+    val lastName: AdminUserName
 }
 
 data class ActiveAdminUser(
     override val id: AdminUserId,
-    override val firstName: AdminName,
-    override val lastName: AdminName,
+    override val firstName: AdminUserName,
+    override val lastName: AdminUserName,
     val email: EmailAddress,
     val password: Password,
 ) : AdminUser {
     companion object{
         fun create(
-            firstName: AdminName,
-            lastName: AdminName,
+            firstName: AdminUserName,
+            lastName: AdminUserName,
             email: EmailAddress,
             password: Password,
         ) = ActiveAdminUser(
@@ -42,13 +42,13 @@ data class ActiveAdminUser(
  */
 data class InActiveAdminUser(
     override val id: AdminUserId,
-    override val firstName: AdminName,
-    override val lastName: AdminName,
+    override val firstName: AdminUserName,
+    override val lastName: AdminUserName,
 ) : AdminUser {
     companion object{
        fun create(
-           firstName: AdminName,
-           lastName: AdminName,
+           firstName: AdminUserName,
+           lastName: AdminUserName,
        ) = InActiveAdminUser(
            id = AdminUserId(0),
            firstName = firstName,
@@ -61,7 +61,7 @@ data class InActiveAdminUser(
 class AdminUserId(override val value: Long) : Identity<Long>(value)
 
 @JvmInline
-value class AdminName(val value: String){
+value class AdminUserName(val value: String){
     companion object {
         const val MAX_LENGTH = 100
     }

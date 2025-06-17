@@ -5,10 +5,22 @@
 package com.spotteacher.infra.db.tables.references
 
 
+import com.spotteacher.infra.db.tables.AdminUsers
 import com.spotteacher.infra.db.tables.Companies
+import com.spotteacher.infra.db.tables.CompanyMembers
+import com.spotteacher.infra.db.tables.LessonPlanDates
+import com.spotteacher.infra.db.tables.LessonPlans
 import com.spotteacher.infra.db.tables.Products
+import com.spotteacher.infra.db.tables.Schools
+import com.spotteacher.infra.db.tables.Teachers
+import com.spotteacher.infra.db.tables.Users
 
 
+
+/**
+ * The table <code>admin_users</code>.
+ */
+val ADMIN_USERS: AdminUsers = AdminUsers.ADMIN_USERS
 
 /**
  * The table <code>companies</code>.
@@ -16,6 +28,36 @@ import com.spotteacher.infra.db.tables.Products
 val COMPANIES: Companies = Companies.COMPANIES
 
 /**
+ * CompanyMemberロールを持つユーザーの追加情報
+ */
+val COMPANY_MEMBERS: CompanyMembers = CompanyMembers.COMPANY_MEMBERS
+
+/**
+ * 授業計画の日付
+ */
+val LESSON_PLAN_DATES: LessonPlanDates = LessonPlanDates.LESSON_PLAN_DATES
+
+/**
+ * The table <code>lesson_plans</code>.
+ */
+val LESSON_PLANS: LessonPlans = LessonPlans.LESSON_PLANS
+
+/**
  * The table <code>products</code>.
  */
 val PRODUCTS: Products = Products.PRODUCTS
+
+/**
+ * The table <code>schools</code>.
+ */
+val SCHOOLS: Schools = Schools.SCHOOLS
+
+/**
+ * Teacherロールを持つユーザーの情報
+ */
+val TEACHERS: Teachers = Teachers.TEACHERS
+
+/**
+ * 全ユーザーの共通情報を格納する基盤テーブル
+ */
+val USERS: Users = Users.USERS
