@@ -11,6 +11,7 @@ import com.spotteacher.infra.db.tables.CompanyMembers
 import com.spotteacher.infra.db.tables.LessonPlanDates
 import com.spotteacher.infra.db.tables.LessonPlans
 import com.spotteacher.infra.db.tables.Products
+import com.spotteacher.infra.db.tables.RefreshTokens
 import com.spotteacher.infra.db.tables.Schools
 import com.spotteacher.infra.db.tables.Teachers
 import com.spotteacher.infra.db.tables.Users
@@ -46,6 +47,11 @@ val LESSON_PLANS: LessonPlans = LessonPlans.LESSON_PLANS
  * The table <code>products</code>.
  */
 val PRODUCTS: Products = Products.PRODUCTS
+
+/**
+ * The table <code>refresh_tokens</code>.
+ */
+val REFRESH_TOKENS: RefreshTokens = RefreshTokens.REFRESH_TOKENS
 
 /**
  * The table <code>schools</code>.
