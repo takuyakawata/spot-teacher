@@ -1,23 +1,8 @@
-package com.spotteacher.admin.config
+package com.spotteacher.admin.config.auth
 
-import org.springframework.beans.factory.annotation.Value
-import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
-import org.springframework.http.client.reactive.ReactorClientHttpConnector
 import org.springframework.security.config.annotation.method.configuration.EnableReactiveMethodSecurity
 import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity
-import org.springframework.security.config.web.server.SecurityWebFiltersOrder
-import org.springframework.security.config.web.server.ServerHttpSecurity
-import org.springframework.security.config.web.server.ServerHttpSecurity.AuthorizeExchangeSpec
-import org.springframework.security.config.web.server.ServerHttpSecurity.CsrfSpec
-import org.springframework.security.oauth2.jwt.NimbusReactiveJwtDecoder
-import org.springframework.security.oauth2.jwt.ReactiveJwtDecoder
-import org.springframework.security.web.server.SecurityWebFilterChain
-import org.springframework.web.reactive.function.client.WebClient
-import reactor.netty.http.client.HttpClient
-import reactor.netty.resources.ConnectionProvider
-import kotlin.time.Duration.Companion.seconds
-import kotlin.time.toJavaDuration
 
 @Configuration
 @EnableWebFluxSecurity

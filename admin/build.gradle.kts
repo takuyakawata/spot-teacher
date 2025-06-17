@@ -49,6 +49,10 @@ dependencies {
     // auth
     implementation(libs.spring.boot.oauth2.resource.server)
     implementation(libs.spring.security.oauth2.jose)
+    implementation(libs.spring.security.oauth2.client)
+    implementation(libs.jjwt.api)
+    implementation(libs.jjwt.impl)
+    implementation(libs.jjwt.jackson)
 
     // validation
     implementation(libs.valiktor.core)
