@@ -7,7 +7,7 @@ graphql:
     enabled: false
 spring:
   application:
-    name: "user"
+    name: spot-teacher-api
   profiles:
     active: local  # デフォルトプロファイルを指定
 management:
