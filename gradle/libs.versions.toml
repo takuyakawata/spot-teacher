@@ -41,6 +41,7 @@ spring-dep-mgmt = "1.1.7"
 dgs-codegen = "7.0.3"
 asciidoctor = "3.3.2"
 jackson = "2.15.3"
+jjwt-api = "0.12.5"
 
 [libraries]
 # Kotlin
@@ -71,6 +72,11 @@ spring-boot-starter-mail = { module = "org.springframework.boot:spring-boot-star
 
 # Spring Other
 spring-boot-docker-compose = { module = "org.springframework.boot:spring-boot-docker-compose", version.ref = "spring-boot" }
+
+# auth
+jjwt-api = {module="io.jsonwebtoken:jjwt-api", version.ref="jjwt-api" }
+jjwt-impl = {module="io.jsonwebtoken:jjwt-impl", version.ref="jjwt-api" }
+jjwt-jackson = {module="io.jsonwebtoken:jjwt-jackson", version.ref="jjwt-api" }
 
 # valiktor
 valiktor-core = { module = "org.valiktor:valiktor-core", version.ref = "valiktor" }

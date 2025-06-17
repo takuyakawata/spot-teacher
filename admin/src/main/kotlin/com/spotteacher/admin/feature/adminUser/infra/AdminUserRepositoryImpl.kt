@@ -1,8 +1,10 @@
 package com.spotteacher.admin.feature.adminUser.infra
 
+import com.spotteacher.admin.feature.adminUser.domain.ActiveAdminUser
 import com.spotteacher.admin.feature.adminUser.domain.AdminUser
 import com.spotteacher.admin.feature.adminUser.domain.AdminUserId
 import com.spotteacher.admin.feature.adminUser.domain.AdminUserRepository
+import com.spotteacher.domain.EmailAddress
 import org.springframework.stereotype.Component
 
 @Component
@@ -24,6 +26,10 @@ class AdminUserRepositoryImpl : AdminUserRepository {
     }
 
     override suspend fun delete(id: AdminUserId) {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun findByEmailAndActiveUser(emailAddress: EmailAddress):ActiveAdminUser? {
         TODO("Not yet implemented")
     }
 }
