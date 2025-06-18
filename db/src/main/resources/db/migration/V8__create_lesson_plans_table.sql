@@ -1,11 +1,12 @@
 CREATE TABLE IF NOT EXISTS lesson_plans (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     company_id BIGINT NOT NULL,
-    title VARCHAR(500) NOT NULL,
+    title VARCHAR(500),
     description VARCHAR(2000) NULL,
     location VARCHAR(500) NULL,
-    lesson_type ENUM('ONLINE', 'OFFLINE', 'ONLINE_AND_OFFLINE') NOT NULL,
-    annual_max_executions BIGINT NOT NULL COMMENT '年間の最大実施回数',
+    lesson_type ENUM('ONLINE', 'OFFLINE', 'ONLINE_AND_OFFLINE'),
+    annual_max_executions BIGINT COMMENT '年間の最大実施回数',
+    published BOOLEAN DEFAULT FALSE NOT NULL,
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 
