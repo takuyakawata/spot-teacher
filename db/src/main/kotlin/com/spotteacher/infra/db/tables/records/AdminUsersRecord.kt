@@ -11,7 +11,6 @@ import java.time.LocalDateTime
 
 import org.jooq.Record1
 import org.jooq.impl.UpdatableRecordImpl
-import org.jooq.types.ULong
 
 
 /**
@@ -20,9 +19,9 @@ import org.jooq.types.ULong
 @Suppress("warnings")
 open class AdminUsersRecord private constructor() : UpdatableRecordImpl<AdminUsersRecord>(AdminUsers.ADMIN_USERS) {
 
-    open var id: ULong?
+    open var id: Long?
         set(value): Unit = set(0, value)
-        get(): ULong? = get(0) as ULong?
+        get(): Long? = get(0) as Long?
 
     open var userId: Long
         set(value): Unit = set(1, value)
@@ -44,12 +43,12 @@ open class AdminUsersRecord private constructor() : UpdatableRecordImpl<AdminUse
     // Primary key information
     // -------------------------------------------------------------------------
 
-    override fun key(): Record1<ULong?> = super.key() as Record1<ULong?>
+    override fun key(): Record1<Long?> = super.key() as Record1<Long?>
 
     /**
      * Create a detached, initialised AdminUsersRecord
      */
-    constructor(id: ULong? = null, userId: Long, adminRole: AdminUsersAdminRole? = null, createdAt: LocalDateTime? = null, updatedAt: LocalDateTime? = null): this() {
+    constructor(id: Long? = null, userId: Long, adminRole: AdminUsersAdminRole? = null, createdAt: LocalDateTime? = null, updatedAt: LocalDateTime? = null): this() {
         this.id = id
         this.userId = userId
         this.adminRole = adminRole

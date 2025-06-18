@@ -32,7 +32,6 @@ import org.jooq.impl.DSL
 import org.jooq.impl.Internal
 import org.jooq.impl.SQLDataType
 import org.jooq.impl.TableImpl
-import org.jooq.types.ULong
 
 
 /**
@@ -75,7 +74,7 @@ open class AdminUsers(
     /**
      * The column <code>admin_users.id</code>.
      */
-    val ID: TableField<AdminUsersRecord, ULong?> = createField(DSL.name("id"), SQLDataType.BIGINTUNSIGNED.nullable(false).identity(true), this, "")
+    val ID: TableField<AdminUsersRecord, Long?> = createField(DSL.name("id"), SQLDataType.BIGINT.nullable(false).identity(true), this, "")
 
     /**
      * The column <code>admin_users.user_id</code>.
@@ -115,10 +114,9 @@ open class AdminUsers(
      * Create a <code>admin_users</code> table reference
      */
     constructor(): this(DSL.name("admin_users"), null)
-    override fun getIdentity(): Identity<AdminUsersRecord, ULong?> = super.getIdentity() as Identity<AdminUsersRecord, ULong?>
+    override fun getIdentity(): Identity<AdminUsersRecord, Long?> = super.getIdentity() as Identity<AdminUsersRecord, Long?>
     override fun getPrimaryKey(): UniqueKey<AdminUsersRecord> = Internal.createUniqueKey(AdminUsers.ADMIN_USERS, DSL.name("KEY_admin_users_PRIMARY"), arrayOf(AdminUsers.ADMIN_USERS.ID), true)
     override fun getUniqueKeys(): List<UniqueKey<AdminUsersRecord>> = listOf(
-        Internal.createUniqueKey(AdminUsers.ADMIN_USERS, DSL.name("KEY_admin_users_id"), arrayOf(AdminUsers.ADMIN_USERS.ID), true), 
         Internal.createUniqueKey(AdminUsers.ADMIN_USERS, DSL.name("KEY_admin_users_user_id"), arrayOf(AdminUsers.ADMIN_USERS.USER_ID), true)
     )
     override fun `as`(alias: String): AdminUsers = AdminUsers(DSL.name(alias), this)
