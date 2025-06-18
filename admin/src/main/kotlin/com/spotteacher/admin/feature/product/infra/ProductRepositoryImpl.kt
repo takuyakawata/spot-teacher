@@ -20,9 +20,10 @@ import kotlinx.coroutines.reactive.awaitFirstOrNull
 import kotlinx.coroutines.reactive.awaitLast
 import org.jooq.types.UInteger
 import org.springframework.stereotype.Component
+import org.springframework.stereotype.Repository
 
-@Component
-class ProductRepositoryImpl(private val dslContext: TransactionAwareDSLContext,) : ProductRepository {
+@Repository
+class ProductRepositoryImpl(private val dslContext: TransactionAwareDSLContext) : ProductRepository {
     override suspend fun findById(id: ProductId): Product? {
         return dslContext.get().nonBlockingFetchOne(
             PRODUCTS,

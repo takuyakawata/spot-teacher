@@ -1,11 +1,8 @@
-package com.spotteacher.admin.config
+package com.spotteacher.admin.config.auth
 
 import com.spotteacher.util.logInfo
-import com.spotteacher.util.logWarn
-import org.springframework.beans.factory.annotation.Value
 import org.springframework.core.io.buffer.DataBuffer
 import org.springframework.core.io.buffer.DataBufferUtils
-import org.springframework.http.HttpStatus
 import org.springframework.http.server.reactive.ServerHttpRequest
 import org.springframework.http.server.reactive.ServerHttpRequestDecorator
 import org.springframework.stereotype.Component
@@ -14,12 +11,9 @@ import org.springframework.web.server.WebFilter
 import org.springframework.web.server.WebFilterChain
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
-import java.util.*
-import javax.crypto.Mac
-import javax.crypto.spec.SecretKeySpec
 
 @Component
-class SecurityFilter : WebFilter {
+class SecurityFilterWithCognito : WebFilter {
 //    @Value("\${api.secret-key}")
     private lateinit var secretKey: String
 

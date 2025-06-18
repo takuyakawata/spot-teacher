@@ -1,0 +1,30 @@
+server:
+  port: ${SERVER_PORT:8080} # 本番環境のポート番号を環境変数で指定
+
+# --- JWT設定 ---
+jwt:
+  # JWTの秘密鍵は必ず環境変数で設定する
+  secret: ${JWT_SECRET}
+  # アクセストークンの有効期限 (1時間)
+  access-token-expiration-ms: 3600000
+  # リフレッシュトークンの有効期限 (30日)
+  refresh-token-expiration-ms: 2592000000
+
+# --- ロギング設定 ---
+logging:
+  level:
+    # 本番環境ではINFOレベル以上のログのみ出力
+    com.backend: INFO
+    org.springframework: WARN
+
+# --- データベース接続設定 (Aurora) ---
+# 全ての認証情報は環境変数から取得
+aurora:
+  writer:
+    url: ${DB_WRITER_URL} # 例: "r2dbc:pool:mysql://aurora-writer-endpoint:3306/spot_teacher?..."
+    username: ${DB_WRITER_USERNAME}
+    password: ${DB_WRITER_PASSWORD}
+  reader:
+    url: ${DB_READER_URL} # 例: "r2dbc:pool:mysql://aurora-reader-endpoint:3306/spot_teacher?..."
+    username: ${DB_READER_USERNAME}
+    password: ${DB_READER_PASSWORD}
