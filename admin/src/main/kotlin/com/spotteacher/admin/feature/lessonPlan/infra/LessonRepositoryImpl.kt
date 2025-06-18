@@ -30,7 +30,7 @@ import java.time.LocalTime
 
 @Repository
 class LessonRepositoryImpl(private val dslContext: TransactionAwareDSLContext): LessonPlanRepository {
-    override suspend fun create(lessonPlan: DraftLessonPlan): LessonPlan {
+    suspend fun create(lessonPlan: DraftLessonPlan): LessonPlan {
         return when (lessonPlan) {
             is PublishedLessonPlan -> createPublishedLessonPlan(lessonPlan)
             is DraftLessonPlan -> createDraftLessonPlan(lessonPlan)
@@ -123,11 +123,19 @@ class LessonRepositoryImpl(private val dslContext: TransactionAwareDSLContext): 
         return lessonPlan.copy(id = LessonPlanId(id))
     }
 
+    override suspend fun createDraft(lessonPlan: DraftLessonPlan): DraftLessonPlan {
+        TODO("Not yet implemented")
+    }
+
     override suspend fun update(lessonPlan: LessonPlan) {
         when (lessonPlan) {
             is PublishedLessonPlan -> updatePublishedLessonPlan(lessonPlan)
             is DraftLessonPlan -> updateDraftLessonPlan(lessonPlan)
         }
+    }
+
+    override suspend fun updateStatus(lessonPlan: LessonPlan) {
+        TODO("Not yet implemented")
     }
 
     private suspend fun updatePublishedLessonPlan(lessonPlan: PublishedLessonPlan) {
