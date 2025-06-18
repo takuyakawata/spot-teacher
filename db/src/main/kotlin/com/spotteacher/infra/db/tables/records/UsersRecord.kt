@@ -3,15 +3,11 @@
  */
 package com.spotteacher.infra.db.tables.records
 
-
 import com.spotteacher.infra.db.enums.UsersRole
 import com.spotteacher.infra.db.tables.Users
-
-import java.time.LocalDateTime
-
 import org.jooq.Record1
 import org.jooq.impl.UpdatableRecordImpl
-
+import java.time.LocalDateTime
 
 /**
  * 全ユーザーの共通情報を格納する基盤テーブル
@@ -64,7 +60,17 @@ open class UsersRecord private constructor() : UpdatableRecordImpl<UsersRecord>(
     /**
      * Create a detached, initialised UsersRecord
      */
-    constructor(id: Long? = null, uuid: String, firstName: String, lastName: String, email: String, passwordHash: String, role: UsersRole, createdAt: LocalDateTime? = null, updatedAt: LocalDateTime? = null): this() {
+    constructor(
+        id: Long? = null,
+        uuid: String,
+        firstName: String,
+        lastName: String,
+        email: String,
+        passwordHash: String,
+        role: UsersRole,
+        createdAt: LocalDateTime? = null,
+        updatedAt: LocalDateTime? = null
+    ) : this() {
         this.id = id
         this.uuid = uuid
         this.firstName = firstName
