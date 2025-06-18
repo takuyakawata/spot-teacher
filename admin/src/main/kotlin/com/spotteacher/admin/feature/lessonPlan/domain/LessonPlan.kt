@@ -28,27 +28,40 @@ data class PublishedLessonPlan(
     val lessonPlanDates: Nel<LessonPlanDate>
 ) : LessonPlan {
     companion object {
-        fun create(
-            companyId: CompanyId,
-            title: LessonPlanTitle,
-            description: LessonPlanDescription,
-            lessonType: LessonType,
-            location: LessonLocation,
-            annualMaxExecutions: Int,
-            lessonPlanDates: Nel<LessonPlanDate>
-        ) = PublishedLessonPlan(
-            id = LessonPlanId(0),
-            companyId = companyId,
-            images = emptyList(),
-            createdAt = LocalDateTime.now(),
-            title = title,
-            description = description,
-            lessonType = lessonType,
-            location = location,
-            annualMaxExecutions = annualMaxExecutions,
-            lessonPlanDates = lessonPlanDates
-        )
+//        fun create(
+//            companyId: CompanyId,
+//            title: LessonPlanTitle,
+//            description: LessonPlanDescription,
+//            lessonType: LessonType,
+//            location: LessonLocation,
+//            annualMaxExecutions: Int,
+//            lessonPlanDates: Nel<LessonPlanDate>
+//        ) = PublishedLessonPlan(
+//            id = LessonPlanId(0),
+//            companyId = companyId,
+//            images = emptyList(),
+//            createdAt = LocalDateTime.now(),
+//            title = title,
+//            description = description,
+//            lessonType = lessonType,
+//            location = location,
+//            annualMaxExecutions = annualMaxExecutions,
+//            lessonPlanDates = lessonPlanDates
+//        )
     }
+
+    fun toDraftLessonPlan() = DraftLessonPlan(
+        id = id,
+        companyId = companyId,
+        images = images,
+        createdAt = createdAt,
+        title = title,
+        description = description,
+        lessonType = lessonType,
+        location = location,
+        annualMaxExecutions = annualMaxExecutions,
+        lessonPlanDates = lessonPlanDates
+    )
 }
 
 data class DraftLessonPlan(
@@ -85,6 +98,19 @@ data class DraftLessonPlan(
             lessonPlanDates = lessonPlanDates
         )
     }
+
+    fun toPublishedLessonPlan() = PublishedLessonPlan(
+        id = id,
+        companyId = companyId,
+        images = images,
+        createdAt = createdAt,
+        title = title!!,
+        description = description!!,
+        lessonType = lessonType!!,
+        location = location!!,
+        annualMaxExecutions = annualMaxExecutions!!,
+        lessonPlanDates = lessonPlanDates!!
+    )
 }
 
 class LessonPlanId(override val value: Long) : Identity<Long>(value)

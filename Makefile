@@ -37,4 +37,4 @@ jooq-codegen:
 admin-graphql-codegen:
 	./gradlew admin:graphqlGenerateSDL --no-configuration-cache
 detekt:
-	./gradlew detekt --auto-correct
+	./gradlew detekt
