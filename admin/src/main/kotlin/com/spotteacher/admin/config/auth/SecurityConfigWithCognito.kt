@@ -7,7 +7,7 @@ import org.springframework.security.config.annotation.web.reactive.EnableWebFlux
 @Configuration
 @EnableWebFluxSecurity
 @EnableReactiveMethodSecurity
-class SecurityConfigWithCognito(private val securityFilter: SecurityFilter) {
+class SecurityConfigWithCognito() {
 
 //    @Value("\${spring.security.oauth2.resourceserver.jwt.issuer-uri}")
 //    private lateinit var issuerUri: String
