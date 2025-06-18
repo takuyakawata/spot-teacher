@@ -3,7 +3,13 @@
  */
 package com.spotteacher.infra.db.tables
 
+
 import com.spotteacher.infra.db.tables.records.LessonPlanDatesRecord
+
+import java.time.LocalDateTime
+
+import kotlin.collections.Collection
+
 import org.jooq.Condition
 import org.jooq.Field
 import org.jooq.ForeignKey
@@ -24,8 +30,7 @@ import org.jooq.impl.DSL
 import org.jooq.impl.Internal
 import org.jooq.impl.SQLDataType
 import org.jooq.impl.TableImpl
-import java.time.LocalDateTime
-import kotlin.collections.Collection
+
 
 /**
  * 授業計画の日付
@@ -39,7 +44,7 @@ open class LessonPlanDates(
     aliased: Table<LessonPlanDatesRecord>?,
     parameters: Array<Field<*>?>?,
     where: Condition?
-) : TableImpl<LessonPlanDatesRecord>(
+): TableImpl<LessonPlanDatesRecord>(
     alias,
     null,
     path,
@@ -107,48 +112,33 @@ open class LessonPlanDates(
     /**
      * The column <code>lesson_plan_dates.created_at</code>.
      */
-    val CREATED_AT: TableField<LessonPlanDatesRecord, LocalDateTime?> = createField(
-        DSL.name("created_at"),
-        SQLDataType.LOCALDATETIME(0).nullable(false).defaultValue(DSL.field(DSL.raw("CURRENT_TIMESTAMP"), SQLDataType.LOCALDATETIME)),
-        this,
-        ""
-    )
+    val CREATED_AT: TableField<LessonPlanDatesRecord, LocalDateTime?> = createField(DSL.name("created_at"), SQLDataType.LOCALDATETIME(0).nullable(false).defaultValue(DSL.field(DSL.raw("CURRENT_TIMESTAMP"), SQLDataType.LOCALDATETIME)), this, "")
 
     /**
      * The column <code>lesson_plan_dates.updated_at</code>.
      */
-    val UPDATED_AT: TableField<LessonPlanDatesRecord, LocalDateTime?> = createField(
-        DSL.name("updated_at"),
-        SQLDataType.LOCALDATETIME(0).nullable(false).defaultValue(DSL.field(DSL.raw("CURRENT_TIMESTAMP"), SQLDataType.LOCALDATETIME)),
-        this,
-        ""
-    )
+    val UPDATED_AT: TableField<LessonPlanDatesRecord, LocalDateTime?> = createField(DSL.name("updated_at"), SQLDataType.LOCALDATETIME(0).nullable(false).defaultValue(DSL.field(DSL.raw("CURRENT_TIMESTAMP"), SQLDataType.LOCALDATETIME)), this, "")
 
-    private constructor(alias: Name, aliased: Table<LessonPlanDatesRecord>?) : this(alias, null, null, null, aliased, null, null)
-    private constructor(alias: Name, aliased: Table<LessonPlanDatesRecord>?, parameters: Array<Field<*>?>?) : this(alias, null, null, null, aliased, parameters, null)
-    private constructor(alias: Name, aliased: Table<LessonPlanDatesRecord>?, where: Condition?) : this(alias, null, null, null, aliased, null, where)
+    private constructor(alias: Name, aliased: Table<LessonPlanDatesRecord>?): this(alias, null, null, null, aliased, null, null)
+    private constructor(alias: Name, aliased: Table<LessonPlanDatesRecord>?, parameters: Array<Field<*>?>?): this(alias, null, null, null, aliased, parameters, null)
+    private constructor(alias: Name, aliased: Table<LessonPlanDatesRecord>?, where: Condition?): this(alias, null, null, null, aliased, null, where)
 
     /**
      * Create an aliased <code>lesson_plan_dates</code> table reference
      */
-    constructor(alias: String) : this(DSL.name(alias))
+    constructor(alias: String): this(DSL.name(alias))
 
     /**
      * Create an aliased <code>lesson_plan_dates</code> table reference
      */
-    constructor(alias: Name) : this(alias, null)
+    constructor(alias: Name): this(alias, null)
 
     /**
      * Create a <code>lesson_plan_dates</code> table reference
      */
-    constructor() : this(DSL.name("lesson_plan_dates"), null)
+    constructor(): this(DSL.name("lesson_plan_dates"), null)
     override fun getIdentity(): Identity<LessonPlanDatesRecord, Long?> = super.getIdentity() as Identity<LessonPlanDatesRecord, Long?>
-    override fun getPrimaryKey(): UniqueKey<LessonPlanDatesRecord> = Internal.createUniqueKey(
-        LessonPlanDates.LESSON_PLAN_DATES,
-        DSL.name("KEY_lesson_plan_dates_PRIMARY"),
-        arrayOf(LessonPlanDates.LESSON_PLAN_DATES.ID),
-        true
-    )
+    override fun getPrimaryKey(): UniqueKey<LessonPlanDatesRecord> = Internal.createUniqueKey(LessonPlanDates.LESSON_PLAN_DATES, DSL.name("KEY_lesson_plan_dates_PRIMARY"), arrayOf(LessonPlanDates.LESSON_PLAN_DATES.ID), true)
     override fun `as`(alias: String): LessonPlanDates = LessonPlanDates(DSL.name(alias), this)
     override fun `as`(alias: Name): LessonPlanDates = LessonPlanDates(alias, this)
     override fun `as`(alias: Table<*>): LessonPlanDates = LessonPlanDates(alias.qualifiedName, this)
