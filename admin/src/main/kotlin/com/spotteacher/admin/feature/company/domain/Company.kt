@@ -9,12 +9,12 @@ import java.time.LocalDateTime
 data class Company(
     val id: CompanyId,
     val name: CompanyName,
-    val address : Address,
-    val phoneNumber : PhoneNumber,
+    val address: Address,
+    val phoneNumber: PhoneNumber,
     val url: URI?,
-    val createdAt : LocalDateTime
-){
-    companion object{
+    val createdAt: LocalDateTime
+) {
+    companion object {
         fun create(
             name: CompanyName,
             address: Address,
@@ -45,7 +45,7 @@ data class Company(
     )
 }
 
-class CompanyId(override val value:Long): Identity<Long>(value)
+class CompanyId(override val value: Long) : Identity<Long>(value)
 
 @JvmInline
 value class CompanyName(val value: String)

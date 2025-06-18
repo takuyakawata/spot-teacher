@@ -6,7 +6,6 @@ import com.spotteacher.admin.feature.product.domain.ProductId
 import com.spotteacher.admin.feature.product.domain.ProductName
 import com.spotteacher.admin.feature.product.domain.ProductPrice
 import com.spotteacher.admin.feature.product.domain.ProductRepository
-import io.kotest.core.spec.style.describeSpec
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 

@@ -9,11 +9,10 @@ import org.springframework.security.core.userdetails.User
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.core.userdetails.UsernameNotFoundException
 import org.springframework.stereotype.Component
-import org.springframework.stereotype.Repository
 import reactor.core.publisher.Mono
 
 @Component
-class FindAdminUserImpl (private val userRepository: AdminUserRepository) : ReactiveUserDetailsService {
+class FindAdminUserImpl(private val userRepository: AdminUserRepository) : ReactiveUserDetailsService {
 
     override fun findByUsername(username: String?): Mono<UserDetails> {
         if (username == null) {

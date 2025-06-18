@@ -37,7 +37,8 @@ class CreateCompanyUseCase(
                 CompanyError(
                     message =  "Company already exists",
                     code = CompanyErrorCode.COMPANY_ALREADY_EXISTS,
-                ).left())
+                ).left()
+            )
         }
 
         val newCompany = Company.create(

@@ -1,6 +1,5 @@
 package com.spotteacher.admin.shared.auth.refreshToken.usecase
 
-import arrow.core.Either
 import com.spotteacher.admin.feature.adminUser.domain.Password
 import com.spotteacher.admin.shared.auth.refreshToken.domain.Authenticator
 import com.spotteacher.admin.shared.auth.refreshToken.domain.TokenIssuer
@@ -8,24 +7,24 @@ import com.spotteacher.admin.shared.auth.refreshToken.domain.TokenPair
 import com.spotteacher.domain.EmailAddress
 import com.spotteacher.usecase.UseCase
 
-//data class LoginUseCaseOutput(
+// data class LoginUseCaseOutput(
 //    val result: Either<LoginError, LoginUseCaseOutputSuccess>
-//)
+// )
 
-//data class LoginUseCaseOutputSuccess(
+// data class LoginUseCaseOutputSuccess(
 //    val accessToken: String,
 //    val refreshToken: String
-//)
+// )
 
-//data class LoginError(
+// data class LoginError(
 //    val message: String,
 //    val code: LoginErrorCode
-//)
+// )
 
-//enum class LoginErrorCode {
+// enum class LoginErrorCode {
 //    EMAIL_NOT_FOUND,
 //    INVALID_PASSWORD
-//}
+// }
 
 data class LoginUseCaseInput(
     val email: EmailAddress,

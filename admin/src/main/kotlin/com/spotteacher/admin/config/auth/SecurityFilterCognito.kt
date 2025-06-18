@@ -34,7 +34,7 @@ class SecurityFilterWithCognito : WebFilter {
                 logInfo { "GraphQL Query: $query" }
 
                 // HMACの検証ロジックだが、サンプルなので実装していない
-                //　一旦不要なため、コメントアウト
+                // 　一旦不要なため、コメントアウト
 //                val clientHmac = exchange.request.headers.getFirst("X-HMAC-Signature") ?: ""
 //                if (clientHmac != generateHmac(query, secretKey)) {
 //                    logWarn { "HMAC verification failed. Query: $query" }

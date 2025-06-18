@@ -25,7 +25,7 @@ class AuthController(private val loginUse: LoginUseCase) {
             )
         )
 
-        return tokenPair.let{
+        return tokenPair.let {
             ResponseEntity.ok(
                 AuthResponse(
                     accessToken = it.accessToken,
