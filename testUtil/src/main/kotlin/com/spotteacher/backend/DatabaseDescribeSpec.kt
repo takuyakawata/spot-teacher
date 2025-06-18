@@ -2,6 +2,7 @@ package com.spotteacher.backend
 
 import io.kotest.core.spec.Spec
 import io.kotest.core.spec.style.DescribeSpec
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.jdbc.core.JdbcTemplate
 import org.springframework.test.context.ActiveProfiles
 
@@ -9,6 +10,7 @@ import org.springframework.test.context.ActiveProfiles
 open class DatabaseDescribeSpec(
     body: DescribeSpec.() -> Unit = {},
 ) : DescribeSpec(body) {
+    @Autowired
     private lateinit var internalJdbcTemplate: JdbcTemplate
 
     override suspend fun beforeSpec(spec: Spec) {

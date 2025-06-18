@@ -19,6 +19,7 @@ class CompanyFixture {
 
     @Autowired
     private lateinit var companyRepository : CompanyRepository
+
     private var companyIdCount = 1L
 
     fun buildCompany(
