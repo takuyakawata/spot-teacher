@@ -83,7 +83,7 @@ open class LessonPlans(
     /**
      * The column <code>lesson_plans.title</code>.
      */
-    val TITLE: TableField<LessonPlansRecord, String?> = createField(DSL.name("title"), SQLDataType.VARCHAR(500).nullable(false), this, "")
+    val TITLE: TableField<LessonPlansRecord, String?> = createField(DSL.name("title"), SQLDataType.VARCHAR(500), this, "")
 
     /**
      * The column <code>lesson_plans.description</code>.
@@ -98,12 +98,17 @@ open class LessonPlans(
     /**
      * The column <code>lesson_plans.lesson_type</code>.
      */
-    val LESSON_TYPE: TableField<LessonPlansRecord, LessonPlansLessonType?> = createField(DSL.name("lesson_type"), SQLDataType.VARCHAR(18).nullable(false).asEnumDataType(LessonPlansLessonType::class.java), this, "")
+    val LESSON_TYPE: TableField<LessonPlansRecord, LessonPlansLessonType?> = createField(DSL.name("lesson_type"), SQLDataType.VARCHAR(18).asEnumDataType(LessonPlansLessonType::class.java), this, "")
 
     /**
      * The column <code>lesson_plans.annual_max_executions</code>. 年間の最大実施回数
      */
-    val ANNUAL_MAX_EXECUTIONS: TableField<LessonPlansRecord, Long?> = createField(DSL.name("annual_max_executions"), SQLDataType.BIGINT.nullable(false), this, "年間の最大実施回数")
+    val ANNUAL_MAX_EXECUTIONS: TableField<LessonPlansRecord, Long?> = createField(DSL.name("annual_max_executions"), SQLDataType.BIGINT, this, "年間の最大実施回数")
+
+    /**
+     * The column <code>lesson_plans.published</code>.
+     */
+    val PUBLISHED: TableField<LessonPlansRecord, Boolean?> = createField(DSL.name("published"), SQLDataType.BOOLEAN.nullable(false).defaultValue(DSL.inline("0", SQLDataType.BOOLEAN)), this, "")
 
     /**
      * The column <code>lesson_plans.created_at</code>.
@@ -114,11 +119,6 @@ open class LessonPlans(
      * The column <code>lesson_plans.updated_at</code>.
      */
     val UPDATED_AT: TableField<LessonPlansRecord, LocalDateTime?> = createField(DSL.name("updated_at"), SQLDataType.LOCALDATETIME(0).nullable(false).defaultValue(DSL.field(DSL.raw("CURRENT_TIMESTAMP"), SQLDataType.LOCALDATETIME)), this, "")
-
-    /**
-     * The column <code>lesson_plans.published</code>.
-     */
-    val PUBLISHED: TableField<LessonPlansRecord, Boolean?> = createField(DSL.name("published"), SQLDataType.BOOLEAN.nullable(false).defaultValue(DSL.inline("0", SQLDataType.BOOLEAN)), this, "")
 
     private constructor(alias: Name, aliased: Table<LessonPlansRecord>?): this(alias, null, null, null, aliased, null, null)
     private constructor(alias: Name, aliased: Table<LessonPlansRecord>?, parameters: Array<Field<*>?>?): this(alias, null, null, null, aliased, parameters, null)

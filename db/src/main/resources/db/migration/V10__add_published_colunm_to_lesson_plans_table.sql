@@ -1,2 +1,0 @@
-ALTER TABLE lesson_plans
-    ADD COLUMN published BOOLEAN DEFAULT FALSE NOT NULL;
