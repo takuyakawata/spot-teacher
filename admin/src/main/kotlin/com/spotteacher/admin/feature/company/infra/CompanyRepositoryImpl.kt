@@ -18,9 +18,10 @@ import com.spotteacher.infra.db.tables.records.CompaniesRecord
 import kotlinx.coroutines.reactive.awaitFirstOrNull
 import kotlinx.coroutines.reactive.awaitLast
 import org.springframework.stereotype.Component
+import org.springframework.stereotype.Repository
 import java.net.URI
 
-@Component
+@Repository
 class CompanyRepositoryImpl(
     private val dslContext: TransactionAwareDSLContext
 ): CompanyRepository {
