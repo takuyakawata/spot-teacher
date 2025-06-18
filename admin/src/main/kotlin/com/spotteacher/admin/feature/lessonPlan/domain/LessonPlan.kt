@@ -26,43 +26,41 @@ data class PublishedLessonPlan(
     val location: LessonLocation,
     val annualMaxExecutions: Int,
     val lessonPlanDates: Nel<LessonPlanDate>
-) : LessonPlan {
-    companion object {
-//        fun create(
-//            companyId: CompanyId,
-//            title: LessonPlanTitle,
-//            description: LessonPlanDescription,
-//            lessonType: LessonType,
-//            location: LessonLocation,
-//            annualMaxExecutions: Int,
-//            lessonPlanDates: Nel<LessonPlanDate>
-//        ) = PublishedLessonPlan(
-//            id = LessonPlanId(0),
-//            companyId = companyId,
-//            images = emptyList(),
-//            createdAt = LocalDateTime.now(),
-//            title = title,
-//            description = description,
-//            lessonType = lessonType,
-//            location = location,
-//            annualMaxExecutions = annualMaxExecutions,
-//            lessonPlanDates = lessonPlanDates
-//        )
-    }
+) : LessonPlan
 
-    fun toDraftLessonPlan() = DraftLessonPlan(
-        id = id,
-        companyId = companyId,
-        images = images,
-        createdAt = createdAt,
-        title = title,
-        description = description,
-        lessonType = lessonType,
-        location = location,
-        annualMaxExecutions = annualMaxExecutions,
-        lessonPlanDates = lessonPlanDates
-    )
-}
+fun PublishedLessonPlan.update(
+    title: LessonPlanTitle?,
+    description: LessonPlanDescription?,
+    lessonType: LessonType?,
+    location: LessonLocation?,
+    annualMaxExecutions: Int?,
+    images: List<UploadFileId>?,
+)=PublishedLessonPlan(
+    id = this.id,
+    companyId = this.companyId,
+    images = images?:this.images,
+    createdAt = this.createdAt,
+    title = title?:this.title,
+    description = description?:this.description,
+    lessonType = lessonType?:this.lessonType,
+    location = location?:this.location,
+    annualMaxExecutions = annualMaxExecutions?:this.annualMaxExecutions,
+    lessonPlanDates = this.lessonPlanDates
+)
+
+fun PublishedLessonPlan.toDraftLessonPlan() = DraftLessonPlan(
+    id = id,
+    companyId = companyId,
+    images = images,
+    createdAt = createdAt,
+    title = title,
+    description = description,
+    lessonType = lessonType,
+    location = location,
+    annualMaxExecutions = annualMaxExecutions,
+    lessonPlanDates = lessonPlanDates
+)
+
 
 data class DraftLessonPlan(
     override val id: LessonPlanId,
@@ -98,6 +96,26 @@ data class DraftLessonPlan(
             lessonPlanDates = lessonPlanDates
         )
     }
+
+    fun update(
+        title: LessonPlanTitle?,
+        description: LessonPlanDescription?,
+        lessonType: LessonType?,
+        location: LessonLocation?,
+        annualMaxExecutions: Int?,
+        images: List<UploadFileId>?
+    ) = DraftLessonPlan(
+        id = this.id,
+        companyId = this.companyId,
+        images = images?:this.images,
+        createdAt = this.createdAt,
+        title = title?:this.title,
+        description = description?:this.description,
+        lessonType = lessonType?:this.lessonType,
+        location = location?:this.location,
+        annualMaxExecutions = annualMaxExecutions?:this.annualMaxExecutions,
+        lessonPlanDates = this.lessonPlanDates
+    )
 
     fun toPublishedLessonPlan() = PublishedLessonPlan(
         id = id,
