@@ -163,7 +163,6 @@ class LessonPlanRepositoryImpl(private val dslContext: TransactionAwareDSLContex
             .set(LESSON_PLANS.LOCATION, lessonPlan.location.value)
             .set(LESSON_PLANS.LESSON_TYPE,  LessonPlansLessonType.valueOf(lessonPlan.lessonType.name))
             .set(LESSON_PLANS.ANNUAL_MAX_EXECUTIONS, lessonPlan.annualMaxExecutions.toLong())
-            .set(LESSON_PLANS.PUBLISHED, true)
             .where(LESSON_PLANS.ID.eq(lessonPlan.id.value))
             .awaitLast()
 
@@ -172,7 +171,7 @@ class LessonPlanRepositoryImpl(private val dslContext: TransactionAwareDSLContex
             .where(LESSON_PLAN_DATES.LESSON_PLAN_ID.eq(lessonPlan.id.value))
             .awaitLast()
 
-        lessonPlan.lessonPlanDates.forEach { date ->
+        lessonPlan.lessonPlanDates.map { date ->
             dslContext.get().insertInto(
                 LESSON_PLAN_DATES,
                 LESSON_PLAN_DATES.LESSON_PLAN_ID,
@@ -202,7 +201,7 @@ class LessonPlanRepositoryImpl(private val dslContext: TransactionAwareDSLContex
             .set(LESSON_PLANS.LOCATION, lessonPlan.location?.value)
             .set(
                 LESSON_PLANS.LESSON_TYPE,
-                lessonPlan.lessonType?.let { LessonPlansLessonType.valueOf(it.name)  } ?: LessonPlansLessonType.ONLINE
+                lessonPlan.lessonType?.let { LessonPlansLessonType.valueOf(it.name)  }
             )
             .set(LESSON_PLANS.ANNUAL_MAX_EXECUTIONS, lessonPlan.annualMaxExecutions?.toLong() ?: 0)
             .where(LESSON_PLANS.ID.eq(lessonPlan.id.value))
@@ -214,7 +213,7 @@ class LessonPlanRepositoryImpl(private val dslContext: TransactionAwareDSLContex
             .awaitLast()
 
         // Insert new dates if available
-        lessonPlan.lessonPlanDates?.forEach { date ->
+        lessonPlan.lessonPlanDates?.map { date ->
             dslContext.get().insertInto(
                 LESSON_PLAN_DATES,
                 LESSON_PLAN_DATES.LESSON_PLAN_ID,

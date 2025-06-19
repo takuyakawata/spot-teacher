@@ -9,6 +9,7 @@ import com.spotteacher.admin.feature.lessonPlan.domain.LessonPlanDescription
 import com.spotteacher.admin.feature.lessonPlan.domain.LessonPlanErrorCode
 import com.spotteacher.admin.feature.lessonPlan.domain.LessonPlanTitle
 import com.spotteacher.admin.feature.lessonPlan.domain.LessonType
+import com.spotteacher.admin.feature.lessonPlan.handler.LessonPlanDateInput
 import com.spotteacher.admin.feature.lessonPlan.usecase.CreateDraftLessonPlanUseCase
 import com.spotteacher.admin.feature.lessonPlan.usecase.CreateDraftLessonPlanUseCaseInput
 import com.spotteacher.graphql.NonEmptyString
@@ -24,15 +25,6 @@ data class CreateDraftLessonPlanMutationInput(
     val location: NonEmptyString?,
     val annualMaxExecutions: Int?,
     val lessonPlanDates: List<LessonPlanDateInput>?
-)
-
-data class LessonPlanDateInput(
-    val startMonth: Int,
-    val startDay: Int,
-    val endMonth: Int,
-    val endDay: Int,
-    val startTime: LocalTime,
-    val endTime: LocalTime
 )
 
 sealed interface CreateDraftLessonPlanMutationOutput
