@@ -70,3 +70,12 @@ data class LessonPlanDateType(
     val startTime: LocalTime,
     val endTime: LocalTime
 )
+
+data class LessonPlanDateInput(
+    val startMonth: Int,
+    val startDay: Int,
+    val endMonth: Int,
+    val endDay: Int,
+    val startTime: LocalTime,
+    val endTime: LocalTime
+)
