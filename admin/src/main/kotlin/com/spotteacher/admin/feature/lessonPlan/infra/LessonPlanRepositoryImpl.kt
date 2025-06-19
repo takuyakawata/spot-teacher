@@ -13,7 +13,6 @@ import com.spotteacher.admin.feature.lessonPlan.domain.LessonPlanRepository
 import com.spotteacher.admin.feature.lessonPlan.domain.LessonPlanTitle
 import com.spotteacher.admin.feature.lessonPlan.domain.LessonType
 import com.spotteacher.admin.feature.lessonPlan.domain.PublishedLessonPlan
-import com.spotteacher.admin.feature.uploadFile.domain.UploadFileId
 import com.spotteacher.admin.shared.infra.TransactionAwareDSLContext
 import com.spotteacher.extension.nonBlockingFetch
 import com.spotteacher.extension.nonBlockingFetchOne
@@ -25,14 +24,12 @@ import com.spotteacher.infra.db.tables.records.LessonPlansRecord
 import kotlinx.coroutines.reactive.awaitFirstOrNull
 import kotlinx.coroutines.reactive.awaitLast
 import org.springframework.stereotype.Repository
-import java.time.LocalDateTime
-import java.time.LocalTime
+import java.time.LocalDate
 
 @Repository
-class LessonRepositoryImpl(private val dslContext: TransactionAwareDSLContext): LessonPlanRepository {
+class LessonPlanRepositoryImpl(private val dslContext: TransactionAwareDSLContext) : LessonPlanRepository {
     suspend fun create(lessonPlan: DraftLessonPlan): LessonPlan {
         return when (lessonPlan) {
-            is PublishedLessonPlan -> createPublishedLessonPlan(lessonPlan)
             is DraftLessonPlan -> createDraftLessonPlan(lessonPlan)
         }
     }
@@ -51,7 +48,7 @@ class LessonRepositoryImpl(private val dslContext: TransactionAwareDSLContext): 
             lessonPlan.title.value,
             lessonPlan.description.value,
             lessonPlan.location.value,
-            mapLessonTypeToEnum(lessonPlan.lessonType),
+            LessonPlansLessonType.valueOf(lessonPlan.lessonType.name),
             lessonPlan.annualMaxExecutions.toLong(),
         ).returning(LESSON_PLANS.ID).awaitFirstOrNull()?.id!!
 
@@ -72,8 +69,8 @@ class LessonRepositoryImpl(private val dslContext: TransactionAwareDSLContext): 
                 date.startDay.toLong(),
                 date.endMonth.toLong(),
                 date.endDay.toLong(),
-                date.startTime.atDate(java.time.LocalDate.now()),
-                date.endTime.atDate(java.time.LocalDate.now()),
+                date.startTime.atDate(LocalDate.now()),
+                date.endTime.atDate(LocalDate.now()),
             ).awaitLast()
         }
 
@@ -91,15 +88,35 @@ class LessonRepositoryImpl(private val dslContext: TransactionAwareDSLContext): 
             LESSON_PLANS.ANNUAL_MAX_EXECUTIONS,
         ).values(
             lessonPlan.companyId.value,
-            lessonPlan.title?.value ?: "",
+            lessonPlan.title?.value,
             lessonPlan.description?.value,
             lessonPlan.location?.value,
-            lessonPlan.lessonType?.let { mapLessonTypeToEnum(it) } ?: LessonPlansLessonType.ONLINE,
-            lessonPlan.annualMaxExecutions?.toLong() ?: 0,
+            lessonPlan.lessonType?.let { LessonPlansLessonType.valueOf(it.name) },
+            lessonPlan.annualMaxExecutions?.toLong(),
         ).returning(LESSON_PLANS.ID).awaitFirstOrNull()?.id!!
 
-        // Insert lesson plan dates if available
-        lessonPlan.lessonPlanDates?.forEach { date ->
+        return lessonPlan.copy(id = LessonPlanId(id))
+    }
+
+    override suspend fun createDraft(lessonPlan: DraftLessonPlan): DraftLessonPlan {
+        val id = dslContext.get().insertInto(
+            LESSON_PLANS,
+            LESSON_PLANS.COMPANY_ID,
+            LESSON_PLANS.TITLE,
+            LESSON_PLANS.DESCRIPTION,
+            LESSON_PLANS.LOCATION,
+            LESSON_PLANS.LESSON_TYPE,
+            LESSON_PLANS.ANNUAL_MAX_EXECUTIONS,
+        ).values(
+            lessonPlan.companyId.value,
+            lessonPlan.title?.value,
+            lessonPlan.description?.value,
+            lessonPlan.location?.value,
+            lessonPlan.lessonType?.let { LessonPlansLessonType.valueOf(it.name) },
+            lessonPlan.annualMaxExecutions?.toLong(),
+        ).returning(LESSON_PLANS.ID).awaitFirstOrNull()?.id!!
+
+        lessonPlan.lessonPlanDates?.map { date ->
             dslContext.get().insertInto(
                 LESSON_PLAN_DATES,
                 LESSON_PLAN_DATES.LESSON_PLAN_ID,
@@ -115,27 +132,27 @@ class LessonRepositoryImpl(private val dslContext: TransactionAwareDSLContext): 
                 date.startDay.toLong(),
                 date.endMonth.toLong(),
                 date.endDay.toLong(),
-                date.startTime.atDate(java.time.LocalDate.now()),
-                date.endTime.atDate(java.time.LocalDate.now()),
+                date.startTime.atDate(LocalDate.now()),
+                date.endTime.atDate(LocalDate.now()),
             ).awaitLast()
         }
 
-        return lessonPlan.copy(id = LessonPlanId(id))
+        return lessonPlan.copy(LessonPlanId(id))
     }
 
-    override suspend fun createDraft(lessonPlan: DraftLessonPlan): DraftLessonPlan {
-        TODO("Not yet implemented")
+    suspend fun createLessonPlanDate(
+        id: LessonPlansRecord,
+        lessonPlanDates: Nel<LessonPlanDate>
+    ): Nel<LessonPlanDatesRecord> {
+        TODO()
     }
 
+    /*update*/
     override suspend fun update(lessonPlan: LessonPlan) {
         when (lessonPlan) {
             is PublishedLessonPlan -> updatePublishedLessonPlan(lessonPlan)
             is DraftLessonPlan -> updateDraftLessonPlan(lessonPlan)
         }
-    }
-
-    override suspend fun updateStatus(lessonPlan: LessonPlan) {
-        TODO("Not yet implemented")
     }
 
     private suspend fun updatePublishedLessonPlan(lessonPlan: PublishedLessonPlan) {
@@ -144,8 +161,9 @@ class LessonRepositoryImpl(private val dslContext: TransactionAwareDSLContext): 
             .set(LESSON_PLANS.TITLE, lessonPlan.title.value)
             .set(LESSON_PLANS.DESCRIPTION, lessonPlan.description.value)
             .set(LESSON_PLANS.LOCATION, lessonPlan.location.value)
-            .set(LESSON_PLANS.LESSON_TYPE, mapLessonTypeToEnum(lessonPlan.lessonType))
+            .set(LESSON_PLANS.LESSON_TYPE,  LessonPlansLessonType.valueOf(lessonPlan.lessonType.name))
             .set(LESSON_PLANS.ANNUAL_MAX_EXECUTIONS, lessonPlan.annualMaxExecutions.toLong())
+            .set(LESSON_PLANS.PUBLISHED, true)
             .where(LESSON_PLANS.ID.eq(lessonPlan.id.value))
             .awaitLast()
 
@@ -170,8 +188,8 @@ class LessonRepositoryImpl(private val dslContext: TransactionAwareDSLContext): 
                 date.startDay.toLong(),
                 date.endMonth.toLong(),
                 date.endDay.toLong(),
-                date.startTime.atDate(java.time.LocalDate.now()),
-                date.endTime.atDate(java.time.LocalDate.now()),
+                date.startTime.atDate(LocalDate.now()),
+                date.endTime.atDate(LocalDate.now()),
             ).awaitLast()
         }
     }
@@ -182,7 +200,10 @@ class LessonRepositoryImpl(private val dslContext: TransactionAwareDSLContext): 
             .set(LESSON_PLANS.TITLE, lessonPlan.title?.value ?: "")
             .set(LESSON_PLANS.DESCRIPTION, lessonPlan.description?.value)
             .set(LESSON_PLANS.LOCATION, lessonPlan.location?.value)
-            .set(LESSON_PLANS.LESSON_TYPE, lessonPlan.lessonType?.let { mapLessonTypeToEnum(it) } ?: LessonPlansLessonType.ONLINE)
+            .set(
+                LESSON_PLANS.LESSON_TYPE,
+                lessonPlan.lessonType?.let { LessonPlansLessonType.valueOf(it.name)  } ?: LessonPlansLessonType.ONLINE
+            )
             .set(LESSON_PLANS.ANNUAL_MAX_EXECUTIONS, lessonPlan.annualMaxExecutions?.toLong() ?: 0)
             .where(LESSON_PLANS.ID.eq(lessonPlan.id.value))
             .awaitLast()
@@ -209,33 +230,60 @@ class LessonRepositoryImpl(private val dslContext: TransactionAwareDSLContext): 
                 date.startDay.toLong(),
                 date.endMonth.toLong(),
                 date.endDay.toLong(),
-                date.startTime.atDate(java.time.LocalDate.now()),
-                date.endTime.atDate(java.time.LocalDate.now()),
+                date.startTime.atDate(LocalDate.now()),
+                date.endTime.atDate(LocalDate.now()),
             ).awaitLast()
         }
     }
 
+    /*updateStatus*/
+    override suspend fun updateStatus(lessonPlan: LessonPlan) {
+        when (lessonPlan) {
+            is PublishedLessonPlan -> convertToPublishedLessonPlan(lessonPlan)
+            is DraftLessonPlan -> convertToDraftLessonPlan(lessonPlan)
+        }
+    }
+
+    private suspend fun convertToPublishedLessonPlan(lessonPlan: PublishedLessonPlan) {
+        dslContext.get().update(LESSON_PLANS)
+            .set(LESSON_PLANS.PUBLISHED, true)
+            .where(LESSON_PLANS.ID.eq(lessonPlan.id.value))
+            .awaitLast()
+    }
+
+    private suspend fun convertToDraftLessonPlan(lessonPlan: DraftLessonPlan) {
+        dslContext.get().update(LESSON_PLANS)
+            .set(LESSON_PLANS.PUBLISHED, false)
+            .where(LESSON_PLANS.ID.eq(lessonPlan.id.value))
+            .awaitLast()
+    }
+
+    /* delete */
     override suspend fun delete(id: LessonPlanId) {
         dslContext.get().deleteFrom(LESSON_PLANS)
             .where(LESSON_PLANS.ID.eq(id.value))
             .awaitLast()
     }
 
+    /* getAll */
     override suspend fun getAll(): List<LessonPlan> {
         val lessonPlansRecords = dslContext.get().nonBlockingFetch(LESSON_PLANS)
         return lessonPlansRecords.map { record ->
-            val dates = getLessonPlanDates(record.id!!)
+            val datesList = getLessonPlanDates(record.id!!)
+            val dates = toNelOrNull(datesList)
             record.toEntity(dates)
         }
     }
 
+    /*findById */
     override suspend fun findById(id: LessonPlanId): LessonPlan? {
         val record = dslContext.get().nonBlockingFetchOne(
             LESSON_PLANS,
             LESSON_PLANS.ID.eq(id.value)
         ) ?: return null
 
-        val dates = getLessonPlanDates(record.id!!)
+        val datesList = getLessonPlanDates(record.id!!)
+        val dates = toNelOrNull(datesList)
         return record.toEntity(dates)
     }
 
@@ -246,67 +294,58 @@ class LessonRepositoryImpl(private val dslContext: TransactionAwareDSLContext): 
         ).map { it.toEntity() }
     }
 
-    private fun LessonPlansRecord.toEntity(dates: List<LessonPlanDate>): LessonPlan {
-        // For simplicity, we're assuming that if title is empty or null, it's a draft
-        return if (title.isNullOrEmpty()) {
-            DraftLessonPlan(
-                id = LessonPlanId(id!!),
-                companyId = CompanyId(companyId!!),
-                images = emptyList(), // Images are handled at the application level
-                createdAt = createdAt!!,
-                title = if (title.isNullOrEmpty()) null else LessonPlanTitle(title),
-                description = description?.let { LessonPlanDescription(it) },
-                lessonType = mapEnumToLessonType(lessonType!!),
-                location = location?.let { LessonLocation(it) },
-                annualMaxExecutions = annualMaxExecutions?.toInt(),
-                lessonPlanDates = if (dates.isEmpty()) null else nonEmptyListOf(dates[0], *dates.drop(1).toTypedArray())
-            )
+    private fun toNelOrNull(list: List<LessonPlanDate>): Nel<LessonPlanDate>? {
+        return if (list.isNotEmpty()) {
+            nonEmptyListOf(list.first(), *list.drop(1).toTypedArray())
         } else {
-            PublishedLessonPlan(
-                id = LessonPlanId(id!!),
-                companyId = CompanyId(companyId!!),
-                images = emptyList(), // Images are handled at the application level
-                createdAt = createdAt!!,
-                title = LessonPlanTitle(title!!),
-                description = LessonPlanDescription(description ?: ""),
-                lessonType = mapEnumToLessonType(lessonType!!),
-                location = LessonLocation(location ?: ""),
-                annualMaxExecutions = annualMaxExecutions!!.toInt(),
-                lessonPlanDates = if (dates.isNotEmpty()) {
-                    nonEmptyListOf(dates[0], *dates.drop(1).toTypedArray())
-                } else {
-                    nonEmptyListOf(
-                        LessonPlanDate(
-                            startMonth = 1,
-                            startDay = 1,
-                            endMonth = 12,
-                            endDay = 31,
-                            startTime = LocalTime.of(9, 0),
-                            endTime = LocalTime.of(17, 0)
-                        )
-                    )
-                }
-            )
+            null
         }
     }
 
-    private fun LessonPlanDatesRecord.toEntity(): LessonPlanDate {
-        return LessonPlanDate(
-            startMonth = startMonth!!.toInt(),
-            startDay = startDay!!.toInt(),
-            endMonth = endMonth!!.toInt(),
-            endDay = endDay!!.toInt(),
-            startTime = startTime!!.toLocalTime(),
-            endTime = endTime!!.toLocalTime()
+    private suspend fun LessonPlansRecord.toEntity(dates: Nel<LessonPlanDate>?): LessonPlan {
+        return when (this.published!!) {
+            true -> createPublishedLessonPlan(this.toPublishedLessonPlanEntity(dates!!))
+            false -> createDraftLessonPlan(this.toDraftLessonPlanEntity(dates))
+        }
+    }
+
+    private fun LessonPlansRecord.toDraftLessonPlanEntity(dates: Nel<LessonPlanDate>?): DraftLessonPlan {
+        return DraftLessonPlan(
+            id = LessonPlanId(id!!),
+            companyId = CompanyId(companyId),
+            images = emptyList(), // todo Images are handled at the application level
+            createdAt = createdAt!!,
+            title = title?.let { LessonPlanTitle(it) },
+            description = description?.let { LessonPlanDescription(it) },
+            lessonType = lessonType?.let { LessonType.valueOf(it.name) },
+            location = location?.let { LessonLocation(location!!) },
+            lessonPlanDates = dates,
+            annualMaxExecutions = annualMaxExecutions?.toInt(),
         )
     }
 
-    private fun mapLessonTypeToEnum(lessonType: LessonType): LessonPlansLessonType {
-        return when (lessonType) {
-            LessonType.ONLINE -> LessonPlansLessonType.ONLINE
-            LessonType.OFFLINE -> LessonPlansLessonType.OFFLINE
-            LessonType.ONLINE_AND_OFFLINE -> LessonPlansLessonType.ONLINE_AND_OFFLINE
-        }
+    private fun LessonPlansRecord.toPublishedLessonPlanEntity(dates: Nel<LessonPlanDate>) = PublishedLessonPlan(
+        id = LessonPlanId(id!!),
+        companyId = CompanyId(companyId),
+        images = emptyList(), // todo Images are handled at the application level
+        createdAt = createdAt!!,
+        title = LessonPlanTitle(title!!),
+        description = LessonPlanDescription(description!!),
+        lessonType = mapEnumToLessonType(lessonType!!),
+        location = LessonLocation(location!!),
+        annualMaxExecutions = annualMaxExecutions!!.toInt(),
+        lessonPlanDates = dates,
+    )
+
+    private fun LessonPlanDatesRecord.toEntity(): LessonPlanDate {
+        return LessonPlanDate(
+            startMonth = startMonth.toInt(),
+            startDay = startDay.toInt(),
+            endMonth = endMonth.toInt(),
+            endDay = endDay.toInt(),
+            startTime = startTime.toLocalTime(),
+            endTime = endTime.toLocalTime()
+        )
     }
 
     private fun mapEnumToLessonType(lessonType: LessonPlansLessonType): LessonType {
