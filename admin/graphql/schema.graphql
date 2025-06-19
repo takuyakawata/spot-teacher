@@ -30,9 +30,18 @@ directive @specifiedBy(
     url: String!
   ) on SCALAR
 
+interface LessonPlan {
+  createdAt: LocalDateTime!
+  id: ID!
+}
+
 union CompanyQueryOutput = CompanyQueryError | CompanyQuerySuccess
 
+union CreateAdminUserMutationOutput = CreateAdminUserMutationError | CreateAdminUserMutationSuccess
+
 union CreateCompanyMutationOutput = CreateCompanyMutationError | CreateCompanyMutationSuccess
+
+union CreateDraftLessonPlanMutationOutput = CreateDraftLessonPlanMutationError | CreateDraftLessonPlanMutationSuccess
 
 union DeleteCompanyMutationOutput = DeleteCompanyMutationError | DeleteCompanyMutationSuccess
 
@@ -42,7 +51,15 @@ union FindProductQueryOutput = FindProductQueryError | FindProductQuerySuccess
 
 union FindProductsQueryOutput = FindProductsQueryError | FindProductsQuerySuccess
 
+union LessonPlanQueryOutput = LessonPlanQueryErrorOutput | LessonPlanQuerySuccessOutput
+
 union UpdateCompanyMutationOutput = UpdateCompanyMutationError | UpdateCompanyMutationSuccess
+
+union UpdateLessonPlanMutationOutput = UpdateLessonPlanMutationError | UpdateLessonPlanMutationSuccess
+
+union UpdateLessonPlanStatusMutationOutput = UpdateLessonPlanStatusMutationError | UpdateLessonPlanStatusMutationSuccess
+
+union UpdatePassWordMutationOutput = UpdatePassWordMutationError | UpdatePassWordMutationSuccess
 
 union UpdateProductMutationOutput = UpdateProductMutationError | UpdateProductMutationSuccess
 
@@ -68,6 +85,15 @@ type CompanyQuerySuccess {
   company: Company!
 }
 
+type CreateAdminUserMutationError {
+  code: String!
+  message: String!
+}
+
+type CreateAdminUserMutationSuccess {
+  result: Unit!
+}
+
 type CreateCompanyMutationError {
   code: CompanyErrorCode!
   message: String!
@@ -75,6 +101,15 @@ type CreateCompanyMutationError {
 
 type CreateCompanyMutationSuccess {
   company: Company!
+}
+
+type CreateDraftLessonPlanMutationError {
+  code: LessonPlanErrorCode!
+  message: String!
+}
+
+type CreateDraftLessonPlanMutationSuccess {
+  result: Unit!
 }
 
 type DeleteCompanyMutationError {
@@ -94,6 +129,17 @@ type DeleteProductMutationSuccess {
   success: Boolean!
 }
 
+type DraftLessonPlan implements LessonPlan {
+  annualMaxExecutions: Int
+  createdAt: LocalDateTime!
+  description: String
+  id: ID!
+  lessonPlanDates: [LessonPlanDate!]
+  lessonType: LessonType
+  location: String
+  title: String
+}
+
 type FindProductQueryError {
   error: ProductError!
 }
@@ -110,12 +156,35 @@ type FindProductsQuerySuccess {
   products: [Product!]!
 }
 
+type LessonPlanDate {
+  endDay: Int!
+  endMonth: Int!
+  endTime: Time!
+  startDay: Int!
+  startMonth: Int!
+  startTime: Time!
+}
+
+type LessonPlanQueryErrorOutput {
+  code: LessonPlanErrorCode!
+  message: String!
+}
+
+type LessonPlanQuerySuccessOutput {
+  lessonPlan: LessonPlan!
+}
+
 type Mutation {
+  createAdminUser(input: CreateAdminUserMutationInput!): CreateAdminUserMutationOutput!
   createCompany(input: CreateCompanyMutationInput!): CreateCompanyMutationOutput!
+  createDraftLessonPlan(input: CreateDraftLessonPlanMutationInput!): CreateDraftLessonPlanMutationOutput!
   createProduct(input: CreateProductMutationInput!): Unit!
   deleteCompany(id: ID!): DeleteCompanyMutationOutput!
   deleteProduct(input: DeleteProductMutationInput!): DeleteProductMutationOutput!
   updateCompany(input: UpdateCompanyMutationInput!): UpdateCompanyMutationOutput!
+  updateLessonPlan(input: UpdateLessonPlanMutationInput!): UpdateLessonPlanMutationOutput!
+  updateLessonPlanStatus(id: ID!): UpdateLessonPlanStatusMutationOutput!
+  updatePassword(input: UpdatePasswordMutationInput!): UpdatePassWordMutationOutput!
   updateProduct(input: UpdateProductMutationInput!): UpdateProductMutationOutput!
 }
 
@@ -131,13 +200,39 @@ type ProductError {
   message: String!
 }
 
+type PublishedLessonPlan implements LessonPlan {
+  annualMaxExecutions: Int!
+  createdAt: LocalDateTime!
+  description: String!
+  id: ID!
+  lessonPlanDates: [LessonPlanDate!]!
+  lessonType: LessonType!
+  location: String!
+  title: String!
+}
+
 type Query {
   companies: [Company!]!
   company(id: ID!): CompanyQueryOutput!
   hello(name: String): String!
+  lessonPlan(id: ID!): LessonPlanQueryOutput!
   ping: String!
   product(productId: ID!): FindProductQueryOutput!
   products(lastId: String, limit: Int!, sortOrder: String!): FindProductsQueryOutput!
+  schools: [School!]!
+}
+
+type School {
+  buildingName: String
+  city: String!
+  id: String!
+  name: String!
+  phoneNumber: String
+  postalCode: String!
+  prefecture: String!
+  schoolCategory: SchoolCategory!
+  streetAddress: String!
+  url: String
 }
 
 type UpdateCompanyMutationError {
@@ -149,6 +244,33 @@ type UpdateCompanyMutationSuccess {
   result: Unit!
 }
 
+type UpdateLessonPlanMutationError {
+  code: LessonPlanErrorCode!
+  message: String!
+}
+
+type UpdateLessonPlanMutationSuccess {
+  result: Unit!
+}
+
+type UpdateLessonPlanStatusMutationError {
+  code: LessonPlanErrorCode!
+  message: String!
+}
+
+type UpdateLessonPlanStatusMutationSuccess {
+  result: Unit!
+}
+
+type UpdatePassWordMutationError {
+  code: AdminUserErrorCode!
+  message: String!
+}
+
+type UpdatePassWordMutationSuccess {
+  result: Unit!
+}
+
 type UpdateProductMutationError {
   error: ProductError!
 }
@@ -157,13 +279,35 @@ type UpdateProductMutationSuccess {
   product: Product!
 }
 
+enum AdminUserErrorCode {
+  ADMIN_USER_ALREADY_EXISTS
+  ADMIN_USER_NOT_FOUND
+}
+
 enum CompanyErrorCode {
   COMPANY_ALREADY_EXISTS
   COMPANY_NOT_FOUND
 }
 
+enum LessonPlanErrorCode {
+  LESSON_PLAN_ALREADY_EXISTS
+  LESSON_PLAN_NOT_FOUND
+}
+
+enum LessonType {
+  OFFLINE
+  ONLINE
+  ONLINE_AND_OFFLINE
+}
+
 enum ProductErrorCode {
   PRODUCT_NOT_FOUND
+}
+
+enum SchoolCategory {
+  ELEMENTARY
+  HIGH
+  JUNIOR_HIGH
 }
 
 "LocalDateTime"
@@ -172,8 +316,19 @@ scalar LocalDateTime
 "String that is not empty"
 scalar NonEmptyString
 
+"An RFC-3339 compliant Full Time Scalar"
+scalar Time
+
 "meaningless value. Necessary just for graphql limitation. Only used for output."
 scalar Unit
+
+input CreateAdminUserMutationInput {
+  confirmPassword: String!
+  email: String!
+  firstName: String!
+  lastName: String!
+  password: String!
+}
 
 input CreateCompanyMutationInput {
   buildingName: NonEmptyString
@@ -186,6 +341,17 @@ input CreateCompanyMutationInput {
   url: NonEmptyString
 }
 
+input CreateDraftLessonPlanMutationInput {
+  annualMaxExecutions: Int
+  companyId: ID!
+  description: NonEmptyString
+  lessonPlanDates: [LessonPlanDateInput!]
+  lessonType: LessonType
+  location: NonEmptyString
+  publish: Boolean!
+  title: NonEmptyString
+}
+
 input CreateProductMutationInput {
   description: String
   name: String!
@@ -194,6 +360,15 @@ input CreateProductMutationInput {
 
 input DeleteProductMutationInput {
   id: ID!
+}
+
+input LessonPlanDateInput {
+  endDay: Int!
+  endMonth: Int!
+  endTime: Time!
+  startDay: Int!
+  startMonth: Int!
+  startTime: Time!
 }
 
 input UpdateCompanyMutationInput {
@@ -206,6 +381,23 @@ input UpdateCompanyMutationInput {
   prefecture: NonEmptyString
   streetAddress: NonEmptyString
   url: NonEmptyString
+}
+
+input UpdateLessonPlanMutationInput {
+  annualMaxExecutions: Int
+  description: NonEmptyString
+  id: ID!
+  images: [ID!]!
+  lessonPlanDates: [LessonPlanDateInput!]
+  location: NonEmptyString
+  title: NonEmptyString
+  type: LessonType
+}
+
+input UpdatePasswordMutationInput {
+  adminUserId: ID!
+  confirmPassword: String!
+  password: String!
 }
 
 input UpdateProductMutationInput {
