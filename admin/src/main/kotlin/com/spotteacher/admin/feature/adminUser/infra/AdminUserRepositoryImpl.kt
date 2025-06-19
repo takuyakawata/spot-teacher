@@ -87,9 +87,15 @@ class AdminUserRepositoryImpl(
                 .set(USERS.FIRST_NAME, user.firstName.value)
                 .set(USERS.LAST_NAME, user.lastName.value)
                 .set(USERS.EMAIL, user.email.value)
-                .set(USERS.PASSWORD_HASH, user.password.value)
                 .where(USERS.ID.eq(user.id.value))
                 .awaitLast()
+    }
+
+    override suspend fun updatePassword(password: Password) {
+        dslContext.get().update(USERS)
+            .set(USERS.PASSWORD_HASH, password.value)
+            .where(USERS.ROLE.eq(UsersRole.ADMIN))
+            .awaitLast()
     }
 
 

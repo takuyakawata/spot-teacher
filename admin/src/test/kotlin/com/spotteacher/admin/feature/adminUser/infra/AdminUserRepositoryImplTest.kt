@@ -83,6 +83,32 @@ class AdminUserRepositoryImplTest(
             }
         }
 
+        describe("updatePassword") {
+            it("should update user's password") {
+                // Create a new ActiveAdminUser
+                val activeUser = adminUserFixture.buildActiveAdminUser(
+                    firstName = AdminUserName("Password"),
+                    lastName = AdminUserName("Test"),
+                    email = EmailAddress("password.test@example.com"),
+                    password = Password("originalPassword")
+                )
+
+                // Create the user in the repository
+                adminUserRepository.create(activeUser)
+
+                // Update password
+                val newPassword = Password("newPassword123")
+                adminUserRepository.updatePassword(newPassword)
+
+                // Find the user by ID to verify password was updated
+                val foundUser = adminUserRepository.findById(activeUser.id)
+
+                // Verify the password was updated
+                foundUser shouldNotBe null
+                foundUser as ActiveAdminUser
+                foundUser.password.value shouldBe "newPassword123"
+            }
+        }
 
         describe("delete") {
             it("should delete a user") {

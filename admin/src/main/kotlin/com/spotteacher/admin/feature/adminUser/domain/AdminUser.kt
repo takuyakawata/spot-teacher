@@ -32,6 +32,20 @@ data class ActiveAdminUser(
     }
 }
 
+fun ActiveAdminUser.changePassword(password: Password) = ActiveAdminUser(
+    id = this.id,
+    firstName = this.firstName,
+    lastName = this.lastName,
+    email = this.email,
+    password = password,
+)
+
+fun ActiveAdminUser.toInActiveAdminUser() = InActiveAdminUser(
+    id = this.id,
+    firstName = this.firstName,
+    lastName = this.lastName,
+)
+
 /**
  * Represents an inactive admin user.(使用停止中のユーザー）
  *
@@ -81,3 +95,13 @@ value class AdminUserName(val value: String) {
 
 @JvmInline
 value class Password(val value: String)
+
+data class AdminUserError(
+    val code: AdminUserErrorCode,
+    val message: String
+)
+
+enum class AdminUserErrorCode {
+    ADMIN_USER_NOT_FOUND,
+    ADMIN_USER_ALREADY_EXISTS,
+}
