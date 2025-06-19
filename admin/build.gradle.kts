@@ -101,6 +101,11 @@ dependencies {
     testImplementation(libs.jackson.datatype.jsr310)
     testImplementation(project(":testUtil"))
 
+    implementation(libs.aws.sdk.core)
+    implementation(libs.aws.sdk.cloudfront)
+    //depend
+    implementation(libs.aws.sdk.s3)
+
     // kotest
     testImplementation(libs.kotest.runner.junit5)
     testImplementation(libs.kotest.framework.datatest)
