@@ -56,6 +56,14 @@ data class InActiveAdminUser(
     }
 }
 
+fun InActiveAdminUser.toActiveAdminUser(email: EmailAddress, password: Password) = ActiveAdminUser(
+    id = this.id,
+    firstName = this.firstName,
+    lastName = this.lastName,
+    email = email,
+    password = password,
+)
+
 // Entity のIDは
 class AdminUserId(override val value: Long) : Identity<Long>(value)
 

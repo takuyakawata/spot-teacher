@@ -12,8 +12,8 @@ data class School(
     val address: Address,
     val phoneNumber: PhoneNumber,
     val url: String?
-){
-    companion object{
+) {
+    companion object {
         fun create(
             name: SchoolName,
             schoolCategory: SchoolCategory,

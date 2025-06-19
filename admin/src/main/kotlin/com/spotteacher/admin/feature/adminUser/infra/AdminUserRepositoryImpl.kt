@@ -54,10 +54,7 @@ class AdminUserRepositoryImpl(
         return toEntity(adminUser, userRecord)
     }
 
-    override suspend fun create(user: AdminUser) {
-        // Insert into users table first
-        val userRecord = when (user) {
-            is ActiveAdminUser -> {
+    override suspend fun create(user: ActiveAdminUser):ActiveAdminUser {
                 val userId = dslContext.get().insertInto(
                     USERS,
                     USERS.UUID,
@@ -75,87 +72,26 @@ class AdminUserRepositoryImpl(
                     UsersRole.ADMIN
                 ).returning(USERS.ID).awaitFirstOrNull()?.id!!
 
-                // Then insert into admin_users table
                 dslContext.get().insertInto(
                     ADMIN_USERS,
                     ADMIN_USERS.USER_ID
                 ).values(
                     userId
                 ).awaitLast()
-            }
-            is InActiveAdminUser -> {
-                // For inactive users, we still need to create a user record
-                // but with placeholder values for email and password
-                val userId = dslContext.get().insertInto(
-                    USERS,
-                    USERS.UUID,
-                    USERS.FIRST_NAME,
-                    USERS.LAST_NAME,
-                    USERS.EMAIL,
-                    USERS.PASSWORD_HASH,
-                    USERS.ROLE
-                ).values(
-                    UUID.randomUUID().toString(),
-                    user.firstName.value,
-                    user.lastName.value,
-                    "inactive-${UUID.randomUUID()}@example.com", // Placeholder email
-                    "inactive", // Placeholder password
-                    UsersRole.ADMIN
-                ).returning(USERS.ID).awaitFirstOrNull()?.id!!
 
-                // Then insert into admin_users table
-                dslContext.get().insertInto(
-                    ADMIN_USERS,
-                    ADMIN_USERS.USER_ID
-                ).values(
-                    userId
-                ).awaitLast()
-            }
-        }
+        return user.copy(id = AdminUserId(userId))
     }
 
-    override suspend fun update(user: AdminUser) {
-        when (user) {
-            is ActiveAdminUser -> {
-                // First find the user_id from admin_users table
-                val adminUser = dslContext.get().nonBlockingFetchOne(
-                    ADMIN_USERS,
-                    ADMIN_USERS.ID.eq(user.id.value)
-                )
-
-                if (adminUser != null) {
-                    val userId = adminUser.userId
-
-                    // Update the users table
-                    dslContext.get().update(USERS)
-                        .set(USERS.FIRST_NAME, user.firstName.value)
-                        .set(USERS.LAST_NAME, user.lastName.value)
-                        .set(USERS.EMAIL, user.email.value)
-                        .set(USERS.PASSWORD_HASH, user.password.value)
-                        .where(USERS.ID.eq(userId))
-                        .awaitLast()
-                }
-            }
-            is InActiveAdminUser -> {
-                // First find the user_id from admin_users table
-                val adminUser = dslContext.get().nonBlockingFetchOne(
-                    ADMIN_USERS,
-                    ADMIN_USERS.ID.eq(user.id.value)
-                )
-
-                if (adminUser != null) {
-                    val userId = adminUser.userId
-
-                    // Update only the name fields in the users table
-                    dslContext.get().update(USERS)
-                        .set(USERS.FIRST_NAME, user.firstName.value)
-                        .set(USERS.LAST_NAME, user.lastName.value)
-                        .where(USERS.ID.eq(userId))
-                        .awaitLast()
-                }
-            }
-        }
+    override suspend fun update(user: ActiveAdminUser) {
+            dslContext.get().update(USERS)
+                .set(USERS.FIRST_NAME, user.firstName.value)
+                .set(USERS.LAST_NAME, user.lastName.value)
+                .set(USERS.EMAIL, user.email.value)
+                .set(USERS.PASSWORD_HASH, user.password.value)
+                .where(USERS.ID.eq(user.id.value))
+                .awaitLast()
     }
+
 
     override suspend fun delete(id: AdminUserId) {
         // First find the user_id from admin_users table
@@ -195,7 +131,7 @@ class AdminUserRepositoryImpl(
 
         // Create and return the admin user if it's active
         val user = toEntity(adminUser, userRecord)
-        return if (user is ActiveAdminUser) user else null
+        return user as? ActiveAdminUser
     }
 
     private fun toEntity(adminUser: AdminUsersRecord, user: UsersRecord): AdminUser {

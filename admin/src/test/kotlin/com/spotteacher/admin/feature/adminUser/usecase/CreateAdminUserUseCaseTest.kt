@@ -4,6 +4,7 @@ import com.spotteacher.admin.feature.adminUser.domain.ActiveAdminUser
 import com.spotteacher.admin.feature.adminUser.domain.AdminUserName
 import com.spotteacher.admin.feature.adminUser.domain.AdminUserRepository
 import com.spotteacher.admin.feature.adminUser.domain.Password
+import com.spotteacher.admin.fixture.AdminUserFixture
 import com.spotteacher.domain.EmailAddress
 import io.kotest.core.spec.style.DescribeSpec
 import io.kotest.matchers.shouldBe
@@ -16,6 +17,7 @@ class CreateAdminUserUseCaseTest : DescribeSpec({
         // Arrange
         val useCase = CreateAdminUserUseCase()
         val adminUserRepository = mock<AdminUserRepository>()
+        val adminUser = AdminUserFixture().buildActiveAdminUser()
 
         // Test data
         val firstName = AdminUserName("John")
@@ -29,7 +31,7 @@ class CreateAdminUserUseCaseTest : DescribeSpec({
             context("when passwords match") {
                 it("should create a new admin user and return success") {
                     // Arrange
-                    coEvery { adminUserRepository.create(any()) } returns Unit
+                    coEvery { adminUserRepository.create(any()) } returns adminUser
 
                     // Act
                     val result = useCase.execute(
@@ -44,11 +46,11 @@ class CreateAdminUserUseCaseTest : DescribeSpec({
 
                     // Assert
                     result.shouldBeInstanceOf<CreateAdminUserUseCaseSuccess>()
-                    val adminUser = (result as CreateAdminUserUseCaseSuccess).adminUser
+                    val adminUser = result.adminUser
                     adminUser.shouldBeInstanceOf<ActiveAdminUser>()
                     adminUser.firstName shouldBe firstName
                     adminUser.lastName shouldBe lastName
-                    (adminUser as ActiveAdminUser).email shouldBe email
+                    adminUser.email shouldBe email
                     adminUser.password shouldBe password
                 }
             }
@@ -68,7 +70,7 @@ class CreateAdminUserUseCaseTest : DescribeSpec({
 
                     // Assert
                     result.shouldBeInstanceOf<CreateAdminUserUseCaseError>()
-                    (result as CreateAdminUserUseCaseError).message shouldBe "Password and confirmation do not match"
+                    result.message shouldBe "Password and confirmation do not match"
                 }
             }
         }

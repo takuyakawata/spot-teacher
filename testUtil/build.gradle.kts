@@ -1,4 +1,5 @@
 
+import io.gitlab.arturbosch.detekt.getSupportedKotlinVersion
 import org.springframework.boot.gradle.tasks.bundling.BootJar
 
 plugins {
@@ -43,6 +44,17 @@ dependencies {
 configurations {
     compileOnly {
         extendsFrom(configurations.annotationProcessor.get())
+    }
+}
+
+/**
+ * This setting is necessary until Detekt, which can deal with Kotlin 2.1.0 is released.
+ */
+configurations.detekt {
+    resolutionStrategy.eachDependency {
+        if (requested.group == "org.jetbrains.kotlin") {
+            useVersion(getSupportedKotlinVersion())
+        }
     }
 }
 

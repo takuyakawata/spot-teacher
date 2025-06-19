@@ -10,7 +10,6 @@ import io.kotest.core.spec.style.DescribeSpec
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.types.shouldBeTypeOf
 import io.mockk.coEvery
-import io.mockk.coVerify
 import io.mockk.mockk
 
 class DeleteLessonPlanUseCaseTest : DescribeSpec({

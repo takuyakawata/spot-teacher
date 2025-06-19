@@ -1,4 +1,3 @@
 package com.spotteacher.admin.feature.company.infra
 
-class CompanyRepositoryImplTest {
-}
+class CompanyRepositoryImplTest

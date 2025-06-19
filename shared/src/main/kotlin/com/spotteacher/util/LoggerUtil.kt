@@ -3,7 +3,7 @@ package com.spotteacher.util
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
-//TODO 全体のsharedで扱う知識
+// TODO 全体のsharedで扱う知識
 val <T : Any> T.logger: Logger
     get() = LoggerFactory.getLogger(this::class.java)
 
