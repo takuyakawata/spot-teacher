@@ -1,4 +1,4 @@
-package com.spotteacher.admin.shared.auth.refreshToken.handler
+package com.spotteacher.admin.shared.auth.handler
 
 import com.spotteacher.backend.DatabaseDescribeSpec
 import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient

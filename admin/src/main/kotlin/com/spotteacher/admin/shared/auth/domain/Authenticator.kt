@@ -1,4 +1,4 @@
-package com.spotteacher.admin.shared.auth.refreshToken.domain
+package com.spotteacher.admin.shared.auth.domain
 
 import com.spotteacher.admin.feature.adminUser.domain.ActiveAdminUser
 import com.spotteacher.admin.feature.adminUser.domain.Password

@@ -1,7 +1,7 @@
-package com.spotteacher.admin.shared.auth.refreshToken.infra
+package com.spotteacher.admin.shared.auth.infra
 
-import com.spotteacher.admin.shared.auth.refreshToken.domain.RefreshToken
-import com.spotteacher.admin.shared.auth.refreshToken.domain.RefreshTokenRepository
+import com.spotteacher.admin.shared.auth.domain.RefreshToken
+import com.spotteacher.admin.shared.auth.domain.RefreshTokenRepository
 import org.springframework.stereotype.Component
 
 @Component

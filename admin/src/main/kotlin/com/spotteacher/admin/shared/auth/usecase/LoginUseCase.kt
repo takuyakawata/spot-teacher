@@ -1,9 +1,9 @@
-package com.spotteacher.admin.shared.auth.refreshToken.usecase
+package com.spotteacher.admin.shared.auth.usecase
 
 import com.spotteacher.admin.feature.adminUser.domain.Password
-import com.spotteacher.admin.shared.auth.refreshToken.domain.Authenticator
-import com.spotteacher.admin.shared.auth.refreshToken.domain.TokenIssuer
-import com.spotteacher.admin.shared.auth.refreshToken.domain.TokenPair
+import com.spotteacher.admin.shared.auth.domain.Authenticator
+import com.spotteacher.admin.shared.auth.domain.TokenIssuer
+import com.spotteacher.admin.shared.auth.domain.TokenPair
 import com.spotteacher.domain.EmailAddress
 import com.spotteacher.usecase.UseCase
 

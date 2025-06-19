@@ -3,8 +3,15 @@
  */
 package com.spotteacher.infra.db.tables
 
+
 import com.spotteacher.infra.db.enums.UsersRole
 import com.spotteacher.infra.db.tables.records.UsersRecord
+
+import java.time.LocalDateTime
+
+import kotlin.collections.Collection
+import kotlin.collections.List
+
 import org.jooq.Condition
 import org.jooq.Field
 import org.jooq.ForeignKey
@@ -25,9 +32,7 @@ import org.jooq.impl.DSL
 import org.jooq.impl.Internal
 import org.jooq.impl.SQLDataType
 import org.jooq.impl.TableImpl
-import java.time.LocalDateTime
-import kotlin.collections.Collection
-import kotlin.collections.List
+
 
 /**
  * 全ユーザーの共通情報を格納する基盤テーブル
@@ -41,7 +46,7 @@ open class Users(
     aliased: Table<UsersRecord>?,
     parameters: Array<Field<*>?>?,
     where: Condition?
-) : TableImpl<UsersRecord>(
+): TableImpl<UsersRecord>(
     alias,
     null,
     path,
@@ -104,37 +109,35 @@ open class Users(
     /**
      * The column <code>users.created_at</code>.
      */
-    val CREATED_AT: TableField<UsersRecord, LocalDateTime?> =
-        createField(DSL.name("created_at"), SQLDataType.LOCALDATETIME(0).nullable(false).defaultValue(DSL.field(DSL.raw("CURRENT_TIMESTAMP"), SQLDataType.LOCALDATETIME)), this, "")
+    val CREATED_AT: TableField<UsersRecord, LocalDateTime?> = createField(DSL.name("created_at"), SQLDataType.LOCALDATETIME(0).nullable(false).defaultValue(DSL.field(DSL.raw("CURRENT_TIMESTAMP"), SQLDataType.LOCALDATETIME)), this, "")
 
     /**
      * The column <code>users.updated_at</code>.
      */
-    val UPDATED_AT: TableField<UsersRecord, LocalDateTime?> =
-        createField(DSL.name("updated_at"), SQLDataType.LOCALDATETIME(0).nullable(false).defaultValue(DSL.field(DSL.raw("CURRENT_TIMESTAMP"), SQLDataType.LOCALDATETIME)), this, "")
+    val UPDATED_AT: TableField<UsersRecord, LocalDateTime?> = createField(DSL.name("updated_at"), SQLDataType.LOCALDATETIME(0).nullable(false).defaultValue(DSL.field(DSL.raw("CURRENT_TIMESTAMP"), SQLDataType.LOCALDATETIME)), this, "")
 
-    private constructor(alias: Name, aliased: Table<UsersRecord>?) : this(alias, null, null, null, aliased, null, null)
-    private constructor(alias: Name, aliased: Table<UsersRecord>?, parameters: Array<Field<*>?>?) : this(alias, null, null, null, aliased, parameters, null)
-    private constructor(alias: Name, aliased: Table<UsersRecord>?, where: Condition?) : this(alias, null, null, null, aliased, null, where)
-
-    /**
-     * Create an aliased <code>users</code> table reference
-     */
-    constructor(alias: String) : this(DSL.name(alias))
+    private constructor(alias: Name, aliased: Table<UsersRecord>?): this(alias, null, null, null, aliased, null, null)
+    private constructor(alias: Name, aliased: Table<UsersRecord>?, parameters: Array<Field<*>?>?): this(alias, null, null, null, aliased, parameters, null)
+    private constructor(alias: Name, aliased: Table<UsersRecord>?, where: Condition?): this(alias, null, null, null, aliased, null, where)
 
     /**
      * Create an aliased <code>users</code> table reference
      */
-    constructor(alias: Name) : this(alias, null)
+    constructor(alias: String): this(DSL.name(alias))
+
+    /**
+     * Create an aliased <code>users</code> table reference
+     */
+    constructor(alias: Name): this(alias, null)
 
     /**
      * Create a <code>users</code> table reference
      */
-    constructor() : this(DSL.name("users"), null)
+    constructor(): this(DSL.name("users"), null)
     override fun getIdentity(): Identity<UsersRecord, Long?> = super.getIdentity() as Identity<UsersRecord, Long?>
     override fun getPrimaryKey(): UniqueKey<UsersRecord> = Internal.createUniqueKey(Users.USERS, DSL.name("KEY_users_PRIMARY"), arrayOf(Users.USERS.ID), true)
     override fun getUniqueKeys(): List<UniqueKey<UsersRecord>> = listOf(
-        Internal.createUniqueKey(Users.USERS, DSL.name("KEY_users_email"), arrayOf(Users.USERS.EMAIL), true),
+        Internal.createUniqueKey(Users.USERS, DSL.name("KEY_users_email"), arrayOf(Users.USERS.EMAIL), true), 
         Internal.createUniqueKey(Users.USERS, DSL.name("KEY_users_uuid"), arrayOf(Users.USERS.UUID), true)
     )
     override fun `as`(alias: String): Users = Users(DSL.name(alias), this)

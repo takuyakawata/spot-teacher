@@ -3,10 +3,14 @@
  */
 package com.spotteacher.infra.db.tables.records
 
+
 import com.spotteacher.infra.db.tables.CompanyMembers
+
+import java.time.LocalDateTime
+
 import org.jooq.Record1
 import org.jooq.impl.UpdatableRecordImpl
-import java.time.LocalDateTime
+
 
 /**
  * CompanyMemberロールを持つユーザーの追加情報
@@ -43,7 +47,7 @@ open class CompanyMembersRecord private constructor() : UpdatableRecordImpl<Comp
     /**
      * Create a detached, initialised CompanyMembersRecord
      */
-    constructor(id: Long? = null, userId: Long, companyId: Long, createdAt: LocalDateTime? = null, updatedAt: LocalDateTime? = null) : this() {
+    constructor(id: Long? = null, userId: Long, companyId: Long, createdAt: LocalDateTime? = null, updatedAt: LocalDateTime? = null): this() {
         this.id = id
         this.userId = userId
         this.companyId = companyId
