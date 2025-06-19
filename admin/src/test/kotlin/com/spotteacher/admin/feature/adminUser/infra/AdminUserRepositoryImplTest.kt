@@ -13,8 +13,9 @@ import io.kotest.matchers.collections.shouldNotBeEmpty
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.shouldNotBe
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.boot.test.context.SpringBootTest.WebEnvironment.NONE
 
-@SpringBootTest
+@SpringBootTest(webEnvironment = NONE)
 class AdminUserRepositoryImplTest(
     private val adminUserRepository: AdminUserRepository,
     private val adminUserFixture: AdminUserFixture
