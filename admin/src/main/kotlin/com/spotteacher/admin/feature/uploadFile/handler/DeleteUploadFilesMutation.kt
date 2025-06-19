@@ -1,3 +1,12 @@
+package com.spotteacher.admin.feature.uploadFile.handler
+
+import arrow.core.toNonEmptyListOrNull
+import com.expediagroup.graphql.generator.scalars.ID
+import com.expediagroup.graphql.server.operations.Mutation
+import com.spotteacher.admin.feature.uploadFile.domain.UploadFileId
+import com.spotteacher.admin.feature.uploadFile.usecase.DeleteUploadFilesUseCase
+import com.spotteacher.graphql.toDomainId
+import org.springframework.stereotype.Component
 
 
 data class DeleteUploadFilesMutationInput(

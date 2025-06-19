@@ -112,6 +112,11 @@ type CreateDraftLessonPlanMutationSuccess {
   result: Unit!
 }
 
+type CreateSchoolPayload {
+  errors: [String!]!
+  school: School
+}
+
 type DeleteCompanyMutationError {
   code: CompanyErrorCode!
   message: String!
@@ -126,6 +131,11 @@ type DeleteProductMutationError {
 }
 
 type DeleteProductMutationSuccess {
+  success: Boolean!
+}
+
+type DeleteSchoolPayload {
+  errors: [String!]!
   success: Boolean!
 }
 
@@ -179,13 +189,18 @@ type Mutation {
   createCompany(input: CreateCompanyMutationInput!): CreateCompanyMutationOutput!
   createDraftLessonPlan(input: CreateDraftLessonPlanMutationInput!): CreateDraftLessonPlanMutationOutput!
   createProduct(input: CreateProductMutationInput!): Unit!
+  createSchool(input: CreateSchoolInput!): CreateSchoolPayload!
+  createUploadFiles(input: CreateUploadFilesMutationInput!): [uploadFile!]!
   deleteCompany(id: ID!): DeleteCompanyMutationOutput!
   deleteProduct(input: DeleteProductMutationInput!): DeleteProductMutationOutput!
+  deleteSchool(input: DeleteSchoolInput!): DeleteSchoolPayload!
+  deleteUploadFiles(input: DeleteUploadFilesMutationInput!): Unit!
   updateCompany(input: UpdateCompanyMutationInput!): UpdateCompanyMutationOutput!
   updateLessonPlan(input: UpdateLessonPlanMutationInput!): UpdateLessonPlanMutationOutput!
   updateLessonPlanStatus(id: ID!): UpdateLessonPlanStatusMutationOutput!
   updatePassword(input: UpdatePasswordMutationInput!): UpdatePassWordMutationOutput!
   updateProduct(input: UpdateProductMutationInput!): UpdateProductMutationOutput!
+  updateSchool(input: UpdateSchoolInput!): UpdateSchoolPayload!
 }
 
 type Product {
@@ -219,6 +234,7 @@ type Query {
   ping: String!
   product(productId: ID!): FindProductQueryOutput!
   products(lastId: String, limit: Int!, sortOrder: String!): FindProductsQueryOutput!
+  school(id: String!): School
   schools: [School!]!
 }
 
@@ -279,6 +295,18 @@ type UpdateProductMutationSuccess {
   product: Product!
 }
 
+type UpdateSchoolPayload {
+  errors: [String!]!
+  school: School
+}
+
+type uploadFile {
+  generateDownloadFileUrl: String!
+  generateUploadFileUrl: String!
+  id: ID!
+  uploadStatus: UploadStatus!
+}
+
 enum AdminUserErrorCode {
   ADMIN_USER_ALREADY_EXISTS
   ADMIN_USER_NOT_FOUND
@@ -300,6 +328,54 @@ enum LessonType {
   ONLINE_AND_OFFLINE
 }
 
+enum Prefecture {
+  AICHI
+  AKITA
+  AOMORI
+  CHIBA
+  EHIME
+  FUKUI
+  FUKUOKA
+  FUKUSHIMA
+  GIFU
+  GUNMA
+  HIROSHIMA
+  HOKKAIDO
+  HYOGO
+  IBARAKI
+  ISHIKAWA
+  IWATE
+  KAGAWA
+  KAGOSHIMA
+  KANAGAWA
+  KOCHI
+  KUMAMOTO
+  KYOTO
+  MIE
+  MIYAGI
+  MIYAZAKI
+  NAGANO
+  NAGASAKI
+  NARA
+  NIIGATA
+  OITA
+  OKAYAMA
+  OKINAWA
+  OSAKA
+  SAGA
+  SAITAMA
+  SHIGA
+  SHIMANE
+  TOCHIGI
+  TOKUSHIMA
+  TOKYO
+  TOTTORI
+  TOYAMA
+  WAKAYAMA
+  YAMAGATA
+  YAMANASHI
+}
+
 enum ProductErrorCode {
   PRODUCT_NOT_FOUND
 }
@@ -308,6 +384,19 @@ enum SchoolCategory {
   ELEMENTARY
   HIGH
   JUNIOR_HIGH
+}
+
+enum UploadFileDirectoryFeatureName {
+  REAL_ESTATE
+  REPORT
+  WORK_PLAN
+  WORK_TEMPLATE
+  WORK_TICKET
+}
+
+enum UploadStatus {
+  PENDING
+  UPLOADED
 }
 
 "LocalDateTime"
@@ -358,8 +447,37 @@ input CreateProductMutationInput {
   price: Int!
 }
 
+input CreateSchoolInput {
+  buildingName: String
+  city: String!
+  name: String!
+  phoneNumber: String!
+  postalCode: String!
+  prefecture: Prefecture!
+  schoolCategory: SchoolCategory!
+  streetAddress: String!
+  url: String
+}
+
+input CreateUploadFileInput {
+  contentType: NonEmptyString!
+  featureName: UploadFileDirectoryFeatureName!
+}
+
+input CreateUploadFilesMutationInput {
+  fileInputs: [CreateUploadFileInput!]!
+}
+
 input DeleteProductMutationInput {
   id: ID!
+}
+
+input DeleteSchoolInput {
+  id: String!
+}
+
+input DeleteUploadFilesMutationInput {
+  uploadFileIDs: [ID!]!
 }
 
 input LessonPlanDateInput {
@@ -405,4 +523,17 @@ input UpdateProductMutationInput {
   id: ID!
   name: String
   price: Int
+}
+
+input UpdateSchoolInput {
+  buildingName: String
+  city: String
+  id: String!
+  name: String
+  phoneNumber: String
+  postalCode: String
+  prefecture: Prefecture
+  schoolCategory: SchoolCategory
+  streetAddress: String
+  url: String
 }
