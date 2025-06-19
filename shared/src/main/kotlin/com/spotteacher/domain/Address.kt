@@ -105,6 +105,11 @@ value class PostCode(val value: String) {
     companion object {
         private const val MAX_LENGTH = 10
     }
+    init {
+        require(value.length <= MAX_LENGTH) {
+            "Post code must be $MAX_LENGTH digits"
+        }
+    }
 }
 
 /**

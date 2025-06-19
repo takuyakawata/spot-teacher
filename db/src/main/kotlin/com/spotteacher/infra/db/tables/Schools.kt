@@ -4,11 +4,13 @@
 package com.spotteacher.infra.db.tables
 
 
+import com.spotteacher.infra.db.enums.SchoolsSchoolCategory
 import com.spotteacher.infra.db.tables.records.SchoolsRecord
 
 import java.time.LocalDateTime
 
 import kotlin.collections.Collection
+import kotlin.collections.List
 
 import org.jooq.Condition
 import org.jooq.Field
@@ -80,6 +82,16 @@ open class Schools(
     val NAME: TableField<SchoolsRecord, String?> = createField(DSL.name("name"), SQLDataType.VARCHAR(255).nullable(false), this, "")
 
     /**
+     * The column <code>schools.school_category</code>.
+     */
+    val SCHOOL_CATEGORY: TableField<SchoolsRecord, SchoolsSchoolCategory?> = createField(DSL.name("school_category"), SQLDataType.VARCHAR(11).nullable(false).asEnumDataType(SchoolsSchoolCategory::class.java), this, "")
+
+    /**
+     * The column <code>schools.post_code</code>.
+     */
+    val POST_CODE: TableField<SchoolsRecord, String?> = createField(DSL.name("post_code"), SQLDataType.VARCHAR(10).nullable(false), this, "")
+
+    /**
      * The column <code>schools.prefecture</code>.
      */
     val PREFECTURE: TableField<SchoolsRecord, String?> = createField(DSL.name("prefecture"), SQLDataType.VARCHAR(10).nullable(false), this, "")
@@ -98,6 +110,16 @@ open class Schools(
      * The column <code>schools.building_name</code>.
      */
     val BUILDING_NAME: TableField<SchoolsRecord, String?> = createField(DSL.name("building_name"), SQLDataType.VARCHAR(255), this, "")
+
+    /**
+     * The column <code>schools.phone_number</code>.
+     */
+    val PHONE_NUMBER: TableField<SchoolsRecord, String?> = createField(DSL.name("phone_number"), SQLDataType.VARCHAR(20).nullable(false), this, "")
+
+    /**
+     * The column <code>schools.url</code>.
+     */
+    val URL: TableField<SchoolsRecord, String?> = createField(DSL.name("url"), SQLDataType.VARCHAR(500), this, "")
 
     /**
      * The column <code>schools.created_at</code>.
@@ -129,6 +151,10 @@ open class Schools(
     constructor(): this(DSL.name("schools"), null)
     override fun getIdentity(): Identity<SchoolsRecord, Long?> = super.getIdentity() as Identity<SchoolsRecord, Long?>
     override fun getPrimaryKey(): UniqueKey<SchoolsRecord> = Internal.createUniqueKey(Schools.SCHOOLS, DSL.name("KEY_schools_PRIMARY"), arrayOf(Schools.SCHOOLS.ID), true)
+    override fun getUniqueKeys(): List<UniqueKey<SchoolsRecord>> = listOf(
+        Internal.createUniqueKey(Schools.SCHOOLS, DSL.name("KEY_schools_phone_number"), arrayOf(Schools.SCHOOLS.PHONE_NUMBER), true), 
+        Internal.createUniqueKey(Schools.SCHOOLS, DSL.name("KEY_schools_post_code"), arrayOf(Schools.SCHOOLS.POST_CODE), true)
+    )
     override fun `as`(alias: String): Schools = Schools(DSL.name(alias), this)
     override fun `as`(alias: Name): Schools = Schools(alias, this)
     override fun `as`(alias: Table<*>): Schools = Schools(alias.qualifiedName, this)
