@@ -1,10 +1,10 @@
-package com.spotteacher.admin.shared.auth.refreshToken.infra
+package com.spotteacher.admin.shared.auth.infra
 
 import com.spotteacher.admin.config.auth.JwtProvider
 import com.spotteacher.admin.feature.adminUser.domain.ActiveAdminUser
-import com.spotteacher.admin.shared.auth.refreshToken.domain.RefreshTokenManager
-import com.spotteacher.admin.shared.auth.refreshToken.domain.TokenIssuer
-import com.spotteacher.admin.shared.auth.refreshToken.domain.TokenPair
+import com.spotteacher.admin.shared.auth.domain.RefreshTokenManager
+import com.spotteacher.admin.shared.auth.domain.TokenIssuer
+import com.spotteacher.admin.shared.auth.domain.TokenPair
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.stereotype.Component
 

@@ -1,4 +1,4 @@
-package com.spotteacher.admin.shared.auth.refreshToken.infra
+package com.spotteacher.admin.shared.auth.infra
 
 import com.spotteacher.admin.feature.adminUser.domain.AdminUserRepository
 import com.spotteacher.domain.EmailAddress

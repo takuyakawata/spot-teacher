@@ -1,10 +1,10 @@
-package com.spotteacher.admin.shared.auth.refreshToken.infra
+package com.spotteacher.admin.shared.auth.infra
 
 import com.spotteacher.admin.feature.adminUser.domain.ActiveAdminUser
 import com.spotteacher.admin.feature.adminUser.domain.AdminUser
 import com.spotteacher.admin.feature.adminUser.domain.AdminUserRepository
 import com.spotteacher.admin.feature.adminUser.domain.Password
-import com.spotteacher.admin.shared.auth.refreshToken.domain.Authenticator
+import com.spotteacher.admin.shared.auth.domain.Authenticator
 import com.spotteacher.domain.EmailAddress
 import com.spotteacher.exception.ResourceNotFoundException
 import kotlinx.coroutines.reactor.awaitSingleOrNull
