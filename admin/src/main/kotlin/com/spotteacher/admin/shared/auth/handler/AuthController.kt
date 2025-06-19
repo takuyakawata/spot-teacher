@@ -1,8 +1,8 @@
-package com.spotteacher.admin.shared.auth.refreshToken.handler
+package com.spotteacher.admin.shared.auth.handler
 
 import com.spotteacher.admin.feature.adminUser.domain.Password
-import com.spotteacher.admin.shared.auth.refreshToken.usecase.LoginUseCase
-import com.spotteacher.admin.shared.auth.refreshToken.usecase.LoginUseCaseInput
+import com.spotteacher.admin.shared.auth.usecase.LoginUseCase
+import com.spotteacher.admin.shared.auth.usecase.LoginUseCaseInput
 import com.spotteacher.domain.EmailAddress
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.PostMapping
