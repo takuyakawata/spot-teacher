@@ -13,6 +13,7 @@ import java.time.LocalTime
 
 private const val LESSON_PLAN_TYPE = "LessonPlan"
 private const val DRAFT_LESSON_PLAN_TYPE = "DraftLessonPlan"
+private const val PUBLISHED_LESSON_PLAN_TYPE = "PublishedLessonPlan"
 private const val LESSON_PLAN_DATE_TYPE = "LessonPlanDate"
 
 @GraphQLName(LESSON_PLAN_TYPE)
@@ -29,7 +30,7 @@ sealed interface LessonPlanType {
 
 fun LessonPlanId.toGraphQLID() = this.toID(LESSON_PLAN_TYPE)
 
-@GraphQLName(LESSON_PLAN_TYPE)
+@GraphQLName(PUBLISHED_LESSON_PLAN_TYPE)
 data class PublishedLessonPlanType(
     override val id: ID,
     @GraphQLIgnore
