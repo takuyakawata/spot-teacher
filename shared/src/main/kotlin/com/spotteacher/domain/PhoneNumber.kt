@@ -1,7 +1,7 @@
 package com.spotteacher.domain
 
 @JvmInline
-value class PhoneNumber(val value: String){
+value class PhoneNumber(val value: String) {
     companion object {
         private const val MAX_LENGTH = 12
     }

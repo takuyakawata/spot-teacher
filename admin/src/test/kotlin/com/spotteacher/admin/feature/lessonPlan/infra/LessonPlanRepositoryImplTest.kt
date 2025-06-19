@@ -1,12 +1,9 @@
 package com.spotteacher.admin.feature.lessonPlan.infra
 
-import arrow.core.Nel
 import com.spotteacher.admin.feature.company.domain.CompanyId
 import com.spotteacher.admin.feature.lessonPlan.domain.DraftLessonPlan
 import com.spotteacher.admin.feature.lessonPlan.domain.LessonLocation
-import com.spotteacher.admin.feature.lessonPlan.domain.LessonPlanDate
 import com.spotteacher.admin.feature.lessonPlan.domain.LessonPlanDescription
-import com.spotteacher.admin.feature.lessonPlan.domain.LessonPlanId
 import com.spotteacher.admin.feature.lessonPlan.domain.LessonPlanRepository
 import com.spotteacher.admin.feature.lessonPlan.domain.LessonPlanTitle
 import com.spotteacher.admin.feature.lessonPlan.domain.LessonType
@@ -18,7 +15,6 @@ import io.kotest.matchers.shouldBe
 import io.kotest.matchers.shouldNotBe
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment.NONE
-import java.time.LocalTime
 
 @SpringBootTest(webEnvironment = NONE)
 class LessonPlanRepositoryImplTest(

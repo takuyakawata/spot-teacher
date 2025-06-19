@@ -1,7 +1,5 @@
 package com.spotteacher.domain
 
-import com.spotteacher.graphql.NonEmptyString
-
 /**
  * 都道府県
  */
@@ -116,7 +114,7 @@ value class PostCode(val value: String) {
  * 住所
  */
 data class Address(
-    val postCode : PostCode,
+    val postCode: PostCode,
     val prefecture: Prefecture,
     val city: City,
     val streetAddress: StreetAddress,

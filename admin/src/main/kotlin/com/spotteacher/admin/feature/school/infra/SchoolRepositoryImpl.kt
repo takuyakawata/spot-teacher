@@ -4,7 +4,6 @@ import arrow.core.Nel
 import arrow.core.toNonEmptyListOrNull
 import com.spotteacher.admin.feature.school.domain.School
 import com.spotteacher.admin.feature.school.domain.SchoolCategory
-import com.spotteacher.admin.feature.school.domain.SchoolCode
 import com.spotteacher.admin.feature.school.domain.SchoolId
 import com.spotteacher.admin.feature.school.domain.SchoolName
 import com.spotteacher.admin.feature.school.domain.SchoolRepository
@@ -24,7 +23,6 @@ import com.spotteacher.infra.db.tables.records.SchoolsRecord
 import kotlinx.coroutines.reactive.awaitFirstOrNull
 import kotlinx.coroutines.reactive.awaitLast
 import org.springframework.stereotype.Repository
-import java.time.LocalDateTime
 
 @Repository
 class SchoolRepositoryImpl(
@@ -58,8 +56,8 @@ class SchoolRepositoryImpl(
             .set(SCHOOLS.CITY, school.address.city.value)
             .set(SCHOOLS.STREET_ADDRESS, school.address.streetAddress.value)
             .set(SCHOOLS.BUILDING_NAME, school.address.buildingName?.value)
-            .set(SCHOOLS.PHONE_NUMBER,school.phoneNumber.value)
-            .set(SCHOOLS.URL,school.url)
+            .set(SCHOOLS.PHONE_NUMBER, school.phoneNumber.value)
+            .set(SCHOOLS.URL, school.url)
             .returning(SCHOOLS.ID)
             .awaitFirstOrNull()?.id!!
 
@@ -75,8 +73,8 @@ class SchoolRepositoryImpl(
             .set(SCHOOLS.CITY, school.address.city.value)
             .set(SCHOOLS.STREET_ADDRESS, school.address.streetAddress.value)
             .set(SCHOOLS.BUILDING_NAME, school.address.buildingName?.value)
-            .set(SCHOOLS.PHONE_NUMBER,school.phoneNumber.value)
-            .set(SCHOOLS.URL,school.url)
+            .set(SCHOOLS.PHONE_NUMBER, school.phoneNumber.value)
+            .set(SCHOOLS.URL, school.url)
             .where(SCHOOLS.ID.eq(school.id.value))
             .awaitLast()
     }
