@@ -10,7 +10,6 @@ import com.spotteacher.admin.feature.lessonPlan.domain.LessonPlanRepository
 import com.spotteacher.admin.feature.lessonPlan.domain.LessonPlanTitle
 import com.spotteacher.admin.feature.lessonPlan.domain.LessonType
 import io.kotest.core.spec.style.DescribeSpec
-import io.kotest.matchers.shouldBe
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
@@ -51,7 +50,7 @@ class CreateDraftLessonPlanUseCaseTest : DescribeSpec({
                     annualMaxExecutions = annualMaxExecutions,
                     lessonPlanDates = lessonPlanDates
                 )
-                
+
                 coEvery { lessonPlanRepository.createDraft(any()) } returns draftLessonPlan
 
                 // Act
@@ -69,16 +68,18 @@ class CreateDraftLessonPlanUseCaseTest : DescribeSpec({
                 )
 
                 // Assert
-                coVerify { 
-                    lessonPlanRepository.createDraft(match { 
-                        it.companyId == companyId &&
-                        it.title == title &&
-                        it.description == description &&
-                        it.lessonType == lessonType &&
-                        it.location == location &&
-                        it.annualMaxExecutions == annualMaxExecutions &&
-                        it.lessonPlanDates == lessonPlanDates
-                    })
+                coVerify {
+                    lessonPlanRepository.createDraft(
+                        match {
+                            it.companyId == companyId &&
+                                it.title == title &&
+                                it.description == description &&
+                                it.lessonType == lessonType &&
+                                it.location == location &&
+                                it.annualMaxExecutions == annualMaxExecutions &&
+                                it.lessonPlanDates == lessonPlanDates
+                        }
+                    )
                 }
             }
 
@@ -93,7 +94,7 @@ class CreateDraftLessonPlanUseCaseTest : DescribeSpec({
                     annualMaxExecutions = null,
                     lessonPlanDates = null
                 )
-                
+
                 coEvery { lessonPlanRepository.createDraft(any()) } returns minimalDraftLessonPlan
 
                 // Act
@@ -111,16 +112,18 @@ class CreateDraftLessonPlanUseCaseTest : DescribeSpec({
                 )
 
                 // Assert
-                coVerify { 
-                    lessonPlanRepository.createDraft(match { 
-                        it.companyId == companyId &&
-                        it.title == null &&
-                        it.description == null &&
-                        it.lessonType == null &&
-                        it.location == null &&
-                        it.annualMaxExecutions == null &&
-                        it.lessonPlanDates == null
-                    })
+                coVerify {
+                    lessonPlanRepository.createDraft(
+                        match {
+                            it.companyId == companyId &&
+                                it.title == null &&
+                                it.description == null &&
+                                it.lessonType == null &&
+                                it.location == null &&
+                                it.annualMaxExecutions == null &&
+                                it.lessonPlanDates == null
+                        }
+                    )
                 }
             }
         }

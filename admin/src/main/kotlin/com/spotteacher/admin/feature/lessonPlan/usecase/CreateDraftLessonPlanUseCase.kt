@@ -1,18 +1,14 @@
 package com.spotteacher.admin.feature.lessonPlan.usecase
 
-import arrow.core.Either
 import arrow.core.toNonEmptyListOrNull
 import com.spotteacher.admin.feature.company.domain.CompanyId
 import com.spotteacher.admin.feature.lessonPlan.domain.DraftLessonPlan
 import com.spotteacher.admin.feature.lessonPlan.domain.LessonLocation
 import com.spotteacher.admin.feature.lessonPlan.domain.LessonPlanDate
 import com.spotteacher.admin.feature.lessonPlan.domain.LessonPlanDescription
-import com.spotteacher.admin.feature.lessonPlan.domain.LessonPlanError
-import com.spotteacher.admin.feature.lessonPlan.domain.LessonPlanErrorCode
 import com.spotteacher.admin.feature.lessonPlan.domain.LessonPlanRepository
 import com.spotteacher.admin.feature.lessonPlan.domain.LessonPlanTitle
 import com.spotteacher.admin.feature.lessonPlan.domain.LessonType
-import com.spotteacher.admin.feature.lessonPlan.handler.LessonPlanDateType
 import com.spotteacher.admin.shared.infra.TransactionCoroutine
 import com.spotteacher.usecase.UseCase
 
@@ -30,7 +26,7 @@ data class CreateDraftLessonPlanUseCaseInput(
 @UseCase
 class CreateDraftLessonPlanUseCase(
     private val lessonPlanRepository: LessonPlanRepository
-){
+) {
     @TransactionCoroutine
     suspend fun call(input: CreateDraftLessonPlanUseCaseInput) {
         val draftLessonPlan = DraftLessonPlan.create(
