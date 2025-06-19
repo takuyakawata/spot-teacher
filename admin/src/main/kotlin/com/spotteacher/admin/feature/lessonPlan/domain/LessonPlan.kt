@@ -2,7 +2,6 @@ package com.spotteacher.admin.feature.lessonPlan.domain
 
 import arrow.core.Nel
 import com.spotteacher.admin.feature.company.domain.CompanyId
-import com.spotteacher.admin.feature.product.domain.ProductErrorCode
 import com.spotteacher.admin.feature.uploadFile.domain.UploadFileId
 import com.spotteacher.util.Identity
 import java.time.LocalDateTime
@@ -189,7 +188,7 @@ data class LessonPlanDate(
 }
 
 data class LessonPlanError(
-    val code: ProductErrorCode,
+    val code: LessonPlanErrorCode,
     val message: String
 )
 

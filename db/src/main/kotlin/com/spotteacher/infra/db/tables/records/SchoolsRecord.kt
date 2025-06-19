@@ -4,6 +4,7 @@
 package com.spotteacher.infra.db.tables.records
 
 
+import com.spotteacher.infra.db.enums.SchoolsSchoolCategory
 import com.spotteacher.infra.db.tables.Schools
 
 import java.time.LocalDateTime
@@ -26,29 +27,45 @@ open class SchoolsRecord private constructor() : UpdatableRecordImpl<SchoolsReco
         set(value): Unit = set(1, value)
         get(): String = get(1) as String
 
-    open var prefecture: String
+    open var schoolCategory: SchoolsSchoolCategory
         set(value): Unit = set(2, value)
-        get(): String = get(2) as String
+        get(): SchoolsSchoolCategory = get(2) as SchoolsSchoolCategory
 
-    open var city: String
+    open var postCode: String
         set(value): Unit = set(3, value)
         get(): String = get(3) as String
 
-    open var streetAddress: String
+    open var prefecture: String
         set(value): Unit = set(4, value)
         get(): String = get(4) as String
 
-    open var buildingName: String?
+    open var city: String
         set(value): Unit = set(5, value)
-        get(): String? = get(5) as String?
+        get(): String = get(5) as String
+
+    open var streetAddress: String
+        set(value): Unit = set(6, value)
+        get(): String = get(6) as String
+
+    open var buildingName: String?
+        set(value): Unit = set(7, value)
+        get(): String? = get(7) as String?
+
+    open var phoneNumber: String
+        set(value): Unit = set(8, value)
+        get(): String = get(8) as String
+
+    open var url: String?
+        set(value): Unit = set(9, value)
+        get(): String? = get(9) as String?
 
     open var createdAt: LocalDateTime?
-        set(value): Unit = set(6, value)
-        get(): LocalDateTime? = get(6) as LocalDateTime?
+        set(value): Unit = set(10, value)
+        get(): LocalDateTime? = get(10) as LocalDateTime?
 
     open var updatedAt: LocalDateTime?
-        set(value): Unit = set(7, value)
-        get(): LocalDateTime? = get(7) as LocalDateTime?
+        set(value): Unit = set(11, value)
+        get(): LocalDateTime? = get(11) as LocalDateTime?
 
     // -------------------------------------------------------------------------
     // Primary key information
@@ -59,13 +76,17 @@ open class SchoolsRecord private constructor() : UpdatableRecordImpl<SchoolsReco
     /**
      * Create a detached, initialised SchoolsRecord
      */
-    constructor(id: Long? = null, name: String, prefecture: String, city: String, streetAddress: String, buildingName: String? = null, createdAt: LocalDateTime? = null, updatedAt: LocalDateTime? = null): this() {
+    constructor(id: Long? = null, name: String, schoolCategory: SchoolsSchoolCategory, postCode: String, prefecture: String, city: String, streetAddress: String, buildingName: String? = null, phoneNumber: String, url: String? = null, createdAt: LocalDateTime? = null, updatedAt: LocalDateTime? = null): this() {
         this.id = id
         this.name = name
+        this.schoolCategory = schoolCategory
+        this.postCode = postCode
         this.prefecture = prefecture
         this.city = city
         this.streetAddress = streetAddress
         this.buildingName = buildingName
+        this.phoneNumber = phoneNumber
+        this.url = url
         this.createdAt = createdAt
         this.updatedAt = updatedAt
         resetTouchedOnNotNull()
