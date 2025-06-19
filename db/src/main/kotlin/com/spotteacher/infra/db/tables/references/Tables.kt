@@ -8,8 +8,12 @@ package com.spotteacher.infra.db.tables.references
 import com.spotteacher.infra.db.tables.AdminUsers
 import com.spotteacher.infra.db.tables.Companies
 import com.spotteacher.infra.db.tables.CompanyMembers
+import com.spotteacher.infra.db.tables.Educations
 import com.spotteacher.infra.db.tables.LessonPlanDates
+import com.spotteacher.infra.db.tables.LessonPlanGrades
+import com.spotteacher.infra.db.tables.LessonPlanSubjects
 import com.spotteacher.infra.db.tables.LessonPlans
+import com.spotteacher.infra.db.tables.LessonPlansEducations
 import com.spotteacher.infra.db.tables.Products
 import com.spotteacher.infra.db.tables.RefreshTokens
 import com.spotteacher.infra.db.tables.Schools
@@ -35,14 +39,34 @@ val COMPANIES: Companies = Companies.COMPANIES
 val COMPANY_MEMBERS: CompanyMembers = CompanyMembers.COMPANY_MEMBERS
 
 /**
+ * The table <code>educations</code>.
+ */
+val EDUCATIONS: Educations = Educations.EDUCATIONS
+
+/**
  * 授業計画の日付
  */
 val LESSON_PLAN_DATES: LessonPlanDates = LessonPlanDates.LESSON_PLAN_DATES
 
 /**
+ * The table <code>lesson_plan_grades</code>.
+ */
+val LESSON_PLAN_GRADES: LessonPlanGrades = LessonPlanGrades.LESSON_PLAN_GRADES
+
+/**
+ * The table <code>lesson_plan_subjects</code>.
+ */
+val LESSON_PLAN_SUBJECTS: LessonPlanSubjects = LessonPlanSubjects.LESSON_PLAN_SUBJECTS
+
+/**
  * The table <code>lesson_plans</code>.
  */
 val LESSON_PLANS: LessonPlans = LessonPlans.LESSON_PLANS
+
+/**
+ * The table <code>lesson_plans_educations</code>.
+ */
+val LESSON_PLANS_EDUCATIONS: LessonPlansEducations = LessonPlansEducations.LESSON_PLANS_EDUCATIONS
 
 /**
  * The table <code>products</code>.
