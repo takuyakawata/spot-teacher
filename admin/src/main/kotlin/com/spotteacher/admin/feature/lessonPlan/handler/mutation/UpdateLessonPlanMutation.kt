@@ -18,7 +18,7 @@ data class UpdateLessonPlanMutationInput(
 )
 
 @Component
-class UpdateLessonPlanMutation: Mutation {
+class UpdateLessonPlanMutation : Mutation {
     suspend fun updateLessonPlan(input: UpdateLessonPlanMutationInput): UpdateLessonPlanMutationOutput {
         return UpdateLessonPlanMutationOutput(
             success = true
