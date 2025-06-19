@@ -1,7 +1,6 @@
 package com.spotteacher.admin.feature.lessonPlan.usecase
 
 import arrow.core.Either
-import arrow.core.Nel
 import arrow.core.toNonEmptyListOrNull
 import com.spotteacher.admin.feature.company.domain.CompanyId
 import com.spotteacher.admin.feature.lessonPlan.domain.DraftLessonPlan

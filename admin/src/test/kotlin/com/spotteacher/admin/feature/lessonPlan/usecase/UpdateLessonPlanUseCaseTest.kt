@@ -1,12 +1,8 @@
 package com.spotteacher.admin.feature.lessonPlan.usecase
 
 import arrow.core.Either
-import arrow.core.Nel
-import arrow.core.toNonEmptyListOrNull
-import com.spotteacher.admin.feature.company.domain.CompanyId
 import com.spotteacher.admin.feature.lessonPlan.domain.DraftLessonPlan
 import com.spotteacher.admin.feature.lessonPlan.domain.LessonLocation
-import com.spotteacher.admin.feature.lessonPlan.domain.LessonPlanDate
 import com.spotteacher.admin.feature.lessonPlan.domain.LessonPlanDescription
 import com.spotteacher.admin.feature.lessonPlan.domain.LessonPlanError
 import com.spotteacher.admin.feature.lessonPlan.domain.LessonPlanErrorCode
@@ -22,11 +18,8 @@ import io.kotest.core.spec.style.DescribeSpec
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.types.shouldBeTypeOf
 import io.mockk.coEvery
-import io.mockk.coVerify
 import io.mockk.mockk
 import io.mockk.slot
-import java.time.LocalDateTime
-import java.time.LocalTime
 
 class UpdateLessonPlanUseCaseTest : DescribeSpec({
     describe("UpdateLessonPlanUseCase") {
@@ -101,7 +94,6 @@ class UpdateLessonPlanUseCaseTest : DescribeSpec({
                     }
                 }
 
-
                 context("when only specified fields") {
                     it("should update keep others unchanged") {
                         // Arrange
@@ -175,7 +167,6 @@ class UpdateLessonPlanUseCaseTest : DescribeSpec({
                         result shouldBe Either.Right(Unit)
                     }
                 }
-
 
                 context("when only specified fields") {
                     it("should update only specified fields and keep others unchanged") {
