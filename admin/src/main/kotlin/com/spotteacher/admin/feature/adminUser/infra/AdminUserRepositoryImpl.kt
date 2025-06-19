@@ -18,7 +18,6 @@ import com.spotteacher.infra.db.tables.records.AdminUsersRecord
 import com.spotteacher.infra.db.tables.records.UsersRecord
 import kotlinx.coroutines.reactive.awaitFirstOrNull
 import kotlinx.coroutines.reactive.awaitLast
-import org.jooq.Record
 import org.springframework.stereotype.Repository
 import java.util.UUID
 
@@ -35,7 +34,7 @@ class AdminUserRepositoryImpl(
                 USERS.ID.eq(adminUser.userId)
             )
 
-            userRecord?.let { toEntity(adminUser,it) }
+            userRecord?.let { toEntity(adminUser, it) }
         }
     }
 

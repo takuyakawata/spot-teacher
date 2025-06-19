@@ -18,7 +18,6 @@ import com.spotteacher.domain.StreetAddress
 import io.kotest.core.spec.style.DescribeSpec
 import io.kotest.matchers.shouldBe
 import io.mockk.coEvery
-import io.mockk.coVerify
 import io.mockk.mockk
 import java.net.URI
 import java.time.LocalDateTime
@@ -65,19 +64,18 @@ class CreateCompanyUseCaseTest : DescribeSpec({
                             url = url
                         )
                     )
-                    
+
                     // Assert
                     result.result.isRight() shouldBe true
                     result.result shouldBe company.right()
-
                 }
             }
-            
+
             context("when company already exists") {
                 it("should return an error") {
                     // Arrange
                     coEvery { companyRepository.findByName(companyName) } returns company
-                    
+
                     // Act
                     val result = useCase.call(
                         CreateCompanyUseCaseInput(
@@ -87,7 +85,7 @@ class CreateCompanyUseCaseTest : DescribeSpec({
                             url = url
                         )
                     )
-                    
+
                     // Assert
                     val expectedError = CompanyError(
                         message = "Company already exists",

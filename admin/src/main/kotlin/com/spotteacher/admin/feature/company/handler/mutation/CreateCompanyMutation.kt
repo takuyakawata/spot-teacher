@@ -32,8 +32,8 @@ data class CreateCompanyMutationInput(
 sealed interface CreateCompanyMutationOutput {
     data class CreateCompanyMutationSuccess(val company: CompanyType) : CreateCompanyMutationOutput
     data class CreateCompanyMutationError(
-    val message: String,
-    val code: CompanyErrorCode
+        val message: String,
+        val code: CompanyErrorCode
     ) : CreateCompanyMutationOutput
 }
 
@@ -62,24 +62,28 @@ class CreateCompanyMutation(
         ).result
 
         return result.fold(
-            ifLeft = { error -> CreateCompanyMutationOutput.CreateCompanyMutationError(
-                message = error.message,
-                code = error.code
-            ) },
-            ifRight = { company -> CreateCompanyMutationOutput.CreateCompanyMutationSuccess(
-            CompanyType(
-                id = company.id.toGraphQLID(),
-                name = company.name.value,
-                postalCode = company.address.postCode.value,
-                prefecture = company.address.prefecture.name,
-                city = company.address.city.value,
-                streetAddress = company.address.streetAddress.value,
-                buildingName = company.address.buildingName?.value,
-                createdAt = company.createdAt,
-                phoneNumber = company.phoneNumber.value,
-                url = company.url?.toString(),
-            )
-            )}
+            ifLeft = { error ->
+                CreateCompanyMutationOutput.CreateCompanyMutationError(
+                    message = error.message,
+                    code = error.code
+                )
+            },
+            ifRight = { company ->
+                CreateCompanyMutationOutput.CreateCompanyMutationSuccess(
+                    CompanyType(
+                        id = company.id.toGraphQLID(),
+                        name = company.name.value,
+                        postalCode = company.address.postCode.value,
+                        prefecture = company.address.prefecture.name,
+                        city = company.address.city.value,
+                        streetAddress = company.address.streetAddress.value,
+                        buildingName = company.address.buildingName?.value,
+                        createdAt = company.createdAt,
+                        phoneNumber = company.phoneNumber.value,
+                        url = company.url?.toString(),
+                    )
+                )
+            }
         )
     }
 }

@@ -6,5 +6,4 @@ data class DeleteAdminUserUseCaseInput(
     val adminUserId: AdminUserId
 )
 
-class DeleteAdminUserUseCase {
-}
+class DeleteAdminUserUseCase

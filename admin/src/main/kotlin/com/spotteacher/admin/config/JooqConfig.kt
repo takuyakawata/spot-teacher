@@ -30,7 +30,6 @@ class JooqConfig(
     @Qualifier("readerConnectionFactory") private val readerConnectionFactory: ConnectionFactory,
 ) {
 
-
     @Bean(name = ["writerDslContext"])
     @Primary
     fun writerDslContext(): DSLContext {

@@ -1,7 +1,6 @@
 package com.spotteacher.admin.fixture
 
 import com.spotteacher.admin.feature.adminUser.domain.ActiveAdminUser
-import com.spotteacher.admin.feature.adminUser.domain.AdminUser
 import com.spotteacher.admin.feature.adminUser.domain.AdminUserId
 import com.spotteacher.admin.feature.adminUser.domain.AdminUserName
 import com.spotteacher.admin.feature.adminUser.domain.Password

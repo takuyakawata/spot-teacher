@@ -7,7 +7,7 @@ private const val ADMIN_USER_TYPE = "AdminUser"
 
 @GraphQLName(ADMIN_USER_TYPE)
 data class AdminUserType(
-    val id : ID,
+    val id: ID,
     val firstName: String,
     val lastName: String,
     val email: String,

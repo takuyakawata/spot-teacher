@@ -9,7 +9,6 @@ import com.spotteacher.admin.feature.company.domain.CompanyErrorCode
 import com.spotteacher.admin.feature.company.domain.CompanyId
 import com.spotteacher.admin.feature.company.domain.CompanyRepository
 import com.spotteacher.usecase.UseCase
-import org.springframework.stereotype.Component
 
 data class FindCompanyUseCaseOutput(
     val result: Either<CompanyError, Company>
@@ -18,9 +17,9 @@ data class FindCompanyUseCaseOutput(
 @UseCase
 class FindCompanyUseCase(
     private val companyRepository: CompanyRepository
-){
-    suspend fun call(companyId : CompanyId): FindCompanyUseCaseOutput {
-        val company = companyRepository.findById(companyId)?: return FindCompanyUseCaseOutput(
+) {
+    suspend fun call(companyId: CompanyId): FindCompanyUseCaseOutput {
+        val company = companyRepository.findById(companyId) ?: return FindCompanyUseCaseOutput(
             CompanyError(
                 message = "Company not found",
                 code = CompanyErrorCode.COMPANY_NOT_FOUND,

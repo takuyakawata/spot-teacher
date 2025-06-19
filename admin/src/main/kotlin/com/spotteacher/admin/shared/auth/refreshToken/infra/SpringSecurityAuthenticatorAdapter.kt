@@ -22,7 +22,7 @@ class SpringSecurityAuthenticatorAdapter(
         val authenticationToken = UsernamePasswordAuthenticationToken(email.value, rawPassword.value)
 
         authenticationManager.authenticate(authenticationToken).awaitSingleOrNull()
-                ?: throw BadCredentialsException("Authentication failed: Bad credentials")
+            ?: throw BadCredentialsException("Authentication failed: Bad credentials")
         val adminUser = userRepository.findByEmailAndActiveUser(email)
             ?: throw ResourceNotFoundException(
                 clazz = AdminUser::class,

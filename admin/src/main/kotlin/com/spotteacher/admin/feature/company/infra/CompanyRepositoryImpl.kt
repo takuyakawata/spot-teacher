@@ -17,14 +17,13 @@ import com.spotteacher.infra.db.tables.Companies.Companion.COMPANIES
 import com.spotteacher.infra.db.tables.records.CompaniesRecord
 import kotlinx.coroutines.reactive.awaitFirstOrNull
 import kotlinx.coroutines.reactive.awaitLast
-import org.springframework.stereotype.Component
 import org.springframework.stereotype.Repository
 import java.net.URI
 
 @Repository
 class CompanyRepositoryImpl(
     private val dslContext: TransactionAwareDSLContext
-): CompanyRepository {
+) : CompanyRepository {
     override suspend fun create(company: Company): Company {
         val id = dslContext.get().insertInto(
             COMPANIES,
@@ -78,13 +77,12 @@ class CompanyRepositoryImpl(
         return dslContext.get().nonBlockingFetch(COMPANIES).map { it.toCompanyEntity() }
     }
 
-    override suspend fun findByName(name: CompanyName): Company?{
+    override suspend fun findByName(name: CompanyName): Company? {
         return dslContext.get().nonBlockingFetchOne(
             COMPANIES,
             COMPANIES.NAME.eq(name.value)
         )?.toCompanyEntity()
     }
-
 
     private fun CompaniesRecord.toCompanyEntity(): Company {
         return Company(

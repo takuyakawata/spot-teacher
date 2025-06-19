@@ -9,7 +9,7 @@ plugins {
     alias(libs.plugins.spring.boot)
     alias(libs.plugins.spring.dependency.management)
     alias(libs.plugins.jooq)
-    //todo detekt の追加
+    alias(libs.plugins.detekt)
 }
 
 buildscript {
@@ -40,7 +40,7 @@ subprojects {
     apply(plugin = "kotlin")
     apply(plugin = "kotlin-spring")
     apply(plugin = "org.springframework.boot")
-//    apply(plugin = "io.gitlab.arturbosch.detekt")
+    apply(plugin = "io.gitlab.arturbosch.detekt")
     repositories {
         mavenCentral()
     }
@@ -56,8 +56,8 @@ subprojects {
         implementation("io.arrow-kt:arrow-core:1.2.4")
         implementation("io.arrow-kt:arrow-fx-coroutines:2.1.0")
 
-        // todo 後で対応 detekt
-
+        // detekt
+        detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:1.23.8")
     }
 
     tasks.withType<KotlinCompile> {
@@ -89,12 +89,26 @@ subprojects {
         systemProperty("spring.profiles.active", "test")
     }
 
-    //todo detektの依存関係の追加を対応
-}
+    detekt {
+        parallel = true
+        buildUponDefaultConfig = true
+        allRules = false
+        autoCorrect = true
+        ignoreFailures = true
+        config.setFrom("${project.rootDir}/detekt.yaml")
 
-kotlin {
-    compilerOptions {
-        freeCompilerArgs.addAll("-Xjsr305=strict")
+        tasks.withType<io.gitlab.arturbosch.detekt.Detekt> {
+            reports {
+                xml.required = true
+                xml.outputLocation = file("${project.rootDir}/build/reports/detekt/detekt.xml")
+            }
+        }
+    }
+
+    kotlin {
+        compilerOptions {
+            freeCompilerArgs.addAll("-Xjsr305=strict")
+        }
     }
 }
 

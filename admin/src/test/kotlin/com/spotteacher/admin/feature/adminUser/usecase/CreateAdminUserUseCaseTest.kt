@@ -4,7 +4,6 @@ import com.spotteacher.admin.feature.adminUser.domain.ActiveAdminUser
 import com.spotteacher.admin.feature.adminUser.domain.AdminUserName
 import com.spotteacher.admin.feature.adminUser.domain.AdminUserRepository
 import com.spotteacher.admin.feature.adminUser.domain.Password
-import com.spotteacher.admin.fixture.AdminUserFixture
 import com.spotteacher.domain.EmailAddress
 import io.kotest.core.spec.style.DescribeSpec
 import io.kotest.matchers.shouldBe
@@ -42,7 +41,7 @@ class CreateAdminUserUseCaseTest : DescribeSpec({
                             confirm = confirmPassword
                         )
                     )
-                    
+
                     // Assert
                     result.shouldBeInstanceOf<CreateAdminUserUseCaseSuccess>()
                     val adminUser = (result as CreateAdminUserUseCaseSuccess).adminUser
@@ -53,7 +52,7 @@ class CreateAdminUserUseCaseTest : DescribeSpec({
                     adminUser.password shouldBe password
                 }
             }
-            
+
             context("when passwords don't match") {
                 it("should return an error") {
                     // Act
@@ -66,7 +65,7 @@ class CreateAdminUserUseCaseTest : DescribeSpec({
                             confirm = mismatchPassword
                         )
                     )
-                    
+
                     // Assert
                     result.shouldBeInstanceOf<CreateAdminUserUseCaseError>()
                     (result as CreateAdminUserUseCaseError).message shouldBe "Password and confirmation do not match"

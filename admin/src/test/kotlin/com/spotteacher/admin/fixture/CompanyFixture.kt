@@ -18,7 +18,7 @@ import java.net.URI
 class CompanyFixture {
 
     @Autowired
-    private lateinit var companyRepository : CompanyRepository
+    private lateinit var companyRepository: CompanyRepository
 
     private var companyIdCount = 1L
 
@@ -27,9 +27,9 @@ class CompanyFixture {
         name: CompanyName = CompanyName("test company"),
         address: Address = defaultAddress(),
         phoneNumber: PhoneNumber = PhoneNumber("1234567890"),
-        url :URI = URI("https://example.com"),
+        url: URI = URI("https://example.com"),
         createdAt: java.time.LocalDateTime = java.time.LocalDateTime.now()
-        ): Company {
+    ): Company {
         return Company(
             id = id,
             name = name,
@@ -44,7 +44,7 @@ class CompanyFixture {
         name: CompanyName = CompanyName("test company"),
         address: Address = defaultAddress(),
         phoneNumber: PhoneNumber = PhoneNumber("12345678"),
-        url :URI = URI("https://example.com"),
+        url: URI = URI("https://example.com"),
         createdAt: java.time.LocalDateTime = java.time.LocalDateTime.now()
     ): Company {
         val company = buildCompany(
@@ -59,8 +59,9 @@ class CompanyFixture {
 }
 
 fun defaultAddress() = Address(
-        postCode = PostCode("1234567"),
-        prefecture = Prefecture.TOKYO, city = City("Tokyo"),
-        streetAddress = StreetAddress("Test Street"),
-        buildingName = null,
-    )
+    postCode = PostCode("1234567"),
+    prefecture = Prefecture.TOKYO,
+    city = City("Tokyo"),
+    streetAddress = StreetAddress("Test Street"),
+    buildingName = null,
+)

@@ -1,0 +1,54 @@
+style:
+  ForbiddenComment:
+    active: false
+  MagicNumber:
+    active: true
+  MaxLineLength:
+    maxLineLength: 200
+  DestructuringDeclarationWithTooManyEntries:
+    active: false
+  ReturnCount:
+    active: false
+  ThrowsCount:
+    active: false
+  ForbiddenMethodCall:
+    active: true
+
+formatting:
+  Wrapping:
+    maxLineLength: 200
+    autoCorrect: true
+  MaximumLineLength:
+    maxLineLength: 200
+    autoCorrect: true
+  ArgumentListWrapping:
+    maxLineLength: 200
+  ParameterListWrapping:
+    maxLineLength: 200
+  PropertyWrapping:
+    maxLineLength: 200
+  NoMultipleSpaces:
+    active: false
+  TrailingComma:
+    active: true
+    autoCorrect: true
+    useTrailingCommaOnCallSite: true
+    useTrailingCommaOnDeclarationSite: true
+  NewLineAtEndOfFile:
+    active: true
+
+complexity:
+  LongParameterList:
+    functionThreshold: 16
+    constructorThreshold: 16
+  LargeClass:
+    active: true
+    excludes:
+      - '**/test/**'
+
+naming:
+  active: true
+  ForbiddenClassName:
+    active: true
+    forbiddenName:
+      - '^.+Tests$'

@@ -17,13 +17,13 @@ data class CreateProductMutationInput(
 @Component
 class CreateProductMutation(
     private val usecase: CreateProductUseCase
-): Mutation {
-    suspend fun createProduct(input: CreateProductMutationInput){
+) : Mutation {
+    suspend fun createProduct(input: CreateProductMutationInput) {
         usecase.call(
             CreateProductUseCaseInput(
                 name = ProductName(input.name),
                 price = ProductPrice(input.price),
-                description = input.description?.let{ProductDescription(it)}
+                description = input.description?.let { ProductDescription(it) }
             )
         )
     }
