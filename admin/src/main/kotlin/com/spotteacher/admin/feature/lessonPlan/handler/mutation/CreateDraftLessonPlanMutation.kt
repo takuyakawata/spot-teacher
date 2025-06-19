@@ -14,7 +14,6 @@ import com.spotteacher.admin.feature.lessonPlan.usecase.CreateDraftLessonPlanUse
 import com.spotteacher.admin.feature.lessonPlan.usecase.CreateDraftLessonPlanUseCaseInput
 import com.spotteacher.graphql.NonEmptyString
 import org.springframework.stereotype.Component
-import java.time.LocalTime
 
 data class CreateDraftLessonPlanMutationInput(
     val companyId: ID,
