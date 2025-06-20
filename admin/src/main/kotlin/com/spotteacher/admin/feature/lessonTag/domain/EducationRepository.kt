@@ -7,6 +7,6 @@ interface EducationRepository {
     suspend fun create(education: Education): Education
     suspend fun update(education: Education)
     suspend fun delete(educationId: EducationId)
-    suspend fun filerByIds(educationIds: Nel<EducationId>):List<Education>
+    suspend fun filterByIds(educationIds: Nel<EducationId>):List<Education>
     suspend fun findByName(name: EducationName): Education?
 }

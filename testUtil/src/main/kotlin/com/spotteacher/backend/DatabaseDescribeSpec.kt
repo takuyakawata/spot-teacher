@@ -5,10 +5,8 @@ import io.kotest.core.spec.style.DescribeSpec
 import kotlinx.coroutines.reactor.awaitSingle
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
-import org.springframework.jdbc.core.JdbcTemplate
 import org.springframework.r2dbc.core.DatabaseClient
 import org.springframework.test.context.ActiveProfiles
-import java.net.URI
 
 @ActiveProfiles("test")
 open class DatabaseDescribeSpec(
@@ -32,12 +30,14 @@ open class DatabaseDescribeSpec(
 
         databaseClient.sql("SET FOREIGN_KEY_CHECKS = 0").fetch().rowsUpdated().awaitSingle()
 
-        val allTestTableNames = databaseClient.sql("""
+        val allTestTableNames = databaseClient.sql(
+            """
             SELECT TABLE_NAME 
             FROM INFORMATION_SCHEMA.TABLES 
             WHERE TABLE_SCHEMA = :databaseName 
               AND TABLE_TYPE = 'BASE TABLE'
-        """.trimIndent()) // MySQLのINFORMATION_SCHEMAからテーブル名を取得
+            """.trimIndent()
+        ) // MySQLのINFORMATION_SCHEMAからテーブル名を取得
             .bind("databaseName", testDatabaseName) // 取得したテストDB名をクエリにバインド
             .map { row -> row.get("TABLE_NAME", String::class.java)!! } // "TABLE_NAME"カラムをStringとして取得
             .all() // すべての結果をFlux<String>として取得
@@ -46,8 +46,6 @@ open class DatabaseDescribeSpec(
 
         databaseClient.sql("SET FOREIGN_KEY_CHECKS = 1").fetch().rowsUpdated().awaitSingle()
         println("取得したテーブル名: $allTestTableNames")
-
-
 
         println("データ削除中...")
         allTestTableNames.forEach { tableName ->
