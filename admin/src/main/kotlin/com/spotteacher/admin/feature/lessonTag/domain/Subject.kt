@@ -6,10 +6,16 @@ enum class Subject {
     SCIENCE,        // 理科
     SOCIAL_STUDIES, // 社会
     MUSIC,          // 音楽
-    ART_AND_CRAFTS, // 図画工作
-    HOMEMAKING,     // 家庭科 (5,6年生で導入)
+    ELEMENTARY_ART_AND_CRAFTS, // 図画工作
     PHYSICAL_EDUCATION, // 体育
     MORAL_EDUCATION,    // 道徳
-    FOREIGN_LANGUAGE_ACTIVITIES, // 外国語活動 (5,6年生で導入。教科「外国語」とは異なる)
-    // 総合的な学習の時間 (特定のコードは設けず、活動として扱うことが多い)
+    LIFE_SKILLS, // 生活科　1.2年生
+    HOMEMAKING,     // 家庭科 5,6年生　技術・家庭科
+    INTEGRATED_STUDIES,// 総合的な学習の時間 (特定のコードは設けず、活動として扱うことが多い)
+
+    FOREIGN_LANGUAGE_ACTIVITIES, // 外国語活動 3.4年生
+    FOREIGN_LANGUAGE,// 外国語 5,6年生
+    ENGLISH,//英語
+    MATH,//数学
+    ART//美術
 }

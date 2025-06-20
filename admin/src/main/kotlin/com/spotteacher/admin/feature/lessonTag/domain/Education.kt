@@ -10,18 +10,26 @@ import com.spotteacher.util.Identity
  *
  * @property id The unique identifier for the education instance.
  * @property name The name representing the education instance.
- * @property description An optional description providing additional details about the education instance.
  */
 data class Education(
     val id: EducationId,
     val name: EducationName,
-    val description: EducationDescription?
-)
+    val isActive: Boolean,
+){
+    companion object{
+        fun create(
+            name: EducationName,
+        ) = Education(
+            id = EducationId(0),
+            name = name,
+            isActive = false,
+        )
+    }
+}
+
+
 
 class EducationId(override val value: Long): Identity<Long>(value)
 
 @JvmInline
 value class EducationName(val value: String)
-
-@JvmInline
-value class EducationDescription(val value: String)

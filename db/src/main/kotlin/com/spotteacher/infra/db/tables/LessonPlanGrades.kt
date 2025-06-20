@@ -76,6 +76,11 @@ open class LessonPlanGrades(
      */
     val GRADE_CODE: TableField<LessonPlanGradesRecord, String?> = createField(DSL.name("grade_code"), SQLDataType.VARCHAR(50).nullable(false), this, "")
 
+    /**
+     * The column <code>lesson_plan_grades.display_order</code>.
+     */
+    val DISPLAY_ORDER: TableField<LessonPlanGradesRecord, Int?> = createField(DSL.name("display_order"), SQLDataType.INTEGER.nullable(false).defaultValue(DSL.inline("0", SQLDataType.INTEGER)), this, "")
+
     private constructor(alias: Name, aliased: Table<LessonPlanGradesRecord>?): this(alias, null, null, null, aliased, null, null)
     private constructor(alias: Name, aliased: Table<LessonPlanGradesRecord>?, parameters: Array<Field<*>?>?): this(alias, null, null, null, aliased, parameters, null)
     private constructor(alias: Name, aliased: Table<LessonPlanGradesRecord>?, where: Condition?): this(alias, null, null, null, aliased, null, where)

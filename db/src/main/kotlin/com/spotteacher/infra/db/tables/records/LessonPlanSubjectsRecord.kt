@@ -24,6 +24,10 @@ open class LessonPlanSubjectsRecord private constructor() : UpdatableRecordImpl<
         set(value): Unit = set(1, value)
         get(): String = get(1) as String
 
+    open var displayOrder: Int?
+        set(value): Unit = set(2, value)
+        get(): Int? = get(2) as Int?
+
     // -------------------------------------------------------------------------
     // Primary key information
     // -------------------------------------------------------------------------
@@ -33,9 +37,10 @@ open class LessonPlanSubjectsRecord private constructor() : UpdatableRecordImpl<
     /**
      * Create a detached, initialised LessonPlanSubjectsRecord
      */
-    constructor(lessonPlanId: Long, subjectCode: String): this() {
+    constructor(lessonPlanId: Long, subjectCode: String, displayOrder: Int? = null): this() {
         this.lessonPlanId = lessonPlanId
         this.subjectCode = subjectCode
+        this.displayOrder = displayOrder
         resetTouchedOnNotNull()
     }
 }

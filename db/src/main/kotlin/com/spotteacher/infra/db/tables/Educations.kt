@@ -86,6 +86,11 @@ open class Educations(
     val DISPLAY_ORDER: TableField<EducationsRecord, Int?> = createField(DSL.name("display_order"), SQLDataType.INTEGER.nullable(false).defaultValue(DSL.inline("0", SQLDataType.INTEGER)), this, "")
 
     /**
+     * The column <code>educations.is_active</code>.
+     */
+    val IS_ACTIVE: TableField<EducationsRecord, Boolean?> = createField(DSL.name("is_active"), SQLDataType.BOOLEAN.nullable(false).defaultValue(DSL.inline("0", SQLDataType.BOOLEAN)), this, "")
+
+    /**
      * The column <code>educations.created_at</code>.
      */
     val CREATED_AT: TableField<EducationsRecord, LocalDateTime?> = createField(DSL.name("created_at"), SQLDataType.LOCALDATETIME(0).defaultValue(DSL.field(DSL.raw("CURRENT_TIMESTAMP"), SQLDataType.LOCALDATETIME)), this, "")

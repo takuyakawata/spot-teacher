@@ -76,6 +76,11 @@ open class LessonPlansEducations(
      */
     val EDUCATION_ID: TableField<LessonPlansEducationsRecord, Long?> = createField(DSL.name("education_id"), SQLDataType.BIGINT.nullable(false), this, "")
 
+    /**
+     * The column <code>lesson_plans_educations.display_order</code>.
+     */
+    val DISPLAY_ORDER: TableField<LessonPlansEducationsRecord, Int?> = createField(DSL.name("display_order"), SQLDataType.INTEGER.nullable(false).defaultValue(DSL.inline("0", SQLDataType.INTEGER)), this, "")
+
     private constructor(alias: Name, aliased: Table<LessonPlansEducationsRecord>?): this(alias, null, null, null, aliased, null, null)
     private constructor(alias: Name, aliased: Table<LessonPlansEducationsRecord>?, parameters: Array<Field<*>?>?): this(alias, null, null, null, aliased, parameters, null)
     private constructor(alias: Name, aliased: Table<LessonPlansEducationsRecord>?, where: Condition?): this(alias, null, null, null, aliased, null, where)

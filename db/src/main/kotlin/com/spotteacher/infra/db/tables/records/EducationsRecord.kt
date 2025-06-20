@@ -30,13 +30,19 @@ open class EducationsRecord private constructor() : UpdatableRecordImpl<Educatio
         set(value): Unit = set(2, value)
         get(): Int? = get(2) as Int?
 
-    open var createdAt: LocalDateTime?
+    @Suppress("INAPPLICABLE_JVM_NAME")
+    @set:JvmName("setIsActive")
+    open var isActive: Boolean?
         set(value): Unit = set(3, value)
-        get(): LocalDateTime? = get(3) as LocalDateTime?
+        get(): Boolean? = get(3) as Boolean?
 
-    open var updatedAt: LocalDateTime?
+    open var createdAt: LocalDateTime?
         set(value): Unit = set(4, value)
         get(): LocalDateTime? = get(4) as LocalDateTime?
+
+    open var updatedAt: LocalDateTime?
+        set(value): Unit = set(5, value)
+        get(): LocalDateTime? = get(5) as LocalDateTime?
 
     // -------------------------------------------------------------------------
     // Primary key information
@@ -47,10 +53,11 @@ open class EducationsRecord private constructor() : UpdatableRecordImpl<Educatio
     /**
      * Create a detached, initialised EducationsRecord
      */
-    constructor(id: Long? = null, name: String, displayOrder: Int? = null, createdAt: LocalDateTime? = null, updatedAt: LocalDateTime? = null): this() {
+    constructor(id: Long? = null, name: String, displayOrder: Int? = null, isActive: Boolean? = null, createdAt: LocalDateTime? = null, updatedAt: LocalDateTime? = null): this() {
         this.id = id
         this.name = name
         this.displayOrder = displayOrder
+        this.isActive = isActive
         this.createdAt = createdAt
         this.updatedAt = updatedAt
         resetTouchedOnNotNull()
