@@ -21,6 +21,14 @@ graphql:
   packages:
     - "com.cosoji.backend"
 
+aws:
+  cloudfront:
+    distribution-domain: test
+    key-pair-id: test
+    private-key: test
+  s3:
+    bucket: test
+
 aurora:
   writer:
     url: "r2dbc:pool:mysql://localhost:3306/spot_teacher_test?autoReconnect=true&useSSL=false&allowPublicKeyRetrieval=true" # ここをspot_teacherに修正

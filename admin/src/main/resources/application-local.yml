@@ -21,6 +21,13 @@ spring:
   #         # この部分はCognitoなどを使う場合に必要。今回は削除します。
   #         # jwk-set-uri: ...
   #         # issuer-uri: ...
+aws:
+  cloudfront:
+    distribution-domain: test
+    key-pair-id: test
+    private-key: test
+  s3:
+    bucket: test
 
 logging:
   level:
