@@ -159,9 +159,9 @@ data class DraftLessonPlan(
         location = location!!,
         annualMaxExecutions = annualMaxExecutions!!,
         lessonPlanDates = lessonPlanDates!!,
-        educations = educations,
-        subjects = subjects,
-        grades = grades,
+        educations = educations!!,
+        subjects = subjects!!,
+        grades = grades!!,
     )
 }
 

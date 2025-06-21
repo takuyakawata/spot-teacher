@@ -1,18 +1,27 @@
 package com.spotteacher.admin.feature.lessonPlan.handler.mutation
 
+import arrow.core.toNonEmptyListOrNull
 import com.expediagroup.graphql.generator.scalars.ID
 import com.expediagroup.graphql.server.operations.Mutation
 import com.spotteacher.admin.feature.company.domain.CompanyId
 import com.spotteacher.admin.feature.lessonPlan.domain.LessonLocation
 import com.spotteacher.admin.feature.lessonPlan.domain.LessonPlanDate
 import com.spotteacher.admin.feature.lessonPlan.domain.LessonPlanDescription
+import com.spotteacher.admin.feature.lessonPlan.domain.LessonPlanEducations
 import com.spotteacher.admin.feature.lessonPlan.domain.LessonPlanErrorCode
+import com.spotteacher.admin.feature.lessonPlan.domain.LessonPlanGrades
+import com.spotteacher.admin.feature.lessonPlan.domain.LessonPlanId
+import com.spotteacher.admin.feature.lessonPlan.domain.LessonPlanSubjects
 import com.spotteacher.admin.feature.lessonPlan.domain.LessonPlanTitle
 import com.spotteacher.admin.feature.lessonPlan.domain.LessonType
 import com.spotteacher.admin.feature.lessonPlan.handler.LessonPlanDateInput
 import com.spotteacher.admin.feature.lessonPlan.usecase.CreateDraftLessonPlanUseCase
 import com.spotteacher.admin.feature.lessonPlan.usecase.CreateDraftLessonPlanUseCaseInput
+import com.spotteacher.admin.feature.lessonTag.domain.EducationId
+import com.spotteacher.admin.feature.lessonTag.domain.Grade
+import com.spotteacher.admin.feature.lessonTag.domain.Subject
 import com.spotteacher.graphql.NonEmptyString
+import com.spotteacher.graphql.toDomainId
 import org.springframework.stereotype.Component
 
 data class CreateDraftLessonPlanMutationInput(
@@ -23,7 +32,10 @@ data class CreateDraftLessonPlanMutationInput(
     val lessonType: LessonType?,
     val location: NonEmptyString?,
     val annualMaxExecutions: Int?,
-    val lessonPlanDates: List<LessonPlanDateInput>?
+    val lessonPlanDates: List<LessonPlanDateInput>?,
+    val educations: List<ID>,
+    val subjects: List<Subject>,
+    val grades: List<Grade>
 )
 
 sealed interface CreateDraftLessonPlanMutationOutput
@@ -58,7 +70,10 @@ class CreateDraftLessonPlanMutation(
                         startTime = dateInput.startTime,
                         endTime = dateInput.endTime
                     )
-                }
+                },
+                educations = LessonPlanEducations(input.educations.map { it.toDomainId(::EducationId) }.toSet()),
+                subjects = LessonPlanSubjects(input.subjects.toSet()),
+                grades = LessonPlanGrades(input.grades.toSet()),
             )
 
             createDraftLessonPlanUseCase.call(useCaseInput)

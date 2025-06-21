@@ -6,10 +6,13 @@ import arrow.core.right
 import com.spotteacher.admin.feature.lessonPlan.domain.DraftLessonPlan
 import com.spotteacher.admin.feature.lessonPlan.domain.LessonLocation
 import com.spotteacher.admin.feature.lessonPlan.domain.LessonPlanDescription
+import com.spotteacher.admin.feature.lessonPlan.domain.LessonPlanEducations
 import com.spotteacher.admin.feature.lessonPlan.domain.LessonPlanError
 import com.spotteacher.admin.feature.lessonPlan.domain.LessonPlanErrorCode
+import com.spotteacher.admin.feature.lessonPlan.domain.LessonPlanGrades
 import com.spotteacher.admin.feature.lessonPlan.domain.LessonPlanId
 import com.spotteacher.admin.feature.lessonPlan.domain.LessonPlanRepository
+import com.spotteacher.admin.feature.lessonPlan.domain.LessonPlanSubjects
 import com.spotteacher.admin.feature.lessonPlan.domain.LessonPlanTitle
 import com.spotteacher.admin.feature.lessonPlan.domain.LessonType
 import com.spotteacher.admin.feature.lessonPlan.domain.PublishedLessonPlan
@@ -25,7 +28,10 @@ data class UpdateLessonPlanUseCaseInput(
     val lessonType: LessonType?,
     val location: LessonLocation?,
     val annualMaxExecutions: Int?,
-    val images: List<UploadFileId>?
+    val images: List<UploadFileId>?,
+    val educations: LessonPlanEducations,
+    val subjects: LessonPlanSubjects,
+    val grades: LessonPlanGrades,
 )
 
 @UseCase
@@ -51,7 +57,11 @@ class UpdateLessonPlanUseCase(
                     lessonType = input.lessonType,
                     location = location,
                     annualMaxExecutions = input.annualMaxExecutions,
-                    images = input.images
+                    images = input.images,
+                    educations = input.educations,
+                    subjects = input.subjects,
+                    grades = input.grades,
+
                 )
             }
             is DraftLessonPlan -> {
@@ -62,7 +72,10 @@ class UpdateLessonPlanUseCase(
                     lessonType = input.lessonType,
                     location = location,
                     annualMaxExecutions = input.annualMaxExecutions,
-                    images = input.images
+                    images = input.images,
+                    educations = input.educations,
+                    subjects = input.subjects,
+                    grades = input.grades,
                 )
             }
         }

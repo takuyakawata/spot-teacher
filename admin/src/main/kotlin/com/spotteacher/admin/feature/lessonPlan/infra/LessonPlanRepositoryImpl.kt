@@ -8,17 +8,26 @@ import com.spotteacher.admin.feature.lessonPlan.domain.LessonLocation
 import com.spotteacher.admin.feature.lessonPlan.domain.LessonPlan
 import com.spotteacher.admin.feature.lessonPlan.domain.LessonPlanDate
 import com.spotteacher.admin.feature.lessonPlan.domain.LessonPlanDescription
+import com.spotteacher.admin.feature.lessonPlan.domain.LessonPlanEducations
+import com.spotteacher.admin.feature.lessonPlan.domain.LessonPlanGrades
 import com.spotteacher.admin.feature.lessonPlan.domain.LessonPlanId
 import com.spotteacher.admin.feature.lessonPlan.domain.LessonPlanRepository
+import com.spotteacher.admin.feature.lessonPlan.domain.LessonPlanSubjects
 import com.spotteacher.admin.feature.lessonPlan.domain.LessonPlanTitle
 import com.spotteacher.admin.feature.lessonPlan.domain.LessonType
 import com.spotteacher.admin.feature.lessonPlan.domain.PublishedLessonPlan
+import com.spotteacher.admin.feature.lessonTag.domain.Education
+import com.spotteacher.admin.feature.lessonTag.domain.Grade
+import com.spotteacher.admin.feature.lessonTag.domain.Subject
 import com.spotteacher.admin.shared.infra.TransactionAwareDSLContext
 import com.spotteacher.extension.nonBlockingFetch
 import com.spotteacher.extension.nonBlockingFetchOne
 import com.spotteacher.infra.db.enums.LessonPlansLessonType
 import com.spotteacher.infra.db.tables.LessonPlanDates.Companion.LESSON_PLAN_DATES
+import com.spotteacher.infra.db.tables.LessonPlanGrades.Companion.LESSON_PLAN_GRADES
+import com.spotteacher.infra.db.tables.LessonPlanSubjects.Companion.LESSON_PLAN_SUBJECTS
 import com.spotteacher.infra.db.tables.LessonPlans.Companion.LESSON_PLANS
+import com.spotteacher.infra.db.tables.LessonPlansEducations.Companion.LESSON_PLANS_EDUCATIONS
 import com.spotteacher.infra.db.tables.records.LessonPlanDatesRecord
 import com.spotteacher.infra.db.tables.records.LessonPlansRecord
 import kotlinx.coroutines.reactive.awaitFirstOrNull
@@ -28,76 +37,7 @@ import java.time.LocalDate
 
 @Repository
 class LessonPlanRepositoryImpl(private val dslContext: TransactionAwareDSLContext) : LessonPlanRepository {
-    suspend fun create(lessonPlan: DraftLessonPlan): LessonPlan {
-        return when (lessonPlan) {
-            is DraftLessonPlan -> createDraftLessonPlan(lessonPlan)
-        }
-    }
-
-    private suspend fun createPublishedLessonPlan(lessonPlan: PublishedLessonPlan): PublishedLessonPlan {
-        val id = dslContext.get().insertInto(
-            LESSON_PLANS,
-            LESSON_PLANS.COMPANY_ID,
-            LESSON_PLANS.TITLE,
-            LESSON_PLANS.DESCRIPTION,
-            LESSON_PLANS.LOCATION,
-            LESSON_PLANS.LESSON_TYPE,
-            LESSON_PLANS.ANNUAL_MAX_EXECUTIONS,
-        ).values(
-            lessonPlan.companyId.value,
-            lessonPlan.title.value,
-            lessonPlan.description.value,
-            lessonPlan.location.value,
-            LessonPlansLessonType.valueOf(lessonPlan.lessonType.name),
-            lessonPlan.annualMaxExecutions.toLong(),
-        ).returning(LESSON_PLANS.ID).awaitFirstOrNull()?.id!!
-
-        // Insert lesson plan dates
-        lessonPlan.lessonPlanDates.forEach { date ->
-            dslContext.get().insertInto(
-                LESSON_PLAN_DATES,
-                LESSON_PLAN_DATES.LESSON_PLAN_ID,
-                LESSON_PLAN_DATES.START_MONTH,
-                LESSON_PLAN_DATES.START_DAY,
-                LESSON_PLAN_DATES.END_MONTH,
-                LESSON_PLAN_DATES.END_DAY,
-                LESSON_PLAN_DATES.START_TIME,
-                LESSON_PLAN_DATES.END_TIME,
-            ).values(
-                id,
-                date.startMonth.toLong(),
-                date.startDay.toLong(),
-                date.endMonth.toLong(),
-                date.endDay.toLong(),
-                date.startTime.atDate(LocalDate.now()),
-                date.endTime.atDate(LocalDate.now()),
-            ).awaitLast()
-        }
-
-        return lessonPlan.copy(id = LessonPlanId(id))
-    }
-
-    private suspend fun createDraftLessonPlan(lessonPlan: DraftLessonPlan): DraftLessonPlan {
-        val id = dslContext.get().insertInto(
-            LESSON_PLANS,
-            LESSON_PLANS.COMPANY_ID,
-            LESSON_PLANS.TITLE,
-            LESSON_PLANS.DESCRIPTION,
-            LESSON_PLANS.LOCATION,
-            LESSON_PLANS.LESSON_TYPE,
-            LESSON_PLANS.ANNUAL_MAX_EXECUTIONS,
-        ).values(
-            lessonPlan.companyId.value,
-            lessonPlan.title?.value,
-            lessonPlan.description?.value,
-            lessonPlan.location?.value,
-            lessonPlan.lessonType?.let { LessonPlansLessonType.valueOf(it.name) },
-            lessonPlan.annualMaxExecutions?.toLong(),
-        ).returning(LESSON_PLANS.ID).awaitFirstOrNull()?.id!!
-
-        return lessonPlan.copy(id = LessonPlanId(id))
-    }
-
+    /* createDraft */
     override suspend fun createDraft(lessonPlan: DraftLessonPlan): DraftLessonPlan {
         val id = dslContext.get().insertInto(
             LESSON_PLANS,
@@ -137,14 +77,61 @@ class LessonPlanRepositoryImpl(private val dslContext: TransactionAwareDSLContex
             ).awaitLast()
         }
 
+        lessonPlan.educations.bulkInsertEducations(id)
+        lessonPlan.subjects.bulkInsertSubjects(id)
+        lessonPlan.grades.bulkInsertGrades(id)
+
         return lessonPlan.copy(LessonPlanId(id))
     }
 
-    suspend fun createLessonPlanDate(
-        id: LessonPlansRecord,
-        lessonPlanDates: Nel<LessonPlanDate>
-    ): Nel<LessonPlanDatesRecord> {
-        TODO()
+    private suspend fun LessonPlanEducations.bulkInsertEducations(id:Long){
+        // Insert educations
+        this.value.forEachIndexed { index, educationId ->
+            dslContext.get().insertInto(
+                LESSON_PLANS_EDUCATIONS,
+                LESSON_PLANS_EDUCATIONS.LESSON_PLAN_ID,
+                LESSON_PLANS_EDUCATIONS.EDUCATION_ID,
+                LESSON_PLANS_EDUCATIONS.DISPLAY_ORDER,
+            ).values(
+                id,
+                educationId.value,
+                index,
+            ).awaitLast()
+        }
+    }
+
+    private suspend fun LessonPlanSubjects.bulkInsertSubjects(id:Long){
+        // Insert subjects
+        this.value.forEachIndexed { index, subject ->
+            dslContext.get().insertInto(
+                LESSON_PLAN_SUBJECTS,
+                LESSON_PLAN_SUBJECTS.LESSON_PLAN_ID,
+                LESSON_PLAN_SUBJECTS.SUBJECT_CODE,
+                LESSON_PLAN_SUBJECTS.DISPLAY_ORDER,
+            ).values(
+                id,
+                subject.name,
+                index,
+            ).awaitLast()
+        }
+
+
+    }
+
+    private suspend fun LessonPlanGrades.bulkInsertGrades(id:Long){
+        // Insert grades
+        this.value.forEachIndexed { index, grade ->
+            dslContext.get().insertInto(
+                LESSON_PLAN_GRADES,
+                LESSON_PLAN_GRADES.LESSON_PLAN_ID,
+                LESSON_PLAN_GRADES.GRADE_CODE,
+                LESSON_PLAN_GRADES.DISPLAY_ORDER,
+            ).values(
+                id,
+                grade.name,
+                index,
+            ).awaitLast()
+        }
     }
 
     /*update*/
@@ -191,6 +178,15 @@ class LessonPlanRepositoryImpl(private val dslContext: TransactionAwareDSLContex
                 date.endTime.atDate(LocalDate.now()),
             ).awaitLast()
         }
+
+//        delete and insert
+        bulkDeleteEducations(lessonPlan.id.value)
+        bulkDeleteSubjects(lessonPlan.id.value)
+        bulkDeleteGrades(lessonPlan.id.value)
+
+        lessonPlan.educations.bulkInsertEducations(lessonPlan.id.value)
+        lessonPlan.subjects.bulkInsertSubjects(lessonPlan.id.value)
+        lessonPlan.grades.bulkInsertGrades(lessonPlan.id.value)
     }
 
     private suspend fun updateDraftLessonPlan(lessonPlan: DraftLessonPlan) {
@@ -262,6 +258,25 @@ class LessonPlanRepositoryImpl(private val dslContext: TransactionAwareDSLContex
         dslContext.get().deleteFrom(LESSON_PLANS)
             .where(LESSON_PLANS.ID.eq(id.value))
             .awaitLast()
+
+        bulkDeleteEducations(id.value)
+        bulkDeleteSubjects(id.value)
+        bulkDeleteGrades(id.value)
+    }
+
+    private suspend fun bulkDeleteEducations(id:Long){
+        dslContext.get().deleteFrom(LESSON_PLANS_EDUCATIONS)
+            .where(LESSON_PLANS_EDUCATIONS.LESSON_PLAN_ID.eq(id))
+    }
+
+    private suspend fun bulkDeleteSubjects(id:Long){
+        dslContext.get().deleteFrom(LESSON_PLAN_SUBJECTS)
+            .where( LESSON_PLAN_SUBJECTS.LESSON_PLAN_ID.eq(id))
+    }
+
+    private suspend fun bulkDeleteGrades(id:Long){
+        dslContext.get().deleteFrom(LESSON_PLAN_GRADES)
+            .where(LESSON_PLAN_GRADES.LESSON_PLAN_ID.eq(id))
     }
 
     /* getAll */
@@ -303,8 +318,8 @@ class LessonPlanRepositoryImpl(private val dslContext: TransactionAwareDSLContex
 
     private suspend fun LessonPlansRecord.toEntity(dates: Nel<LessonPlanDate>?): LessonPlan {
         return when (this.published!!) {
-            true -> createPublishedLessonPlan(this.toPublishedLessonPlanEntity(dates!!))
-            false -> createDraftLessonPlan(this.toDraftLessonPlanEntity(dates))
+            true -> this.toPublishedLessonPlanEntity(dates!!)
+            false -> this.toDraftLessonPlanEntity(dates)
         }
     }
 
@@ -320,6 +335,9 @@ class LessonPlanRepositoryImpl(private val dslContext: TransactionAwareDSLContex
             location = location?.let { LessonLocation(location!!) },
             lessonPlanDates = dates,
             annualMaxExecutions = annualMaxExecutions?.toInt(),
+            educations = LessonPlanEducations(emptySet()),
+            subjects = LessonPlanSubjects(emptySet()),
+            grades = LessonPlanGrades(emptySet()),
         )
     }
 
@@ -334,6 +352,9 @@ class LessonPlanRepositoryImpl(private val dslContext: TransactionAwareDSLContex
         location = LessonLocation(location!!),
         annualMaxExecutions = annualMaxExecutions!!.toInt(),
         lessonPlanDates = dates,
+        educations = LessonPlanEducations(emptySet()),
+        subjects = LessonPlanSubjects(emptySet()),
+        grades = LessonPlanGrades(emptySet()),
     )
 
     private fun LessonPlanDatesRecord.toEntity(): LessonPlanDate {
