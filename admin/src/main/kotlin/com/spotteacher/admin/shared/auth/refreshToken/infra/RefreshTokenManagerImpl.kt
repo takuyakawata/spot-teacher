@@ -31,6 +31,7 @@ class RefreshTokenManagerImpl(
             expiresAt =  LocalDateTime.now().plusNanos(refreshTokenExpirationMs)
         )
 
-        return refreshTokenRepository.save(newRefreshToken)
+        refreshTokenRepository.save(newRefreshToken)
+        return newRefreshToken
     }
 }

@@ -10,7 +10,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.stereotype.Component
 
-@Component // インフラ層のSpringコンポーネント
+@Component
 class JwtTokenIssuerAdapter(
     private val jwtProvider: JwtProvider,
     private val refreshTokenManager: RefreshTokenManager
