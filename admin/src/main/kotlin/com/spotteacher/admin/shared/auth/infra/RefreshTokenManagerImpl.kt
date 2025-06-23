@@ -1,10 +1,10 @@
-package com.spotteacher.admin.shared.auth.refreshToken.infra
+package com.spotteacher.admin.shared.auth.infra
 
 import com.spotteacher.admin.feature.adminUser.domain.AdminUser
 import com.spotteacher.admin.feature.adminUser.domain.AdminUserRepository
-import com.spotteacher.admin.shared.auth.refreshToken.domain.RefreshToken
-import com.spotteacher.admin.shared.auth.refreshToken.domain.RefreshTokenManager
-import com.spotteacher.admin.shared.auth.refreshToken.domain.RefreshTokenRepository
+import com.spotteacher.admin.shared.auth.domain.RefreshToken
+import com.spotteacher.admin.shared.auth.domain.RefreshTokenManager
+import com.spotteacher.admin.shared.auth.domain.RefreshTokenRepository
 import com.spotteacher.domain.EmailAddress
 import com.spotteacher.exception.ResourceNotFoundException
 import org.springframework.beans.factory.annotation.Value
@@ -22,7 +22,7 @@ class RefreshTokenManagerImpl(
     override suspend fun createAndSaveRefreshToken(email: EmailAddress): RefreshToken {
         val adminUser = userRepository.findByEmailAndActiveUser(email)?: throw ResourceNotFoundException(
             clazz = AdminUser::class,
-            params = mapOf("email" to email)
+            params = mapOf("email" to email.value)
         )
 
         val newRefreshToken = RefreshToken.create(

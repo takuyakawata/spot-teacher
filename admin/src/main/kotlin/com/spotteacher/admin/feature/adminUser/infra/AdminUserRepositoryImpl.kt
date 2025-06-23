@@ -6,7 +6,7 @@ import com.spotteacher.admin.feature.adminUser.domain.AdminUserId
 import com.spotteacher.admin.feature.adminUser.domain.AdminUserName
 import com.spotteacher.admin.feature.adminUser.domain.AdminUserRepository
 import com.spotteacher.admin.feature.adminUser.domain.InActiveAdminUser
-import com.spotteacher.admin.feature.adminUser.domain.Password
+import com.spotteacher.admin.shared.domain.Password
 import com.spotteacher.admin.shared.infra.TransactionAwareDSLContext
 import com.spotteacher.domain.EmailAddress
 import com.spotteacher.extension.nonBlockingFetch
@@ -35,7 +35,7 @@ class AdminUserRepositoryImpl(
                 USERS.ID.eq(adminUser.userId)
             )
 
-            userRecord?.let { toEntity(adminUser,it) }
+            userRecord?.let { toEntity(it) }
         }
     }
 
@@ -52,13 +52,10 @@ class AdminUserRepositoryImpl(
             USERS.ID.eq(adminUser.userId)
         ) ?: return null
 
-        return toEntity(adminUser, userRecord)
+        return toEntity(userRecord)
     }
 
-    override suspend fun create(user: AdminUser) {
-        // Insert into users table first
-        val userRecord = when (user) {
-            is ActiveAdminUser -> {
+    override suspend fun create(user: ActiveAdminUser,password: String):ActiveAdminUser{
                 val userId = dslContext.get().insertInto(
                     USERS,
                     USERS.UUID,
@@ -72,7 +69,7 @@ class AdminUserRepositoryImpl(
                     user.firstName.value,
                     user.lastName.value,
                     user.email.value,
-                    user.password.value,
+                    password,
                     UsersRole.ADMIN
                 ).returning(USERS.ID).awaitFirstOrNull()?.id!!
 
@@ -83,36 +80,8 @@ class AdminUserRepositoryImpl(
                 ).values(
                     userId
                 ).awaitLast()
-            }
-            is InActiveAdminUser -> {
-                // For inactive users, we still need to create a user record
-                // but with placeholder values for email and password
-                val userId = dslContext.get().insertInto(
-                    USERS,
-                    USERS.UUID,
-                    USERS.FIRST_NAME,
-                    USERS.LAST_NAME,
-                    USERS.EMAIL,
-                    USERS.PASSWORD_HASH,
-                    USERS.ROLE
-                ).values(
-                    UUID.randomUUID().toString(),
-                    user.firstName.value,
-                    user.lastName.value,
-                    "inactive-${UUID.randomUUID()}@example.com", // Placeholder email
-                    "inactive", // Placeholder password
-                    UsersRole.ADMIN
-                ).returning(USERS.ID).awaitFirstOrNull()?.id!!
 
-                // Then insert into admin_users table
-                dslContext.get().insertInto(
-                    ADMIN_USERS,
-                    ADMIN_USERS.USER_ID
-                ).values(
-                    userId
-                ).awaitLast()
-            }
-        }
+        return user.copy(id=AdminUserId(userId))
     }
 
     override suspend fun update(user: AdminUser) {
@@ -132,7 +101,6 @@ class AdminUserRepositoryImpl(
                         .set(USERS.FIRST_NAME, user.firstName.value)
                         .set(USERS.LAST_NAME, user.lastName.value)
                         .set(USERS.EMAIL, user.email.value)
-                        .set(USERS.PASSWORD_HASH, user.password.value)
                         .where(USERS.ID.eq(userId))
                         .awaitLast()
                 }
@@ -185,38 +153,29 @@ class AdminUserRepositoryImpl(
         val userRecord = dslContext.get().nonBlockingFetchOne(
             USERS,
             USERS.EMAIL.eq(emailAddress.value),
-            USERS.ROLE.eq(UsersRole.ADMIN)
-        ) ?: return null
+        )
 
-        // Find the corresponding admin user
-        val adminUser = dslContext.get().nonBlockingFetchOne(
-            ADMIN_USERS,
-            ADMIN_USERS.USER_ID.eq(userRecord.id)
-        ) ?: return null
+        if (userRecord!=null){
+            // Find the corresponding admin user
+            dslContext.get().nonBlockingFetchOne(
+                ADMIN_USERS,
+                ADMIN_USERS.USER_ID.eq(userRecord.id)
+            )
+        }
+
 
         // Create and return the admin user if it's active
-        val user = toEntity(adminUser, userRecord)
-        return if (user is ActiveAdminUser) user else null
+        val user = userRecord?.let{toEntity(it)}
+        return user
     }
 
-    private fun toEntity(adminUser: AdminUsersRecord, user: UsersRecord): AdminUser {
-        // Check if this is an active user (has valid email)
-        return if (user.email.contains("inactive-")) {
-            // Inactive user
-            InActiveAdminUser(
-                id = AdminUserId(adminUser.id!!),
-                firstName = AdminUserName(user.firstName),
-                lastName = AdminUserName(user.lastName)
-            )
-        } else {
-            // Active user
-            ActiveAdminUser(
-                id = AdminUserId(adminUser.id!!),
+    private fun toEntity(user: UsersRecord): ActiveAdminUser {
+        return ActiveAdminUser(
+                id = AdminUserId(user.id!!),
                 firstName = AdminUserName(user.firstName),
                 lastName = AdminUserName(user.lastName),
                 email = EmailAddress(user.email),
                 password = Password(user.passwordHash)
             )
-        }
     }
 }

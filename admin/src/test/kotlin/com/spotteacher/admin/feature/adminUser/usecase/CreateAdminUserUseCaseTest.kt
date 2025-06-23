@@ -17,6 +17,14 @@ class CreateAdminUserUseCaseTest : DescribeSpec({
         // Arrange
         val useCase = CreateAdminUserUseCase()
         val adminUserRepository = mock<AdminUserRepository>()
+        val adminUserFixture = AdminUserFixture()
+
+        val adminUserMock = adminUserFixture.buildActiveAdminUser(
+            firstName = AdminUserName("John"),
+            lastName = AdminUserName("Doe"),
+            email = EmailAddress("john.doe@example.com"),
+            password = Password("password123")
+        )
 
         // Test data
         val firstName = AdminUserName("John")
@@ -26,11 +34,12 @@ class CreateAdminUserUseCaseTest : DescribeSpec({
         val confirmPassword = Password("password123")
         val mismatchPassword = Password("different123")
 
-        describe("execute") {
+        describe("call") {
             context("when passwords match") {
                 it("should create a new admin user and return success") {
+
                     // Arrange
-                    coEvery { adminUserRepository.create(any()) } returns Unit
+                    coEvery { adminUserRepository.create(any()) } returns adminUserMock
 
                     // Act
                     val result = useCase.execute(
@@ -45,11 +54,11 @@ class CreateAdminUserUseCaseTest : DescribeSpec({
                     
                     // Assert
                     result.shouldBeInstanceOf<CreateAdminUserUseCaseSuccess>()
-                    val adminUser = (result as CreateAdminUserUseCaseSuccess).adminUser
+                    val adminUser = result.adminUser
                     adminUser.shouldBeInstanceOf<ActiveAdminUser>()
                     adminUser.firstName shouldBe firstName
                     adminUser.lastName shouldBe lastName
-                    (adminUser as ActiveAdminUser).email shouldBe email
+                    adminUser.email shouldBe email
                     adminUser.password shouldBe password
                 }
             }

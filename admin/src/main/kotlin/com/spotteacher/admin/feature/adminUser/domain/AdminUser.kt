@@ -14,20 +14,17 @@ data class ActiveAdminUser(
     override val firstName: AdminUserName,
     override val lastName: AdminUserName,
     val email: EmailAddress,
-    val password: Password,
 ) : AdminUser {
     companion object{
         fun create(
             firstName: AdminUserName,
             lastName: AdminUserName,
             email: EmailAddress,
-            password: Password,
         ) = ActiveAdminUser(
             id = AdminUserId(0),
             firstName = firstName,
             lastName = lastName,
             email = email,
-            password = password,
         )
     }
 }
@@ -71,7 +68,4 @@ value class AdminUserName(val value: String){
         }
     }
 }
-
-@JvmInline
-value class Password(val value: String)
 
