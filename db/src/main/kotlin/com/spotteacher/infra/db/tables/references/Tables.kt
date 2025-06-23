@@ -19,6 +19,7 @@ import com.spotteacher.infra.db.tables.RefreshTokens
 import com.spotteacher.infra.db.tables.Schools
 import com.spotteacher.infra.db.tables.Teachers
 import com.spotteacher.infra.db.tables.UploadFiles
+import com.spotteacher.infra.db.tables.UserCredentials
 import com.spotteacher.infra.db.tables.Users
 
 
@@ -92,6 +93,11 @@ val TEACHERS: Teachers = Teachers.TEACHERS
  * The table <code>UPLOAD_FILES</code>.
  */
 val UPLOAD_FILES: UploadFiles = UploadFiles.UPLOAD_FILES
+
+/**
+ * The table <code>user_credentials</code>.
+ */
+val USER_CREDENTIALS: UserCredentials = UserCredentials.USER_CREDENTIALS
 
 /**
  * 全ユーザーの共通情報を格納する基盤テーブル
