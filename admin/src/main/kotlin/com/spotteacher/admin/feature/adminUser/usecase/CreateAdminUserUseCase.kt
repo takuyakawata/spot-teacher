@@ -32,7 +32,6 @@ class CreateAdminUserUseCase {
             firstName = input.firstName,
             lastName = input.lastName,
             email = input.email,
-            password = input.password
         )
 
         return CreateAdminUserUseCaseSuccess(adminUser)
