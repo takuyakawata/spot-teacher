@@ -14,12 +14,12 @@ import com.spotteacher.domain.SortOrder
 import com.spotteacher.graphql.toDomainId
 import org.springframework.stereotype.Component
 
-sealed interface FindProductQueryOutput{
+sealed interface FindProductQueryOutput {
     data class FindProductQuerySuccess(val product: ProductType) : FindProductQueryOutput
     data class FindProductQueryError(val error: ProductError) : FindProductQueryOutput
 }
 
-sealed interface FindProductsQueryOutput{
+sealed interface FindProductsQueryOutput {
     data class FindProductsQuerySuccess(val products: List<ProductType>) : FindProductsQueryOutput
     data class FindProductsQueryError(val error: ProductError) : FindProductsQueryOutput
 }
@@ -30,9 +30,9 @@ class ProductQuery(
     private val findProductsUseCase: FindProductsUseCase
 ) : Query {
 
-    suspend fun product(productId: ID) : FindProductQueryOutput {
+    suspend fun product(productId: ID): FindProductQueryOutput {
         val result = findProductUseCase.call(
-            FindProductUseCaseInput(productId.toDomainId{ProductId(it)})
+            FindProductUseCaseInput(productId.toDomainId { ProductId(it) })
         ).result
 
         return result.fold(
@@ -54,7 +54,7 @@ class ProductQuery(
         limit: Int = 10,
         lastId: String? = null,
         sortOrder: String = "DESC"
-    ) : FindProductsQueryOutput {
+    ): FindProductsQueryOutput {
         val order = when (sortOrder.uppercase()) {
             "ASC" -> SortOrder.ASC
             else -> SortOrder.DESC
@@ -69,7 +69,7 @@ class ProductQuery(
         ).result
 
         return result.fold(
-            ifLeft = { error -> FindProductsQueryOutput.FindProductsQueryError(error)},
+            ifLeft = { error -> FindProductsQueryOutput.FindProductsQueryError(error) },
             ifRight = { products ->
                 FindProductsQueryOutput.FindProductsQuerySuccess(
                     products.map { product ->

@@ -32,16 +32,16 @@ data class UpdateCompanyMutationInput(
 )
 
 sealed interface UpdateCompanyMutationOutput
-data class UpdateCompanyMutationSuccess(val result: Unit): UpdateCompanyMutationOutput
+data class UpdateCompanyMutationSuccess(val result: Unit) : UpdateCompanyMutationOutput
 data class UpdateCompanyMutationError(
     val message: String,
     val code: CompanyErrorCode
-): UpdateCompanyMutationOutput
+) : UpdateCompanyMutationOutput
 
 @Component
 class UpdateCompanyMutation(
     private val useCase: UpdateCompanyUseCase
-): Mutation {
+) : Mutation {
 
     suspend fun updateCompany(input: UpdateCompanyMutationInput): UpdateCompanyMutationOutput {
         // Convert ID to CompanyId
@@ -56,7 +56,9 @@ class UpdateCompanyMutation(
                 streetAddress = StreetAddress(input.streetAddress?.value ?: ""),
                 buildingName = input.buildingName?.let { BuildingName(it.value) }
             )
-        } else null
+        } else {
+            null
+        }
 
         // Call use case
         val result = useCase.call(
@@ -70,13 +72,13 @@ class UpdateCompanyMutation(
         ).result
 
         return result.fold(
-            ifLeft = { error -> 
+            ifLeft = { error ->
                 UpdateCompanyMutationError(
                     message = error.message,
                     code = error.code
                 )
             },
-            ifRight = { 
+            ifRight = {
                 UpdateCompanyMutationSuccess(Unit)
             }
         )

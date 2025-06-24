@@ -2,18 +2,19 @@ package com.spotteacher.admin.shared.auth.infra
 
 import com.spotteacher.admin.config.auth.JwtProvider
 import com.spotteacher.admin.feature.adminUser.domain.ActiveAdminUser
+import com.spotteacher.admin.shared.auth.domain.AuthUser
 import com.spotteacher.admin.shared.auth.domain.RefreshTokenManager
 import com.spotteacher.admin.shared.auth.domain.TokenIssuer
 import com.spotteacher.admin.shared.auth.domain.TokenPair
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.stereotype.Component
 
-@Component
+@Component // インフラ層のSpringコンポーネント
 class JwtTokenIssuerAdapter(
     private val jwtProvider: JwtProvider,
     private val refreshTokenManager: RefreshTokenManager
 ) : TokenIssuer {
-    override suspend fun issueTokens(user:ActiveAdminUser): TokenPair {
+    override suspend fun issueToken(user: AuthUser): TokenPair {
         val authenticationForJwt = UsernamePasswordAuthenticationToken(
             user.email.value,
             null,

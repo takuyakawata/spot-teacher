@@ -3,7 +3,6 @@ package com.spotteacher.admin.feature.company.usecase
 import arrow.core.Either
 import arrow.core.left
 import arrow.core.right
-import com.spotteacher.admin.feature.company.domain.Company
 import com.spotteacher.admin.feature.company.domain.CompanyError
 import com.spotteacher.admin.feature.company.domain.CompanyErrorCode
 import com.spotteacher.admin.feature.company.domain.CompanyId
@@ -29,9 +28,9 @@ data class UpdateCompanyUseCaseOutput(
 @UseCase
 class UpdateCompanyUseCase(
     private val companyRepository: CompanyRepository
-){
-    suspend fun call(input: UpdateCompanyUseCaseInput): UpdateCompanyUseCaseOutput{
-        val company = companyRepository.findById(input.companyId)?: return UpdateCompanyUseCaseOutput(
+) {
+    suspend fun call(input: UpdateCompanyUseCaseInput): UpdateCompanyUseCaseOutput {
+        val company = companyRepository.findById(input.companyId) ?: return UpdateCompanyUseCaseOutput(
             CompanyError(
                 code = CompanyErrorCode.COMPANY_NOT_FOUND,
                 message = "Company not found"

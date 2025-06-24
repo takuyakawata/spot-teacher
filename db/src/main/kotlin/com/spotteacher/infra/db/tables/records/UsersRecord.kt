@@ -39,21 +39,17 @@ open class UsersRecord private constructor() : UpdatableRecordImpl<UsersRecord>(
         set(value): Unit = set(4, value)
         get(): String = get(4) as String
 
-    open var passwordHash: String
-        set(value): Unit = set(5, value)
-        get(): String = get(5) as String
-
     open var role: UsersRole
-        set(value): Unit = set(6, value)
-        get(): UsersRole = get(6) as UsersRole
+        set(value): Unit = set(5, value)
+        get(): UsersRole = get(5) as UsersRole
 
     open var createdAt: LocalDateTime?
-        set(value): Unit = set(7, value)
-        get(): LocalDateTime? = get(7) as LocalDateTime?
+        set(value): Unit = set(6, value)
+        get(): LocalDateTime? = get(6) as LocalDateTime?
 
     open var updatedAt: LocalDateTime?
-        set(value): Unit = set(8, value)
-        get(): LocalDateTime? = get(8) as LocalDateTime?
+        set(value): Unit = set(7, value)
+        get(): LocalDateTime? = get(7) as LocalDateTime?
 
     // -------------------------------------------------------------------------
     // Primary key information
@@ -64,13 +60,12 @@ open class UsersRecord private constructor() : UpdatableRecordImpl<UsersRecord>(
     /**
      * Create a detached, initialised UsersRecord
      */
-    constructor(id: Long? = null, uuid: String, firstName: String, lastName: String, email: String, passwordHash: String, role: UsersRole, createdAt: LocalDateTime? = null, updatedAt: LocalDateTime? = null): this() {
+    constructor(id: Long? = null, uuid: String, firstName: String, lastName: String, email: String, role: UsersRole, createdAt: LocalDateTime? = null, updatedAt: LocalDateTime? = null): this() {
         this.id = id
         this.uuid = uuid
         this.firstName = firstName
         this.lastName = lastName
         this.email = email
-        this.passwordHash = passwordHash
         this.role = role
         this.createdAt = createdAt
         this.updatedAt = updatedAt

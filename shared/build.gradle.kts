@@ -1,4 +1,5 @@
 //import io.gitlab.arturbosch.detekt.getSupportedKotlinVersion
+import io.gitlab.arturbosch.detekt.getSupportedKotlinVersion
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
@@ -96,10 +97,10 @@ tasks.withType<org.springframework.boot.gradle.tasks.bundling.BootJar> {
     enabled = false // bootJar タスクを無効化
 }
 
-//configurations.detekt {
-//    resolutionStrategy.eachDependency {
-//        if (requested.group == "org.jetbrains.kotlin") {
-//            useVersion(getSupportedKotlinVersion())
-//        }
-//    }
-//}
+configurations.detekt {
+    resolutionStrategy.eachDependency {
+        if (requested.group == "org.jetbrains.kotlin") {
+            useVersion(getSupportedKotlinVersion())
+        }
+    }
+}

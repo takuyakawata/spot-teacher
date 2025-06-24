@@ -19,17 +19,17 @@ data class CreateAdminUserMutationInput(
 )
 
 sealed interface CreateAdminUserMutationOutput
-data class CreateAdminUserMutationSuccess(val result: Unit): CreateAdminUserMutationOutput
+data class CreateAdminUserMutationSuccess(val result: Unit) : CreateAdminUserMutationOutput
 data class CreateAdminUserMutationError(
     val message: String,
     val code: String
-): CreateAdminUserMutationOutput
+) : CreateAdminUserMutationOutput
 
 @Component
 class CreateAdminUserMutation(
     private val createAdminUserUseCase: CreateAdminUserUseCase
-): Mutation {
-    suspend fun createAdminUser(input: CreateAdminUserMutationInput) : CreateAdminUserMutationOutput {
+) : Mutation {
+    suspend fun createAdminUser(input: CreateAdminUserMutationInput): CreateAdminUserMutationOutput {
         val useCaseInput = CreateAdminUserUseCaseInput(
             firstName = AdminUserName(input.firstName),
             lastName = AdminUserName(input.lastName),

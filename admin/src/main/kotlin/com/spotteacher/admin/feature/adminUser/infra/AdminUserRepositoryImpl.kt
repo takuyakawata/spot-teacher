@@ -6,7 +6,7 @@ import com.spotteacher.admin.feature.adminUser.domain.AdminUserId
 import com.spotteacher.admin.feature.adminUser.domain.AdminUserName
 import com.spotteacher.admin.feature.adminUser.domain.AdminUserRepository
 import com.spotteacher.admin.feature.adminUser.domain.InActiveAdminUser
-import com.spotteacher.admin.shared.domain.Password
+import com.spotteacher.admin.feature.adminUser.domain.Password
 import com.spotteacher.admin.shared.infra.TransactionAwareDSLContext
 import com.spotteacher.domain.EmailAddress
 import com.spotteacher.extension.nonBlockingFetch
@@ -18,7 +18,6 @@ import com.spotteacher.infra.db.tables.records.AdminUsersRecord
 import com.spotteacher.infra.db.tables.records.UsersRecord
 import kotlinx.coroutines.reactive.awaitFirstOrNull
 import kotlinx.coroutines.reactive.awaitLast
-import org.jooq.Record
 import org.springframework.stereotype.Repository
 import java.util.UUID
 
@@ -35,7 +34,7 @@ class AdminUserRepositoryImpl(
                 USERS.ID.eq(adminUser.userId)
             )
 
-            userRecord?.let { toEntity(it) }
+            userRecord?.let { toEntity(adminUser, it) }
         }
     }
 
@@ -52,28 +51,25 @@ class AdminUserRepositoryImpl(
             USERS.ID.eq(adminUser.userId)
         ) ?: return null
 
-        return toEntity(userRecord)
+        return toEntity(adminUser, userRecord)
     }
 
-    override suspend fun create(user: ActiveAdminUser,password: String):ActiveAdminUser{
+    override suspend fun create(user: ActiveAdminUser):ActiveAdminUser {
                 val userId = dslContext.get().insertInto(
                     USERS,
                     USERS.UUID,
                     USERS.FIRST_NAME,
                     USERS.LAST_NAME,
                     USERS.EMAIL,
-                    USERS.PASSWORD_HASH,
                     USERS.ROLE
                 ).values(
                     UUID.randomUUID().toString(),
                     user.firstName.value,
                     user.lastName.value,
                     user.email.value,
-                    password,
                     UsersRole.ADMIN
                 ).returning(USERS.ID).awaitFirstOrNull()?.id!!
 
-                // Then insert into admin_users table
                 dslContext.get().insertInto(
                     ADMIN_USERS,
                     ADMIN_USERS.USER_ID
@@ -81,49 +77,20 @@ class AdminUserRepositoryImpl(
                     userId
                 ).awaitLast()
 
-        return user.copy(id=AdminUserId(userId))
+        return user.copy(id = AdminUserId(userId))
     }
 
-    override suspend fun update(user: AdminUser) {
-        when (user) {
-            is ActiveAdminUser -> {
-                // First find the user_id from admin_users table
-                val adminUser = dslContext.get().nonBlockingFetchOne(
-                    ADMIN_USERS,
-                    ADMIN_USERS.ID.eq(user.id.value)
-                )
+    override suspend fun update(user: ActiveAdminUser) {
+            dslContext.get().update(USERS)
+                .set(USERS.FIRST_NAME, user.firstName.value)
+                .set(USERS.LAST_NAME, user.lastName.value)
+                .set(USERS.EMAIL, user.email.value)
+                .where(USERS.ID.eq(user.id.value))
+                .awaitLast()
+    }
 
-                if (adminUser != null) {
-                    val userId = adminUser.userId
-
-                    // Update the users table
-                    dslContext.get().update(USERS)
-                        .set(USERS.FIRST_NAME, user.firstName.value)
-                        .set(USERS.LAST_NAME, user.lastName.value)
-                        .set(USERS.EMAIL, user.email.value)
-                        .where(USERS.ID.eq(userId))
-                        .awaitLast()
-                }
-            }
-            is InActiveAdminUser -> {
-                // First find the user_id from admin_users table
-                val adminUser = dslContext.get().nonBlockingFetchOne(
-                    ADMIN_USERS,
-                    ADMIN_USERS.ID.eq(user.id.value)
-                )
-
-                if (adminUser != null) {
-                    val userId = adminUser.userId
-
-                    // Update only the name fields in the users table
-                    dslContext.get().update(USERS)
-                        .set(USERS.FIRST_NAME, user.firstName.value)
-                        .set(USERS.LAST_NAME, user.lastName.value)
-                        .where(USERS.ID.eq(userId))
-                        .awaitLast()
-                }
-            }
-        }
+    override suspend fun updatePassword(password: Password) {
+        TODO("Impl")
     }
 
     override suspend fun delete(id: AdminUserId) {
@@ -153,29 +120,37 @@ class AdminUserRepositoryImpl(
         val userRecord = dslContext.get().nonBlockingFetchOne(
             USERS,
             USERS.EMAIL.eq(emailAddress.value),
-        )
+            USERS.ROLE.eq(UsersRole.ADMIN)
+        ) ?: return null
 
-        if (userRecord!=null){
-            // Find the corresponding admin user
-            dslContext.get().nonBlockingFetchOne(
-                ADMIN_USERS,
-                ADMIN_USERS.USER_ID.eq(userRecord.id)
-            )
-        }
-
+        // Find the corresponding admin user
+        val adminUser = dslContext.get().nonBlockingFetchOne(
+            ADMIN_USERS,
+            ADMIN_USERS.USER_ID.eq(userRecord.id)
+        ) ?: return null
 
         // Create and return the admin user if it's active
-        val user = userRecord?.let{toEntity(it)}
-        return user
+        val user = toEntity(adminUser, userRecord)
+        return user as? ActiveAdminUser
     }
 
-    private fun toEntity(user: UsersRecord): ActiveAdminUser {
-        return ActiveAdminUser(
-                id = AdminUserId(user.id!!),
+    private fun toEntity(adminUser: AdminUsersRecord, user: UsersRecord): AdminUser {
+        // Check if this is an active user (has valid email)
+        return if (user.email.contains("inactive-")) {
+            // Inactive user
+            InActiveAdminUser(
+                id = AdminUserId(adminUser.id!!),
+                firstName = AdminUserName(user.firstName),
+                lastName = AdminUserName(user.lastName)
+            )
+        } else {
+            // Active user
+            ActiveAdminUser(
+                id = AdminUserId(adminUser.id!!),
                 firstName = AdminUserName(user.firstName),
                 lastName = AdminUserName(user.lastName),
                 email = EmailAddress(user.email),
-                password = Password(user.passwordHash)
             )
+        }
     }
 }

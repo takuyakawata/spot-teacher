@@ -34,8 +34,8 @@ class UpdateProductMutation(
         val result = usecase.call(
             UpdateProductUseCaseInput(
                 id = input.id.toDomainId(::ProductId),
-                name = input.name?.let{ProductName(it)},
-                price = input.price?.let{ProductPrice(it)},
+                name = input.name?.let { ProductName(it) },
+                price = input.price?.let { ProductPrice(it) },
                 description = input.description?.let { ProductDescription(it) }
             )
         ).result

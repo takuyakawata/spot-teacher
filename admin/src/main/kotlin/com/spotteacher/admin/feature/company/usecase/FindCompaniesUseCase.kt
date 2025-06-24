@@ -8,5 +8,5 @@ import com.spotteacher.usecase.UseCase
 class FindCompaniesUseCase(
     private val companyRepository: CompanyRepository
 ) {
-    suspend fun call():List<Company> = companyRepository.getAll()
+    suspend fun call(): List<Company> = companyRepository.getAll()
 }

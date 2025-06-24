@@ -1,4 +1,4 @@
-package com.spotteacher.admin.feature.product.usecase 
+package com.spotteacher.admin.feature.product.usecase
 
 import arrow.core.left
 import arrow.core.right

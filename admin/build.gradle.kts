@@ -1,5 +1,7 @@
 import com.expediagroup.graphql.plugin.gradle.graphql
 import com.expediagroup.graphql.plugin.gradle.tasks.GraphQLGenerateSDLTask
+import io.gitlab.arturbosch.detekt.getSupportedKotlinVersion
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
     alias(libs.plugins.expediagroup.graphql)
@@ -99,6 +101,11 @@ dependencies {
     testImplementation(libs.jackson.datatype.jsr310)
     testImplementation(project(":testUtil"))
 
+    implementation(libs.aws.sdk.core)
+    implementation(libs.aws.sdk.cloudfront)
+    //depend
+    implementation(libs.aws.sdk.s3)
+
     // kotest
     testImplementation(libs.kotest.runner.junit5)
     testImplementation(libs.kotest.framework.datatest)
@@ -114,6 +121,7 @@ dependencies {
 kotlin {
     compilerOptions {
         freeCompilerArgs.addAll("-Xjsr305=strict")
+        jvmTarget.set(JvmTarget.JVM_21)
     }
 }
 
@@ -131,4 +139,12 @@ val graphqlGenerateSDL by tasks.getting(GraphQLGenerateSDLTask::class) {
 
 tasks.withType<Test> {
     useJUnitPlatform()
+}
+
+configurations.detekt {
+    resolutionStrategy.eachDependency {
+        if (requested.group == "org.jetbrains.kotlin") {
+            useVersion(getSupportedKotlinVersion())
+        }
+    }
 }

@@ -1,7 +1,5 @@
 package com.spotteacher.domain
 
-import com.spotteacher.graphql.NonEmptyString
-
 /**
  * 都道府県
  */
@@ -105,13 +103,18 @@ value class PostCode(val value: String) {
     companion object {
         private const val MAX_LENGTH = 10
     }
+    init {
+        require(value.length <= MAX_LENGTH) {
+            "Post code must be $MAX_LENGTH digits"
+        }
+    }
 }
 
 /**
  * 住所
  */
 data class Address(
-    val postCode : PostCode,
+    val postCode: PostCode,
     val prefecture: Prefecture,
     val city: City,
     val streetAddress: StreetAddress,

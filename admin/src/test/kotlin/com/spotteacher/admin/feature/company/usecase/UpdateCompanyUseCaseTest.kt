@@ -32,7 +32,7 @@ class UpdateCompanyUseCaseTest : DescribeSpec({
         val fixture = CompanyFixture()
 
         val company = fixture.buildCompany()
-        
+
         val companyId = CompanyId(1)
         val originalName = CompanyName("Original Company")
         val originalAddress = Address(
@@ -44,7 +44,7 @@ class UpdateCompanyUseCaseTest : DescribeSpec({
         )
         val originalPhoneNumber = PhoneNumber("1234567890")
         val originalUrl = URI("https://original-example.com")
-        
+
         val originalCompany = Company(
             id = companyId,
             name = originalName,
@@ -53,7 +53,7 @@ class UpdateCompanyUseCaseTest : DescribeSpec({
             url = originalUrl,
             createdAt = LocalDateTime.now()
         )
-        
+
         val updatedName = CompanyName("Updated Company")
         val updatedAddress = Address(
             postCode = PostCode("0987654321"),
@@ -64,7 +64,7 @@ class UpdateCompanyUseCaseTest : DescribeSpec({
         )
         val updatedPhoneNumber = PhoneNumber("0987654321")
         val updatedUrl = URI("https://updated-example.com")
-        
+
         val updatedCompany = Company(
             id = companyId,
             name = updatedName,
@@ -73,14 +73,14 @@ class UpdateCompanyUseCaseTest : DescribeSpec({
             url = updatedUrl,
             createdAt = originalCompany.createdAt
         )
-        
+
         describe("call") {
             context("when company exists") {
                 it("should update the company and return success") {
                     // Arrange
                     coEvery { companyRepository.findById(company.id) } returns originalCompany
                     coEvery { companyRepository.update(any()) } returns Unit
-                    
+
                     // Act
                     val result = useCase.call(
                         UpdateCompanyUseCaseInput(
@@ -91,16 +91,16 @@ class UpdateCompanyUseCaseTest : DescribeSpec({
                             url = updatedUrl
                         )
                     )
-                    
+
                     // Assert
                     result.result shouldBe Unit.right()
                 }
-                
+
                 it("should update only specified fields") {
                     // Arrange
                     coEvery { companyRepository.findById(companyId) } returns originalCompany
                     coEvery { companyRepository.update(any()) } returns Unit
-                    
+
                     // Only update name and phone number
                     val partiallyUpdatedCompany = Company(
                         id = companyId,
@@ -110,7 +110,7 @@ class UpdateCompanyUseCaseTest : DescribeSpec({
                         url = originalUrl,
                         createdAt = originalCompany.createdAt
                     )
-                    
+
                     // Act
                     val result = useCase.call(
                         UpdateCompanyUseCaseInput(
@@ -121,18 +121,18 @@ class UpdateCompanyUseCaseTest : DescribeSpec({
                             url = null
                         )
                     )
-                    
+
                     // Assert
                     result.result shouldBe Unit.right()
                     coVerify { companyRepository.update(partiallyUpdatedCompany) }
                 }
             }
-            
+
             context("when company does not exist") {
                 it("should return company not found error") {
                     // Arrange
                     coEvery { companyRepository.findById(company.id) } returns null
-                    
+
                     // Act
                     val result = useCase.call(
                         UpdateCompanyUseCaseInput(
@@ -143,7 +143,7 @@ class UpdateCompanyUseCaseTest : DescribeSpec({
                             url = updatedUrl
                         )
                     )
-                    
+
                     // Assert
                     val expectedError = CompanyError(
                         code = CompanyErrorCode.COMPANY_NOT_FOUND,

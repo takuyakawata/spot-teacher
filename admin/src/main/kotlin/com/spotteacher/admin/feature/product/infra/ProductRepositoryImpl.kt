@@ -19,7 +19,6 @@ import kotlinx.coroutines.reactive.asFlow
 import kotlinx.coroutines.reactive.awaitFirstOrNull
 import kotlinx.coroutines.reactive.awaitLast
 import org.jooq.types.UInteger
-import org.springframework.stereotype.Component
 import org.springframework.stereotype.Repository
 
 @Repository
@@ -54,7 +53,7 @@ class ProductRepositoryImpl(private val dslContext: TransactionAwareDSLContext) 
         return productFlow.toList()
     }
 
-    override suspend fun create(product: Product):Product {
+    override suspend fun create(product: Product): Product {
         val id = dslContext.get().insertInto(
             PRODUCTS,
             PRODUCTS.NAME,

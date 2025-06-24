@@ -7,7 +7,7 @@ import com.spotteacher.domain.EmailAddress
 import com.spotteacher.usecase.UseCase
 
 data class UpdateAdminUserUseCaseInput(
-    val adminUserId : AdminUserId,
+    val adminUserId: AdminUserId,
     val firstName: AdminUserName?,
     val lastName: AdminUserName?,
     val email: EmailAddress?,
@@ -16,5 +16,4 @@ data class UpdateAdminUserUseCaseInput(
 )
 
 @UseCase
-class UpdateAdminUserUseCase {
-}
+class UpdateAdminUserUseCase

@@ -20,7 +20,7 @@ data class DeleteCompanyMutationError(
 class DeleteCompanyMutation(
     private val usecase: DeleteCompanyUseCase
 ) : Mutation {
-    suspend fun deleteCompany(id: ID) : DeleteCompanyMutationOutput  {
+    suspend fun deleteCompany(id: ID): DeleteCompanyMutationOutput {
         val result = usecase.call(
             DeleteCompanyUseCaseInput(
                 id = id.toDomainId(::CompanyId)
@@ -29,7 +29,7 @@ class DeleteCompanyMutation(
 
         return result.fold(
             ifLeft = { error -> DeleteCompanyMutationError(error.message, error.code) },
-            ifRight = { DeleteCompanyMutationSuccess(Unit)}
+            ifRight = { DeleteCompanyMutationSuccess(Unit) }
         )
     }
 }

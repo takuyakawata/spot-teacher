@@ -1,0 +1,37 @@
+<?xml version="1.0" ?>
+<SmellBaseline>
+  <ManuallySuppressedIssues/>
+  <CurrentIssues>
+    <ID>ComplexCondition:UpdateCompanyMutation.kt$UpdateCompanyMutation$input.postalCode != null || input.prefecture != null || input.city != null || input.streetAddress != null</ID>
+    <ID>EmptyDefaultConstructor:SecurityConfigWithCognito.kt$SecurityConfigWithCognito$()</ID>
+    <ID>FunctionOnlyReturningConstant:SampleQuery.kt$SampleQuery$fun ping(): String</ID>
+    <ID>Indentation:UpdateStatusLessonPlanUseCase.kt$UpdateStatusLessonPlanUseCase$ </ID>
+    <ID>NoConsecutiveBlankLines:UpdateLessonPlanUseCaseTest.kt$UpdateLessonPlanUseCaseTest$ </ID>
+    <ID>NoTrailingSpaces:UpdateLessonPlanStatusMutation.kt$UpdateLessonPlanStatusMutation$ </ID>
+    <ID>NoUnusedImports:CreateDraftLessonPlanMutation.kt$com.spotteacher.admin.feature.lessonPlan.handler.mutation.CreateDraftLessonPlanMutation.kt</ID>
+    <ID>NoUnusedImports:FindLessonPlanUseCaseTest.kt$com.spotteacher.admin.feature.lessonPlan.usecase.FindLessonPlanUseCaseTest.kt</ID>
+    <ID>NoUnusedImports:UpdateLessonPlanMutation.kt$com.spotteacher.admin.feature.lessonPlan.handler.mutation.UpdateLessonPlanMutation.kt</ID>
+    <ID>NoUnusedImports:UpdateLessonPlanStatusMutation.kt$com.spotteacher.admin.feature.lessonPlan.handler.mutation.UpdateLessonPlanStatusMutation.kt</ID>
+    <ID>NoUnusedImports:UpdateLessonPlanUseCaseTest.kt$com.spotteacher.admin.feature.lessonPlan.usecase.UpdateLessonPlanUseCaseTest.kt</ID>
+    <ID>SafeCast:AdminUserRepositoryImpl.kt$AdminUserRepositoryImpl$if (user is ActiveAdminUser) user else null</ID>
+    <ID>SpacingAroundColon:School.kt$School$:</ID>
+    <ID>SpacingAroundColon:School.kt$SchoolId$:</ID>
+    <ID>SpacingAroundColon:UpdateLessonPlanMutation.kt$UpdateLessonPlanMutation$:</ID>
+    <ID>SpacingAroundColon:UpdateLessonPlanMutation.kt$UpdateLessonPlanMutationSuccess$:</ID>
+    <ID>SpreadOperator:AdminApplication.kt$(*args)</ID>
+    <ID>SpreadOperator:LessonPlanRepositoryImpl.kt$LessonPlanRepositoryImpl$(list.first(), *list.drop(1).toTypedArray())</ID>
+    <ID>SpreadOperator:ProductRepositoryImpl.kt$ProductRepositoryImpl$(*paginationFields.map { it.first }.toTypedArray())</ID>
+    <ID>SpreadOperator:ProductRepositoryImpl.kt$ProductRepositoryImpl$(*paginationFields.map { it.second }.toTypedArray())</ID>
+    <ID>TooGenericExceptionCaught:CreateDraftLessonPlanMutation.kt$CreateDraftLessonPlanMutation$e: Exception</ID>
+    <ID>TooManyFunctions:LessonPlanRepositoryImpl.kt$LessonPlanRepositoryImpl : LessonPlanRepository</ID>
+    <ID>UnusedParameter:LessonPlanFixture.kt$LessonPlanFixture$images: List&lt;UploadFileId&gt; = emptyList()</ID>
+    <ID>UnusedParameter:LessonPlanRepositoryImpl.kt$LessonPlanRepositoryImpl$id: LessonPlansRecord</ID>
+    <ID>UnusedParameter:LessonPlanRepositoryImpl.kt$LessonPlanRepositoryImpl$lessonPlanDates: Nel&lt;LessonPlanDate&gt;</ID>
+    <ID>UnusedPrivateProperty:DeleteCompanyUseCase.kt$DeleteCompanyUseCase$val existingCompany = companyRepository.findById(input.id) ?: return DeleteCompanyUseCaseOutput( CompanyError( code = CompanyErrorCode.COMPANY_NOT_FOUND, message = "Company not found" ).left() )</ID>
+    <ID>UnusedPrivateProperty:DeleteProductUseCase.kt$DeleteProductUseCase$val existingProduct = productRepository.findById(input.id) ?: return DeleteProductUseCaseOutput( ProductError( ProductErrorCode.PRODUCT_NOT_FOUND, "Product not found" ).left() )</ID>
+    <ID>UnusedPrivateProperty:SecurityFilterCognito.kt$SecurityFilterWithCognito$// @Value("\${api.secret-key}") private lateinit var secretKey: String</ID>
+    <ID>UnusedPrivateProperty:UpdateCompanyUseCaseTest.kt$UpdateCompanyUseCaseTest$val updatedCompany = Company( id = companyId, name = updatedName, address = updatedAddress, phoneNumber = updatedPhoneNumber, url = updatedUrl, createdAt = originalCompany.createdAt )</ID>
+    <ID>UnusedPrivateProperty:UpdateLessonPlanUseCaseTest.kt$UpdateLessonPlanUseCaseTest$val lessonPlanSlot = slot&lt;DraftLessonPlan&gt;()</ID>
+    <ID>UnusedPrivateProperty:UpdateLessonPlanUseCaseTest.kt$UpdateLessonPlanUseCaseTest$val lessonPlanSlot = slot&lt;PublishedLessonPlan&gt;()</ID>
+  </CurrentIssues>
+</SmellBaseline>

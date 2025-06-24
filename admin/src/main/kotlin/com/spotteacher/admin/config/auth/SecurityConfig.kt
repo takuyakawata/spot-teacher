@@ -27,7 +27,7 @@ class SecurityConfig {
     fun authEndpointsFilterChain(http: ServerHttpSecurity): SecurityWebFilterChain {
         return http
             // この設定が適用されるパスを限定
-            .securityMatcher(PathPatternParserServerWebExchangeMatcher("/api/auth/**"))
+            .securityMatcher(PathPatternParserServerWebExchangeMatcher("/api/admin/auth/**"))
             .authorizeExchange { exchanges ->
                 // "/api/auth/**" へのリクエストはすべて許可
                 exchanges.anyExchange().permitAll()

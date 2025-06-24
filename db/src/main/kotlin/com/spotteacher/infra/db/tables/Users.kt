@@ -97,11 +97,6 @@ open class Users(
     val EMAIL: TableField<UsersRecord, String?> = createField(DSL.name("email"), SQLDataType.VARCHAR(255).nullable(false), this, "")
 
     /**
-     * The column <code>users.password_hash</code>.
-     */
-    val PASSWORD_HASH: TableField<UsersRecord, String?> = createField(DSL.name("password_hash"), SQLDataType.VARCHAR(255).nullable(false), this, "")
-
-    /**
      * The column <code>users.role</code>.
      */
     val ROLE: TableField<UsersRecord, UsersRole?> = createField(DSL.name("role"), SQLDataType.VARCHAR(14).nullable(false).asEnumDataType(UsersRole::class.java), this, "")

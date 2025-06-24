@@ -15,7 +15,7 @@ data class CreateProductUseCaseInput(
 )
 
 sealed interface CreateProductUseCaseOutput {
-    data class Success(val success:Unit) : CreateProductUseCaseOutput
+    data class Success(val success: Unit) : CreateProductUseCaseOutput
 //    data class Error(val error: ProductErrorCode) : CreateProductUseCaseOutput
 }
 
@@ -24,7 +24,7 @@ class CreateProductUseCase(
     private val productRepository: ProductRepository
 ) {
     @TransactionCoroutine
-    suspend fun call(input: CreateProductUseCaseInput) : CreateProductUseCaseOutput{
+    suspend fun call(input: CreateProductUseCaseInput): CreateProductUseCaseOutput {
         val newProduct = Product.create(
             name = input.name,
             price = input.price,

@@ -20,7 +20,7 @@ class RefreshTokenManagerImpl(
     val refreshTokenExpirationMs: Long
 ) : RefreshTokenManager {
     override suspend fun createAndSaveRefreshToken(email: EmailAddress): RefreshToken {
-        val adminUser = userRepository.findByEmailAndActiveUser(email)?: throw ResourceNotFoundException(
+        val adminUser = userRepository.findByEmailAndActiveUser(email) ?: throw ResourceNotFoundException(
             clazz = AdminUser::class,
             params = mapOf("email" to email.value)
         )

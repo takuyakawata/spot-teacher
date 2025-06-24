@@ -33,8 +33,6 @@ data class Product(
     )
 }
 
-
-
 class ProductId(override val value: Long) : Identity<Long>(value)
 
 @JvmInline

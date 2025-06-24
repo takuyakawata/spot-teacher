@@ -27,9 +27,9 @@ open class LessonPlansRecord private constructor() : UpdatableRecordImpl<LessonP
         set(value): Unit = set(1, value)
         get(): Long = get(1) as Long
 
-    open var title: String
+    open var title: String?
         set(value): Unit = set(2, value)
-        get(): String = get(2) as String
+        get(): String? = get(2) as String?
 
     open var description: String?
         set(value): Unit = set(3, value)
@@ -39,21 +39,25 @@ open class LessonPlansRecord private constructor() : UpdatableRecordImpl<LessonP
         set(value): Unit = set(4, value)
         get(): String? = get(4) as String?
 
-    open var lessonType: LessonPlansLessonType
+    open var lessonType: LessonPlansLessonType?
         set(value): Unit = set(5, value)
-        get(): LessonPlansLessonType = get(5) as LessonPlansLessonType
+        get(): LessonPlansLessonType? = get(5) as LessonPlansLessonType?
 
-    open var annualMaxExecutions: Long
+    open var annualMaxExecutions: Long?
         set(value): Unit = set(6, value)
-        get(): Long = get(6) as Long
+        get(): Long? = get(6) as Long?
+
+    open var published: Boolean?
+        set(value): Unit = set(7, value)
+        get(): Boolean? = get(7) as Boolean?
 
     open var createdAt: LocalDateTime?
-        set(value): Unit = set(7, value)
-        get(): LocalDateTime? = get(7) as LocalDateTime?
-
-    open var updatedAt: LocalDateTime?
         set(value): Unit = set(8, value)
         get(): LocalDateTime? = get(8) as LocalDateTime?
+
+    open var updatedAt: LocalDateTime?
+        set(value): Unit = set(9, value)
+        get(): LocalDateTime? = get(9) as LocalDateTime?
 
     // -------------------------------------------------------------------------
     // Primary key information
@@ -64,7 +68,7 @@ open class LessonPlansRecord private constructor() : UpdatableRecordImpl<LessonP
     /**
      * Create a detached, initialised LessonPlansRecord
      */
-    constructor(id: Long? = null, companyId: Long, title: String, description: String? = null, location: String? = null, lessonType: LessonPlansLessonType, annualMaxExecutions: Long, createdAt: LocalDateTime? = null, updatedAt: LocalDateTime? = null): this() {
+    constructor(id: Long? = null, companyId: Long, title: String? = null, description: String? = null, location: String? = null, lessonType: LessonPlansLessonType? = null, annualMaxExecutions: Long? = null, published: Boolean? = null, createdAt: LocalDateTime? = null, updatedAt: LocalDateTime? = null): this() {
         this.id = id
         this.companyId = companyId
         this.title = title
@@ -72,6 +76,7 @@ open class LessonPlansRecord private constructor() : UpdatableRecordImpl<LessonP
         this.location = location
         this.lessonType = lessonType
         this.annualMaxExecutions = annualMaxExecutions
+        this.published = published
         this.createdAt = createdAt
         this.updatedAt = updatedAt
         resetTouchedOnNotNull()

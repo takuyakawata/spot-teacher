@@ -1,0 +1,24 @@
+<?xml version="1.0" ?>
+<SmellBaseline>
+  <ManuallySuppressedIssues/>
+  <CurrentIssues>
+    <ID>CyclomaticComplexMethod:GraphQLBuilder.kt$GraphQLBuilder$private fun &lt;I&gt; processComplexObject(input: I, json: String, processedObjects: MutableSet&lt;Any&gt; = mutableSetOf()): String</ID>
+    <ID>ForbiddenMethodCall:DatabaseDescribeSpec.kt$DatabaseDescribeSpec$println("テーブル削除: $it")</ID>
+    <ID>ForbiddenMethodCall:DatabaseDescribeSpec.kt$DatabaseDescribeSpec$println("データ削除成功！")</ID>
+    <ID>HasPlatformType:GraphQLBuilder.kt$GraphQLBuilder.Companion$val objectMapper = jacksonObjectMapper() .registerModules( JavaTimeModule(), SimpleModule() .addSerializer( Enum::class.java, object : JsonSerializer&lt;Enum&lt;*&gt;&gt;() { override fun serialize( value: Enum&lt;*&gt;, gen: JsonGenerator, serializers: SerializerProvider, ) { gen.writeString(value.name) } } ).setSerializerModifier( object : BeanSerializerModifier() { override fun changeProperties( config: SerializationConfig?, beanDesc: BeanDescription?, beanProperties: MutableList&lt;BeanPropertyWriter&gt;?, ): MutableList&lt;BeanPropertyWriter&gt; { return super.changeProperties( config, beanDesc, beanProperties?.filter { it.getAnnotation(GraphQLIgnore::class.java) == null } ) } } ), ).configure(WRITE_DATES_AS_TIMESTAMPS, false)</ID>
+    <ID>LargeClass:GraphQLBuilder.kt$GraphQLBuilder</ID>
+    <ID>MaxLineLength:GraphQLBuilder.kt$GraphQLBuilder$// //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////</ID>
+    <ID>NoUnusedImports:DatabaseDescribeSpec.kt$com.spotteacher.backend.DatabaseDescribeSpec.kt</ID>
+    <ID>RedundantSuspendModifier:GraphQLBuilder.kt$GraphQLBuilder$suspend</ID>
+    <ID>SpreadOperator:DatabaseDescribeSpec.kt$DatabaseDescribeSpec$( "SET FOREIGN_KEY_CHECKS = 0", *deleteTargetTableNames.map { println("テーブル削除: $it") "DELETE FROM $it" }.toTypedArray(), "SET FOREIGN_KEY_CHECKS = 1", )</ID>
+    <ID>SwallowedException:GraphQLBuilder.kt$GraphQLBuilder$e: Exception</ID>
+    <ID>TooGenericExceptionCaught:GraphQLBuilder.kt$GraphQLBuilder$e: Exception</ID>
+    <ID>TooManyFunctions:GraphQLBuilder.kt$GraphQLBuilder</ID>
+    <ID>UnsafeCallOnNullableType:GraphQLBuilder.kt$GraphQLBuilder$this.parameters[0].name!!</ID>
+    <ID>UnsafeCallOnNullableType:GraphQLBuilder.kt$GraphQLBuilder$this.parameters[1].name!!</ID>
+    <ID>UnsafeCallOnNullableType:GraphQLBuilder.kt$GraphQLBuilder$this.parameters[2].name!!</ID>
+    <ID>UnusedParameter:GraphQLBuilder.kt$GraphQLBuilder$input: I</ID>
+    <ID>UseOrEmpty:PostGraphQLRequest.kt$match?.groupValues?.get(1) ?.replace("\\n", " ") ?.lines() ?.joinToString(" ") { it.trim() } ?.replace(Regex("\\s{2,}"), " ") ?.trim() ?: ""</ID>
+    <ID>VarCouldBeVal:DatabaseDescribeSpec.kt$DatabaseDescribeSpec$@Autowired private lateinit var internalJdbcTemplate: JdbcTemplate</ID>
+  </CurrentIssues>
+</SmellBaseline>

@@ -4,14 +4,18 @@ import com.spotteacher.admin.feature.adminUser.domain.AdminUserId
 import com.spotteacher.util.Identity
 import java.time.LocalDateTime
 
+data class TokenPair(
+    val accessToken: String,
+    val refreshToken: String //todo RefreshTokenにする
+)
 
 data class RefreshToken(
-    val id : RefreshTokenId,
+    val id: RefreshTokenId,
     val userId: AdminUserId,
     val token: String,
     val expiresAt: LocalDateTime,
-){
-    companion object{
+) {
+    companion object {
         fun create(
             adminUserId: AdminUserId,
             token: String,
@@ -24,7 +28,5 @@ data class RefreshToken(
         )
     }
 }
-
-
 
 class RefreshTokenId(override val value: Long) : Identity<Long>(value)

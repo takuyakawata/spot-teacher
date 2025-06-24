@@ -17,14 +17,7 @@ class CreateAdminUserUseCaseTest : DescribeSpec({
         // Arrange
         val useCase = CreateAdminUserUseCase()
         val adminUserRepository = mock<AdminUserRepository>()
-        val adminUserFixture = AdminUserFixture()
-
-        val adminUserMock = adminUserFixture.buildActiveAdminUser(
-            firstName = AdminUserName("John"),
-            lastName = AdminUserName("Doe"),
-            email = EmailAddress("john.doe@example.com"),
-            password = Password("password123")
-        )
+        val adminUser = AdminUserFixture().buildActiveAdminUser()
 
         // Test data
         val firstName = AdminUserName("John")
@@ -34,12 +27,11 @@ class CreateAdminUserUseCaseTest : DescribeSpec({
         val confirmPassword = Password("password123")
         val mismatchPassword = Password("different123")
 
-        describe("call") {
+        describe("execute") {
             context("when passwords match") {
                 it("should create a new admin user and return success") {
-
                     // Arrange
-                    coEvery { adminUserRepository.create(any()) } returns adminUserMock
+                    coEvery { adminUserRepository.create(any()) } returns adminUser
 
                     // Act
                     val result = useCase.execute(
@@ -51,7 +43,7 @@ class CreateAdminUserUseCaseTest : DescribeSpec({
                             confirm = confirmPassword
                         )
                     )
-                    
+
                     // Assert
                     result.shouldBeInstanceOf<CreateAdminUserUseCaseSuccess>()
                     val adminUser = result.adminUser
@@ -59,10 +51,9 @@ class CreateAdminUserUseCaseTest : DescribeSpec({
                     adminUser.firstName shouldBe firstName
                     adminUser.lastName shouldBe lastName
                     adminUser.email shouldBe email
-                    adminUser.password shouldBe password
                 }
             }
-            
+
             context("when passwords don't match") {
                 it("should return an error") {
                     // Act
@@ -75,10 +66,10 @@ class CreateAdminUserUseCaseTest : DescribeSpec({
                             confirm = mismatchPassword
                         )
                     )
-                    
+
                     // Assert
                     result.shouldBeInstanceOf<CreateAdminUserUseCaseError>()
-                    (result as CreateAdminUserUseCaseError).message shouldBe "Password and confirmation do not match"
+                    result.message shouldBe "Password and confirmation do not match"
                 }
             }
         }

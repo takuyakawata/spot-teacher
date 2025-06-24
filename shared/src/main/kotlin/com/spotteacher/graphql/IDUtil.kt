@@ -1,6 +1,5 @@
 package com.spotteacher.graphql
 
-
 import com.expediagroup.graphql.generator.scalars.ID
 import com.spotteacher.util.Identity
 import graphql.relay.Relay

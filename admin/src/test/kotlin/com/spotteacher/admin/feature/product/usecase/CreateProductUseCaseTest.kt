@@ -1,4 +1,5 @@
-package com.spotteacher.admin.feature.product.usecase 
+package com.spotteacher.admin.feature.product.usecase
+
 import com.spotteacher.admin.feature.product.domain.ProductDescription
 import com.spotteacher.admin.feature.product.domain.ProductName
 import com.spotteacher.admin.feature.product.domain.ProductPrice
@@ -16,9 +17,9 @@ class CreateProductUseCaseTest : DescribeSpec({
         val usecase = CreateProductUseCase(productRepository)
         val product = ProductFixture().buildProduct()
 
-        describe("call"){
-            context("when input is valid"){
-                it("should return success"){
+        describe("call") {
+            context("when input is valid") {
+                it("should return success") {
                     // Arrange
                     coEvery { productRepository.create(any()) } returns product
 
