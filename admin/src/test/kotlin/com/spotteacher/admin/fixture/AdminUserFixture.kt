@@ -43,7 +43,7 @@ class AdminUserFixture {
             email = email,
         )
 
-        repository.create(adminUser, Password("pass1234"))
+        repository.create(adminUser, Password("pass1234").value)
         return adminUser
     }
 }

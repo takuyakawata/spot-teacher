@@ -8,8 +8,8 @@ import com.spotteacher.admin.feature.adminUser.domain.AdminUserError
 import com.spotteacher.admin.feature.adminUser.domain.AdminUserErrorCode
 import com.spotteacher.admin.feature.adminUser.domain.AdminUserId
 import com.spotteacher.admin.feature.adminUser.domain.AdminUserRepository
-import com.spotteacher.admin.feature.adminUser.domain.Password
 import com.spotteacher.admin.feature.adminUser.domain.changePassword
+import com.spotteacher.admin.shared.domain.Password
 import com.spotteacher.usecase.UseCase
 
 
@@ -37,7 +37,7 @@ class UpdatePasswordUseCase(
             message = "Admin user not found"
         ).left()}
 
-        val updatedPasswordAdminUser = adminUser.changePassword(input.password)
+        val updatedPasswordAdminUser = adminUser.changePassword()
 
         adminUserRepository.updatePassword(input.password)
         return Unit.right()

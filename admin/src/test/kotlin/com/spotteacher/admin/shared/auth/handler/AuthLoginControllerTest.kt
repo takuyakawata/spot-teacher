@@ -1,6 +1,5 @@
 package com.spotteacher.admin.shared.auth.handler
 
-import com.spotteacher.admin.feature.adminUser.domain.Password
 import com.spotteacher.admin.fixture.AdminUserFixture
 import com.spotteacher.admin.shared.domain.Password
 import com.spotteacher.backend.DatabaseDescribeSpec
@@ -23,9 +22,10 @@ class AuthLoginControllerTest(
         context("正常な認証情報の場合") {
             it("200 OKとトークンを返す") {
                val activeAdminUser = adminUserFixture.createActiveAdminUser(email = EmailAddress("test@example.com"))
+                val password = Password("test1234")
 
                 // --- 準備 (Arrange) ---
-                val loginRequest = LoginRequest(activeAdminUser.email.value, activeAdminUser.password.value)
+                val loginRequest = LoginRequest(activeAdminUser.email.value, password.value)
 
                 // --- 実行 (Act) & 検証 (Assert) ---
                 webTestClient.post().uri("/api/auth/login")

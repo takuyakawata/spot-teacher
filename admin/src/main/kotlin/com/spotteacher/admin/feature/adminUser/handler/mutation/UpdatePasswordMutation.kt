@@ -4,9 +4,9 @@ import com.expediagroup.graphql.generator.scalars.ID
 import com.expediagroup.graphql.server.operations.Mutation
 import com.spotteacher.admin.feature.adminUser.domain.AdminUserErrorCode
 import com.spotteacher.admin.feature.adminUser.domain.AdminUserId
-import com.spotteacher.admin.feature.adminUser.domain.Password
 import com.spotteacher.admin.feature.adminUser.usecase.UpdatePasswordUseCase
 import com.spotteacher.admin.feature.adminUser.usecase.UpdatePasswordUseCaseInput
+import com.spotteacher.admin.shared.domain.Password
 import com.spotteacher.graphql.toDomainId
 import org.springframework.stereotype.Component
 

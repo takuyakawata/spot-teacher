@@ -15,7 +15,7 @@ data class CreateAdminUserUseCaseInput(
     val lastName: AdminUserName,
     val email: EmailAddress,
     val password: Password,
-    val confirm: Password,
+    val confirmPassword: Password,
 )
 
 sealed interface CreateAdminUserUseCaseOutput
@@ -30,7 +30,7 @@ class CreateAdminUserUseCase(
     @TransactionCoroutine
     suspend fun call(input: CreateAdminUserUseCaseInput): CreateAdminUserUseCaseOutput {
         // Validate password confirmation
-        if (input.password.value != input.confirm.value) {
+        if (input.password.value != input.confirmPassword.value) {
             return CreateAdminUserUseCaseError("Password and confirmation do not match")
         }
 

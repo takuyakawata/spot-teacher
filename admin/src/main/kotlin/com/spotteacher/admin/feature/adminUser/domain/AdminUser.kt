@@ -29,7 +29,7 @@ data class ActiveAdminUser(
     }
 }
 
-fun ActiveAdminUser.changePassword(password: Password) = ActiveAdminUser(
+fun ActiveAdminUser.changePassword() = ActiveAdminUser(
     id = this.id,
     firstName = this.firstName,
     lastName = this.lastName,
@@ -66,7 +66,7 @@ data class InActiveAdminUser(
     }
 }
 
-fun InActiveAdminUser.toActiveAdminUser(email: EmailAddress, password: Password) = ActiveAdminUser(
+fun InActiveAdminUser.toActiveAdminUser(email: EmailAddress) = ActiveAdminUser(
     id = this.id,
     firstName = this.firstName,
     lastName = this.lastName,
@@ -88,8 +88,6 @@ value class AdminUserName(val value: String) {
     }
 }
 
-@JvmInline
-value class Password(val value: String)
 
 data class AdminUserError(
     val code: AdminUserErrorCode,

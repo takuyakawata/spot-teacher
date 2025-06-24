@@ -1,10 +1,9 @@
 package com.spotteacher.admin.shared.auth.infra
 
 import com.spotteacher.admin.feature.adminUser.domain.AdminUserId
-import com.spotteacher.admin.feature.adminUser.domain.Password
-import com.spotteacher.admin.feature.adminUser.handler.AdminUserType
 import com.spotteacher.admin.shared.auth.domain.AuthUser
 import com.spotteacher.admin.shared.auth.domain.AuthUserRepository
+import com.spotteacher.admin.shared.domain.Password
 import com.spotteacher.admin.shared.infra.TransactionAwareDSLContext
 import com.spotteacher.domain.EmailAddress
 import com.spotteacher.extension.nonBlockingFetchOne
@@ -28,6 +27,7 @@ class AuthUserRepositoryImpl(
             USER_CREDENTIALS,
             USER_CREDENTIALS.USER_ID.eq(user!!.id)
         )
+
         return if (credentials != null) {
             AuthUser(
                 userId = AdminUserId(user.id!!),

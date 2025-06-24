@@ -35,7 +35,7 @@ class CreateAdminUserMutation(
             lastName = AdminUserName(input.lastName),
             email = EmailAddress(input.email),
             password = Password(input.password),
-            confirm = Password(input.confirmPassword)
+            confirmPassword = Password(input.confirmPassword)
 
         )
 

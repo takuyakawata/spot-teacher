@@ -1,7 +1,6 @@
 package com.spotteacher.admin.shared.auth.domain
 
-import com.spotteacher.admin.feature.adminUser.domain.ActiveAdminUser
-import com.spotteacher.admin.feature.adminUser.domain.Password
+import com.spotteacher.admin.shared.domain.Password
 import com.spotteacher.domain.EmailAddress
 
 interface Authenticator {

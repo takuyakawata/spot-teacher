@@ -4,8 +4,8 @@ import arrow.core.Either
 import com.spotteacher.admin.feature.adminUser.domain.AdminUserError
 import com.spotteacher.admin.feature.adminUser.domain.AdminUserErrorCode
 import com.spotteacher.admin.feature.adminUser.domain.AdminUserRepository
-import com.spotteacher.admin.feature.adminUser.domain.Password
 import com.spotteacher.admin.fixture.AdminUserFixture
+import com.spotteacher.admin.shared.domain.Password
 import io.kotest.core.spec.style.DescribeSpec
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.types.shouldBeTypeOf
