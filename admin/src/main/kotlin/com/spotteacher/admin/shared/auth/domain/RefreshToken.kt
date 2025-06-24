@@ -4,6 +4,11 @@ import com.spotteacher.admin.feature.adminUser.domain.AdminUserId
 import com.spotteacher.util.Identity
 import java.time.LocalDateTime
 
+data class TokenPair(
+    val accessToken: String,
+    val refreshToken: String //todo RefreshTokenにする
+)
+
 data class RefreshToken(
     val id: RefreshTokenId,
     val userId: AdminUserId,

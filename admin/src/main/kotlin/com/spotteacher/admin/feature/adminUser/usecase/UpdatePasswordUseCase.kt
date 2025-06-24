@@ -39,7 +39,7 @@ class UpdatePasswordUseCase(
 
         val updatedPasswordAdminUser = adminUser.changePassword(input.password)
 
-        adminUserRepository.updatePassword(updatedPasswordAdminUser.password)
+        adminUserRepository.updatePassword(input.password)
         return Unit.right()
     }
 }

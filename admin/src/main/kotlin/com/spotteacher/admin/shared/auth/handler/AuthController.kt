@@ -14,7 +14,7 @@ data class LoginRequest(val email: String, val password: String)
 data class AuthResponse(val accessToken: String, val refreshToken: String)
 
 @RestController
-@RequestMapping("/api/auth")
+@RequestMapping("/api/admin/auth")
 class AuthController(private val loginUse: LoginUseCase) {
     @PostMapping("/login")
     suspend fun login(@RequestBody loginRequest: LoginRequest): ResponseEntity<AuthResponse> {

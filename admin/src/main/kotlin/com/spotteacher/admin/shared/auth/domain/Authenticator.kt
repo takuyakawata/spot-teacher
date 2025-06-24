@@ -5,5 +5,5 @@ import com.spotteacher.admin.feature.adminUser.domain.Password
 import com.spotteacher.domain.EmailAddress
 
 interface Authenticator {
-    suspend fun authenticate(email: EmailAddress, rawPassword: Password): ActiveAdminUser
+    suspend fun authenticate(email: EmailAddress, password: Password): AuthUser
 }

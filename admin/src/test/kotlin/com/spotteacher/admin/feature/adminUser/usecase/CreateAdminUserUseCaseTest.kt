@@ -51,7 +51,6 @@ class CreateAdminUserUseCaseTest : DescribeSpec({
                     adminUser.firstName shouldBe firstName
                     adminUser.lastName shouldBe lastName
                     adminUser.email shouldBe email
-                    adminUser.password shouldBe password
                 }
             }
 

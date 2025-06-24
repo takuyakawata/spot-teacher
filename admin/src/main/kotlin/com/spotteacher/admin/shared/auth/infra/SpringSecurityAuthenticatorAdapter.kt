@@ -18,8 +18,8 @@ class SpringSecurityAuthenticatorAdapter(
     private val authenticationManager: ReactiveAuthenticationManager,
     private val userRepository: AdminUserRepository
 ) : Authenticator {
-    override suspend fun authenticate(email: EmailAddress, rawPassword: Password): ActiveAdminUser {
-        val authenticationToken = UsernamePasswordAuthenticationToken(email.value, rawPassword.value)
+    override suspend fun authenticate(email: EmailAddress, password: Password): ActiveAdminUser {
+        val authenticationToken = UsernamePasswordAuthenticationToken(email.value, password.value)
 
         authenticationManager.authenticate(authenticationToken).awaitSingleOrNull()
             ?: throw BadCredentialsException("Authentication failed: Bad credentials")

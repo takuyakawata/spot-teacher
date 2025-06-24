@@ -61,14 +61,12 @@ class AdminUserRepositoryImpl(
                     USERS.FIRST_NAME,
                     USERS.LAST_NAME,
                     USERS.EMAIL,
-                    USERS.PASSWORD_HASH,
                     USERS.ROLE
                 ).values(
                     UUID.randomUUID().toString(),
                     user.firstName.value,
                     user.lastName.value,
                     user.email.value,
-                    user.password.value,
                     UsersRole.ADMIN
                 ).returning(USERS.ID).awaitFirstOrNull()?.id!!
 
@@ -92,12 +90,8 @@ class AdminUserRepositoryImpl(
     }
 
     override suspend fun updatePassword(password: Password) {
-        dslContext.get().update(USERS)
-            .set(USERS.PASSWORD_HASH, password.value)
-            .where(USERS.ROLE.eq(UsersRole.ADMIN))
-            .awaitLast()
+        TODO("Impl")
     }
-
 
     override suspend fun delete(id: AdminUserId) {
         // First find the user_id from admin_users table
@@ -156,7 +150,6 @@ class AdminUserRepositoryImpl(
                 firstName = AdminUserName(user.firstName),
                 lastName = AdminUserName(user.lastName),
                 email = EmailAddress(user.email),
-                password = Password(user.passwordHash)
             )
         }
     }

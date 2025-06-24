@@ -7,8 +7,11 @@ import com.spotteacher.admin.feature.lessonPlan.domain.DraftLessonPlan
 import com.spotteacher.admin.feature.lessonPlan.domain.LessonLocation
 import com.spotteacher.admin.feature.lessonPlan.domain.LessonPlanDate
 import com.spotteacher.admin.feature.lessonPlan.domain.LessonPlanDescription
+import com.spotteacher.admin.feature.lessonPlan.domain.LessonPlanEducations
+import com.spotteacher.admin.feature.lessonPlan.domain.LessonPlanGrades
 import com.spotteacher.admin.feature.lessonPlan.domain.LessonPlanId
 import com.spotteacher.admin.feature.lessonPlan.domain.LessonPlanRepository
+import com.spotteacher.admin.feature.lessonPlan.domain.LessonPlanSubjects
 import com.spotteacher.admin.feature.lessonPlan.domain.LessonPlanTitle
 import com.spotteacher.admin.feature.lessonPlan.domain.LessonType
 import com.spotteacher.admin.feature.lessonPlan.domain.PublishedLessonPlan
@@ -41,6 +44,10 @@ class LessonPlanFixture {
         return listOf(defaultLessonPlanDate()).toNonEmptyListOrNull()!!
     }
 
+    fun defaultEducations() = LessonPlanEducations(emptySet())
+    fun defaultSubjects() = LessonPlanSubjects(emptySet())
+    fun defaultGrades() = LessonPlanGrades(emptySet())
+
     // Build a DraftLessonPlan with default values
     fun buildDraftLessonPlan(
         id: LessonPlanId = LessonPlanId(lessonPlanIdCount++),
@@ -52,7 +59,10 @@ class LessonPlanFixture {
         lessonType: LessonType? = LessonType.ONLINE,
         location: LessonLocation? = LessonLocation("Test Location"),
         annualMaxExecutions: Int? = 10,
-        lessonPlanDates: Nel<LessonPlanDate>? = defaultLessonPlanDates()
+        lessonPlanDates: Nel<LessonPlanDate>? = defaultLessonPlanDates(),
+        educations: LessonPlanEducations = defaultEducations(),
+        subjects: LessonPlanSubjects = defaultSubjects(),
+        grades: LessonPlanGrades = defaultGrades()
     ): DraftLessonPlan {
         return DraftLessonPlan(
             id = id,
@@ -64,7 +74,10 @@ class LessonPlanFixture {
             lessonType = lessonType,
             location = location,
             annualMaxExecutions = annualMaxExecutions,
-            lessonPlanDates = lessonPlanDates
+            lessonPlanDates = lessonPlanDates,
+            educations = educations,
+            subjects = subjects,
+            grades = grades
         )
     }
 
@@ -79,7 +92,10 @@ class LessonPlanFixture {
         lessonType: LessonType = LessonType.ONLINE,
         location: LessonLocation = LessonLocation("Test Location"),
         annualMaxExecutions: Int = 10,
-        lessonPlanDates: Nel<LessonPlanDate> = defaultLessonPlanDates()
+        lessonPlanDates: Nel<LessonPlanDate> = defaultLessonPlanDates(),
+        educations: LessonPlanEducations = defaultEducations(),
+        subjects: LessonPlanSubjects = defaultSubjects(),
+        grades: LessonPlanGrades = defaultGrades()
     ): PublishedLessonPlan {
         return PublishedLessonPlan(
             id = id,
@@ -91,7 +107,10 @@ class LessonPlanFixture {
             lessonType = lessonType,
             location = location,
             annualMaxExecutions = annualMaxExecutions,
-            lessonPlanDates = lessonPlanDates
+            lessonPlanDates = lessonPlanDates,
+            educations = educations,
+            subjects = subjects,
+            grades = grades,
         )
     }
 
@@ -104,7 +123,10 @@ class LessonPlanFixture {
         lessonType: LessonType? = LessonType.ONLINE,
         location: LessonLocation? = LessonLocation("Test Location"),
         annualMaxExecutions: Int? = 10,
-        lessonPlanDates: Nel<LessonPlanDate>? = defaultLessonPlanDates()
+        lessonPlanDates: Nel<LessonPlanDate>? = defaultLessonPlanDates(),
+        educations: LessonPlanEducations = defaultEducations(),
+        subjects: LessonPlanSubjects = defaultSubjects(),
+        grades: LessonPlanGrades = defaultGrades()
     ): DraftLessonPlan {
         val draftLessonPlan = DraftLessonPlan.create(
             companyId = companyId,
@@ -113,7 +135,10 @@ class LessonPlanFixture {
             lessonType = lessonType,
             location = location,
             annualMaxExecutions = annualMaxExecutions,
-            lessonPlanDates = lessonPlanDates
+            lessonPlanDates = lessonPlanDates,
+            educations = educations,
+            subjects = subjects,
+            grades = grades,
         )
         return lessonPlanRepository.createDraft(draftLessonPlan)
     }

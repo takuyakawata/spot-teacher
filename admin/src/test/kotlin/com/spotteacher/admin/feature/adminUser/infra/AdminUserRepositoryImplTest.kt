@@ -44,7 +44,6 @@ class AdminUserRepositoryImplTest(
                 foundUser.firstName.value shouldBe "John"
                 foundUser.lastName.value shouldBe "Doe"
                 foundUser.email.value shouldBe "john.doe@example.com"
-                foundUser.password.value shouldBe "securePassword123"
             }
         }
 
@@ -66,7 +65,6 @@ class AdminUserRepositoryImplTest(
                     firstName = AdminUserName("Updated"),
                     lastName = AdminUserName("Name"),
                     email = EmailAddress("updated.email@example.com"),
-                    password = Password("newPassword")
                 )
                 adminUserRepository.update(updatedUser)
 
@@ -79,7 +77,6 @@ class AdminUserRepositoryImplTest(
                 foundUser.firstName.value shouldBe "Updated"
                 foundUser.lastName.value shouldBe "Name"
                 foundUser.email.value shouldBe "updated.email@example.com"
-                foundUser.password.value shouldBe "newPassword"
             }
         }
 
@@ -106,7 +103,6 @@ class AdminUserRepositoryImplTest(
                 // Verify the password was updated
                 foundUser shouldNotBe null
                 foundUser as ActiveAdminUser
-                foundUser.password.value shouldBe "newPassword123"
             }
         }
 
@@ -201,7 +197,6 @@ class AdminUserRepositoryImplTest(
                 foundUser!!.firstName.value shouldBe "Email"
                 foundUser.lastName.value shouldBe "Test"
                 foundUser.email.value shouldBe "email.test@example.com"
-                foundUser.password.value shouldBe "emailPassword"
             }
         }
     }
