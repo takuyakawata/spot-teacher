@@ -28,7 +28,6 @@ class AuthUserRepositoryImplTest(
                     email = email,
                     password = password
                 )
-                val encodePassword = passwordEncoder.encode(password.value)
 
                 // Act
                 val authUser = repository.findByEmail(email)
