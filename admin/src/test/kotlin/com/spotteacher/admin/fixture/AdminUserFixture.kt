@@ -7,6 +7,7 @@ import com.spotteacher.admin.feature.adminUser.domain.AdminUserRepository
 import com.spotteacher.admin.shared.domain.Password
 import com.spotteacher.domain.EmailAddress
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Component
 
 @Component
@@ -14,6 +15,9 @@ class AdminUserFixture {
 
     @Autowired
     private lateinit var  repository: AdminUserRepository
+
+    @Autowired
+    private lateinit var  passwordEncoder: PasswordEncoder
 
     private var adminUserIdCount = 1L
 
@@ -43,7 +47,9 @@ class AdminUserFixture {
             email = email,
         )
 
-        repository.create(adminUser, Password("pass1234").value)
+        val hashedPassword = passwordEncoder.encode(password.value)
+
+        repository.create(adminUser, hashedPassword)
         return adminUser
     }
 }
