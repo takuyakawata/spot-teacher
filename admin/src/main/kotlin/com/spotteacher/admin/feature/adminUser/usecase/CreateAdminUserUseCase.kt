@@ -2,6 +2,8 @@ package com.spotteacher.admin.feature.adminUser.usecase
 
 import com.spotteacher.admin.feature.adminUser.domain.ActiveAdminUser
 import com.spotteacher.admin.feature.adminUser.domain.AdminUser
+import com.spotteacher.admin.feature.adminUser.domain.AdminUserCreator
+import com.spotteacher.admin.feature.adminUser.domain.AdminUserError
 import com.spotteacher.admin.feature.adminUser.domain.AdminUserName
 import com.spotteacher.admin.feature.adminUser.domain.AdminUserRepository
 import com.spotteacher.admin.shared.domain.Password
@@ -18,33 +20,22 @@ data class CreateAdminUserUseCaseInput(
     val confirmPassword: Password,
 )
 
-sealed interface CreateAdminUserUseCaseOutput
-data class CreateAdminUserUseCaseSuccess(val adminUser: AdminUser) : CreateAdminUserUseCaseOutput
-data class CreateAdminUserUseCaseError(val message: String) : CreateAdminUserUseCaseOutput
-
 @UseCase
 class CreateAdminUserUseCase(
-    private val adminUserRepository: AdminUserRepository,
-    private val passwordEncoder: PasswordEncoder
+    private val adminUserCreator: AdminUserCreator
 ) {
     @TransactionCoroutine
-    suspend fun call(input: CreateAdminUserUseCaseInput): CreateAdminUserUseCaseOutput {
-        // Validate password confirmation
-        if (input.password.value != input.confirmPassword.value) {
-            return CreateAdminUserUseCaseError("Password and confirmation do not match")
+    suspend fun call(input: CreateAdminUserUseCaseInput): Result<Unit>{
+        require(input.password.value == input.confirmPassword.value){"Password and confirmation do not match"}
+
+        return runCatching {
+            val adminUser = ActiveAdminUser.create(
+                firstName = input.firstName,
+                lastName = input.lastName,
+                email = input.email,
+            )
+
+            adminUserCreator.createAdminUser(adminUser, input.password)
         }
-
-        val hashedPassword = passwordEncoder.encode(input.password.value)
-
-        // Create admin user
-        val adminUser = ActiveAdminUser.create(
-            firstName = input.firstName,
-            lastName = input.lastName,
-            email = input.email,
-        )
-
-        adminUserRepository.create(adminUser, hashedPassword)
-
-        return CreateAdminUserUseCaseSuccess(adminUser)
     }
 }

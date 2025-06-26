@@ -3,9 +3,11 @@ server:
 
 jwt:
   # 環境変数 JWT_SECRET から値を取得。なければ開発用のデフォルト値を使用。
-  secret: ${JWT_SECRET:your-super-secret-and-long-base64-encoded-string-for-dev-environment}
+  secret: ${JWT_SECRET:YS12ZXJ5LXNlY3VyZS1kZXYtc2VjcmV0LWtleS0zMi1ieXRlcw==}
   # アクセストークンの有効期限 (ミリ秒単位。この例では1時間)
   access-token-expiration-ms: 3600000
+  refresh-token-expiration-ms: 2592000000
+
 
 spring:
   r2dbc:

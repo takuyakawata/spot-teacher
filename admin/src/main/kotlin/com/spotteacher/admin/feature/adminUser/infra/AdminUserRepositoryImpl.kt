@@ -36,7 +36,7 @@ class AdminUserRepositoryImpl(
                 USERS.ID.eq(adminUser.userId)
             )
 
-            userRecord?.let { toEntity(adminUser, it) }
+            userRecord?.let { toEntity(it) }
         }
     }
 
@@ -53,7 +53,7 @@ class AdminUserRepositoryImpl(
             USERS.ID.eq(adminUser.userId)
         ) ?: return null
 
-        return toEntity(adminUser, userRecord)
+        return toEntity(userRecord)
     }
 
     override suspend fun create(user: ActiveAdminUser,password: String):ActiveAdminUser {
@@ -144,27 +144,31 @@ class AdminUserRepositoryImpl(
         ) ?: return null
 
         // Create and return the admin user if it's active
-        val user = toEntity(adminUser, userRecord)
-        return user as? ActiveAdminUser
+        val user = toEntity(userRecord)
+        return user
     }
 
-    private fun toEntity(adminUser: AdminUsersRecord, user: UsersRecord): AdminUser {
+    override suspend fun findByEmail(emailAddress: EmailAddress): ActiveAdminUser? {
+        val user = dslContext.get().nonBlockingFetchOne(
+            USERS,
+            USERS.EMAIL.eq(emailAddress.value),
+        )?: return null
+
+        val admin = dslContext.get().nonBlockingFetchOne(
+            ADMIN_USERS,
+            ADMIN_USERS.USER_ID.eq(user.id)
+        ) ?: return null
+
+        return toEntity(user)
+    }
+
+    private fun toEntity(user: UsersRecord): ActiveAdminUser{
         // Check if this is an active user (has valid email)
-        return if (user.email.contains("inactive-")) {
-            // Inactive user
-            InActiveAdminUser(
-                id = AdminUserId(adminUser.id!!),
-                firstName = AdminUserName(user.firstName),
-                lastName = AdminUserName(user.lastName)
-            )
-        } else {
-            // Active user
-            ActiveAdminUser(
-                id = AdminUserId(adminUser.id!!),
+        return ActiveAdminUser(
+                id = AdminUserId(user.id!!),
                 firstName = AdminUserName(user.firstName),
                 lastName = AdminUserName(user.lastName),
                 email = EmailAddress(user.email),
             )
         }
     }
-}

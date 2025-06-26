@@ -43,7 +43,11 @@ union CreateCompanyMutationOutput = CreateCompanyMutationError | CreateCompanyMu
 
 union CreateDraftLessonPlanMutationOutput = CreateDraftLessonPlanMutationError | CreateDraftLessonPlanMutationSuccess
 
+union CreateEducationMutationOutput = CreateEducationMutationError | CreateEducationMutationSuccess
+
 union DeleteCompanyMutationOutput = DeleteCompanyMutationError | DeleteCompanyMutationSuccess
+
+union DeleteEducationMutationOutput = DeleteEducationMutationError | DeleteEducationMutationSuccess
 
 union DeleteProductMutationOutput = DeleteProductMutationError | DeleteProductMutationSuccess
 
@@ -55,6 +59,8 @@ union LessonPlanQueryOutput = LessonPlanQueryErrorOutput | LessonPlanQuerySucces
 
 union UpdateCompanyMutationOutput = UpdateCompanyMutationError | UpdateCompanyMutationSuccess
 
+union UpdateEducationMutationOutput = UpdateEducationMutationError | UpdateEducationMutationSuccess
+
 union UpdateLessonPlanMutationOutput = UpdateLessonPlanMutationError | UpdateLessonPlanMutationSuccess
 
 union UpdateLessonPlanStatusMutationOutput = UpdateLessonPlanStatusMutationError | UpdateLessonPlanStatusMutationSuccess
@@ -62,6 +68,15 @@ union UpdateLessonPlanStatusMutationOutput = UpdateLessonPlanStatusMutationError
 union UpdatePassWordMutationOutput = UpdatePassWordMutationError | UpdatePassWordMutationSuccess
 
 union UpdateProductMutationOutput = UpdateProductMutationError | UpdateProductMutationSuccess
+
+type AdminUser {
+  email: String!
+  firstName: String!
+  id: ID!
+  isActive: Boolean!
+  lastName: String!
+  password: String!
+}
 
 type Company {
   buildingName: String
@@ -86,7 +101,7 @@ type CompanyQuerySuccess {
 }
 
 type CreateAdminUserMutationError {
-  code: String!
+  code: AdminUserErrorCode!
   message: String!
 }
 
@@ -112,6 +127,15 @@ type CreateDraftLessonPlanMutationSuccess {
   result: Unit!
 }
 
+type CreateEducationMutationError {
+  code: EducationErrorCode!
+  message: String!
+}
+
+type CreateEducationMutationSuccess {
+  result: Unit!
+}
+
 type CreateSchoolPayload {
   errors: [String!]!
   school: School
@@ -123,6 +147,15 @@ type DeleteCompanyMutationError {
 }
 
 type DeleteCompanyMutationSuccess {
+  result: Unit!
+}
+
+type DeleteEducationMutationError {
+  code: EducationErrorCode!
+  message: String!
+}
+
+type DeleteEducationMutationSuccess {
   result: Unit!
 }
 
@@ -148,6 +181,15 @@ type DraftLessonPlan implements LessonPlan {
   lessonType: LessonType
   location: String
   title: String
+}
+
+type EducationType {
+  displayOrder: Int!
+  grades: [Grade!]!
+  id: ID!
+  isActive: Boolean!
+  name: String!
+  subjects: [Subject!]!
 }
 
 type FindProductQueryError {
@@ -188,14 +230,17 @@ type Mutation {
   createAdminUser(input: CreateAdminUserMutationInput!): CreateAdminUserMutationOutput!
   createCompany(input: CreateCompanyMutationInput!): CreateCompanyMutationOutput!
   createDraftLessonPlan(input: CreateDraftLessonPlanMutationInput!): CreateDraftLessonPlanMutationOutput!
+  createEducation(name: NonEmptyString!): CreateEducationMutationOutput!
   createProduct(input: CreateProductMutationInput!): Unit!
   createSchool(input: CreateSchoolInput!): CreateSchoolPayload!
   createUploadFiles(input: CreateUploadFilesMutationInput!): [uploadFile!]!
   deleteCompany(id: ID!): DeleteCompanyMutationOutput!
+  deleteEducation(id: ID!): DeleteEducationMutationOutput!
   deleteProduct(input: DeleteProductMutationInput!): DeleteProductMutationOutput!
   deleteSchool(input: DeleteSchoolInput!): DeleteSchoolPayload!
   deleteUploadFiles(input: DeleteUploadFilesMutationInput!): Unit!
   updateCompany(input: UpdateCompanyMutationInput!): UpdateCompanyMutationOutput!
+  updateEducation(input: UpdateEducationMutationInput!): UpdateEducationMutationOutput!
   updateLessonPlan(input: UpdateLessonPlanMutationInput!): UpdateLessonPlanMutationOutput!
   updateLessonPlanStatus(id: ID!): UpdateLessonPlanStatusMutationOutput!
   updatePassword(input: UpdatePasswordMutationInput!): UpdatePassWordMutationOutput!
@@ -227,8 +272,11 @@ type PublishedLessonPlan implements LessonPlan {
 }
 
 type Query {
+  adminUsers: [AdminUser!]!
   companies: [Company!]!
   company(id: ID!): CompanyQueryOutput!
+  educationFindByName(name: NonEmptyString!): EducationType
+  educationGetAll: [EducationType!]!
   hello(name: String): String!
   lessonPlan(id: ID!): LessonPlanQueryOutput!
   ping: String!
@@ -257,6 +305,15 @@ type UpdateCompanyMutationError {
 }
 
 type UpdateCompanyMutationSuccess {
+  result: Unit!
+}
+
+type UpdateEducationMutationError {
+  code: EducationErrorCode!
+  message: String!
+}
+
+type UpdateEducationMutationSuccess {
   result: Unit!
 }
 
@@ -315,6 +372,23 @@ enum AdminUserErrorCode {
 enum CompanyErrorCode {
   COMPANY_ALREADY_EXISTS
   COMPANY_NOT_FOUND
+}
+
+enum EducationErrorCode {
+  EDUCATION_ALREADY_EXISTS
+  EDUCATION_NOT_FOUND
+}
+
+enum Grade {
+  ELEMENTARY_1
+  ELEMENTARY_2
+  ELEMENTARY_3
+  ELEMENTARY_4
+  ELEMENTARY_5
+  ELEMENTARY_6
+  JUNIOR_HIGH_1
+  JUNIOR_HIGH_2
+  JUNIOR_HIGH_3
 }
 
 enum LessonPlanErrorCode {
@@ -386,6 +460,25 @@ enum SchoolCategory {
   JUNIOR_HIGH
 }
 
+enum Subject {
+  ARITHMETIC
+  ART
+  ELEMENTARY_ART_AND_CRAFTS
+  ENGLISH
+  FOREIGN_LANGUAGE
+  FOREIGN_LANGUAGE_ACTIVITIES
+  HOMEMAKING
+  INTEGRATED_STUDIES
+  JAPANESE
+  LIFE_SKILLS
+  MATH
+  MORAL_EDUCATION
+  MUSIC
+  PHYSICAL_EDUCATION
+  SCIENCE
+  SOCIAL_STUDIES
+}
+
 enum UploadFileDirectoryFeatureName {
   REAL_ESTATE
   REPORT
@@ -434,10 +527,13 @@ input CreateDraftLessonPlanMutationInput {
   annualMaxExecutions: Int
   companyId: ID!
   description: NonEmptyString
+  educations: [ID!]!
+  grades: [Grade!]!
   lessonPlanDates: [LessonPlanDateInput!]
   lessonType: LessonType
   location: NonEmptyString
   publish: Boolean!
+  subjects: [Subject!]!
   title: NonEmptyString
 }
 
@@ -501,13 +597,23 @@ input UpdateCompanyMutationInput {
   url: NonEmptyString
 }
 
+input UpdateEducationMutationInput {
+  displayOrder: Int
+  id: ID!
+  isActive: Boolean
+  name: NonEmptyString
+}
+
 input UpdateLessonPlanMutationInput {
   annualMaxExecutions: Int
   description: NonEmptyString
+  educations: [ID!]!
+  grades: [Grade!]!
   id: ID!
   images: [ID!]!
   lessonPlanDates: [LessonPlanDateInput!]
   location: NonEmptyString
+  subjects: [Subject!]!
   title: NonEmptyString
   type: LessonType
 }

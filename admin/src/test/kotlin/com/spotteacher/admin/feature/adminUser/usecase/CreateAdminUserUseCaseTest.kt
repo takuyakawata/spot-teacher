@@ -1,27 +1,23 @@
 package com.spotteacher.admin.feature.adminUser.usecase
 
 import com.spotteacher.admin.feature.adminUser.domain.ActiveAdminUser
+import com.spotteacher.admin.feature.adminUser.domain.AdminUserCreator
 import com.spotteacher.admin.feature.adminUser.domain.AdminUserName
-import com.spotteacher.admin.feature.adminUser.domain.AdminUserRepository
-import com.spotteacher.admin.fixture.AdminUserFixture
 import com.spotteacher.admin.shared.domain.Password
 import com.spotteacher.domain.EmailAddress
+import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.DescribeSpec
 import io.kotest.matchers.shouldBe
-import io.kotest.matchers.types.shouldBeInstanceOf
+import io.kotest.matchers.string.shouldContain
 import io.mockk.coEvery
-import org.mockito.Mockito.mock
+import io.mockk.mockk
+import kotlinx.coroutines.test.runTest
 
 class CreateAdminUserUseCaseTest : DescribeSpec({
     describe("CreateAdminUserUseCase") {
         // Arrange
-        val adminUserRepository = mock<AdminUserRepository>()
-        val passwordEncoder = mock<org.springframework.security.crypto.password.PasswordEncoder>()
-        val useCase = CreateAdminUserUseCase(
-            adminUserRepository = adminUserRepository,
-            passwordEncoder = passwordEncoder
-        )
-        val adminUser = AdminUserFixture().buildActiveAdminUser()
+        val adminUserCreator = mockk<AdminUserCreator>()
+        val useCase = CreateAdminUserUseCase(adminUserCreator)
 
         // Test data
         val firstName = AdminUserName("John")
@@ -31,49 +27,54 @@ class CreateAdminUserUseCaseTest : DescribeSpec({
         val confirmPassword = Password("password123")
         val mismatchPassword = Password("different123")
 
-        describe("execute") {
+        describe("call") {
             context("when passwords match") {
                 it("should create a new admin user and return success") {
-                    // Arrange
-                    coEvery { adminUserRepository.create(adminUser, password.value)} returns adminUser
-
-                    // Act
-                    val result = useCase.call(
-                        CreateAdminUserUseCaseInput(
+                    runTest {
+                        // Arrange
+                        val expectedAdminUser = ActiveAdminUser.create(
                             firstName = firstName,
                             lastName = lastName,
-                            email = email,
-                            password = password,
-                            confirmPassword = confirmPassword
+                            email = email
                         )
-                    )
 
-                    // Assert
-                    result.shouldBeInstanceOf<CreateAdminUserUseCaseSuccess>()
-                    val adminUser = result.adminUser
-                    adminUser.shouldBeInstanceOf<ActiveAdminUser>()
-                    adminUser.firstName shouldBe firstName
-                    adminUser.lastName shouldBe lastName
-                    adminUser.email shouldBe email
+                        coEvery { adminUserCreator.createAdminUser(any(), password) } returns Unit
+
+                        // Act
+                        val result = useCase.call(
+                            CreateAdminUserUseCaseInput(
+                                firstName = firstName,
+                                lastName = lastName,
+                                email = email,
+                                password = password,
+                                confirmPassword = confirmPassword
+                            )
+                        )
+
+                        // Assert
+                        result.isSuccess shouldBe true
+                    }
                 }
             }
 
             context("when passwords don't match") {
-                it("should return an error") {
-                    // Act
-                    val result = useCase.call(
-                        CreateAdminUserUseCaseInput(
-                            firstName = firstName,
-                            lastName = lastName,
-                            email = email,
-                            password = password,
-                            confirmPassword = mismatchPassword
-                        )
-                    )
+                it("should throw IllegalArgumentException") {
+                    runTest {
+                        // Act & Assert
+                        val exception = shouldThrow<IllegalArgumentException> {
+                            useCase.call(
+                                CreateAdminUserUseCaseInput(
+                                    firstName = firstName,
+                                    lastName = lastName,
+                                    email = email,
+                                    password = password,
+                                    confirmPassword = mismatchPassword
+                                )
+                            )
+                        }
 
-                    // Assert
-                    result.shouldBeInstanceOf<CreateAdminUserUseCaseError>()
-                    result.message shouldBe "Password and confirmation do not match"
+                        exception.message shouldContain "Password and confirmation do not match"
+                    }
                 }
             }
         }
