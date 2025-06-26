@@ -21,30 +21,26 @@ import org.springframework.security.web.server.util.matcher.PathPatternParserSer
 @EnableReactiveMethodSecurity
 class SecurityConfig {
 
-    // 認証エンドポイント用フィルターチェーン (優先度1)
-    @Bean
-    @Order(1)
-    fun authEndpointsFilterChain(http: ServerHttpSecurity): SecurityWebFilterChain {
-        return http
-            // この設定が適用されるパスを限定
-            .securityMatcher(PathPatternParserServerWebExchangeMatcher("/api/admin/auth/**"))
-            .authorizeExchange { exchanges ->
-                // "/api/auth/**" へのリクエストはすべて許可
-                exchanges.anyExchange().permitAll()
-            }
-            // 認証APIではCSRFは不要
-            .csrf(ServerHttpSecurity.CsrfSpec::disable)
-            .build()
-    }
+//    // 認証エンドポイント用フィルターチェーン (優先度1)
+//    @Bean
+//    @Order(1)
+//    fun authEndpointsFilterChain(http: ServerHttpSecurity): SecurityWebFilterChain {
+//        return http.securityMatcher(PathPatternParserServerWebExchangeMatcher("/api/admin/auth/**"))
+//            .authorizeExchange { exchanges ->
+//                // "/api/auth/**" へのリクエストはすべて許可
+//                exchanges.anyExchange().permitAll()
+//            }
+//            .csrf(ServerHttpSecurity.CsrfSpec::disable)
+//            .build()
+//    }
 
     // API保護用フィルターチェーン (優先度2)
     @Bean
-    @Order(2)
+    @Order(1)
     fun apiEndpointsFilterChain(http: ServerHttpSecurity, jwtDecoder: ReactiveJwtDecoder): SecurityWebFilterChain {
-        return http
-            // /api/auth/** 以外に適用
-            .authorizeExchange { exchanges ->
+        return http.authorizeExchange { exchanges ->
                 exchanges
+                    .pathMatchers("/api/admin/auth/**").permitAll()
                     .pathMatchers("/actuator/health").permitAll()
                     .pathMatchers("/graphql").permitAll()
                     .anyExchange().authenticated()
@@ -64,10 +60,7 @@ class SecurityConfig {
                                     .anyExchange().authenticated()
                             }
                             .oauth2ResourceServer { oauth2 ->
-                                oauth2.jwt { jwt ->
-                                    // カスタムのJWTデコーダーを設定
-                                    jwt.jwtDecoder(jwtDecoder)
-                                }
+                                oauth2.jwt { jwt -> jwt.jwtDecoder(jwtDecoder) }
                             }
                             .csrf(ServerHttpSecurity.CsrfSpec::disable)
                             .build()
