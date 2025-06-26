@@ -13,31 +13,27 @@ data class ActiveAdminUser(
     override val id: AdminUserId,
     override val firstName: AdminUserName,
     override val lastName: AdminUserName,
-    val email: EmailAddress,
-    val password: Password,
+    val email: EmailAddress
 ) : AdminUser {
     companion object {
         fun create(
             firstName: AdminUserName,
             lastName: AdminUserName,
             email: EmailAddress,
-            password: Password,
         ) = ActiveAdminUser(
             id = AdminUserId(0),
             firstName = firstName,
             lastName = lastName,
             email = email,
-            password = password,
         )
     }
 }
 
-fun ActiveAdminUser.changePassword(password: Password) = ActiveAdminUser(
+fun ActiveAdminUser.changePassword() = ActiveAdminUser(
     id = this.id,
     firstName = this.firstName,
     lastName = this.lastName,
     email = this.email,
-    password = password,
 )
 
 fun ActiveAdminUser.toInActiveAdminUser() = InActiveAdminUser(
@@ -70,12 +66,11 @@ data class InActiveAdminUser(
     }
 }
 
-fun InActiveAdminUser.toActiveAdminUser(email: EmailAddress, password: Password) = ActiveAdminUser(
+fun InActiveAdminUser.toActiveAdminUser(email: EmailAddress) = ActiveAdminUser(
     id = this.id,
     firstName = this.firstName,
     lastName = this.lastName,
     email = email,
-    password = password,
 )
 
 // Entity のIDは
@@ -93,8 +88,6 @@ value class AdminUserName(val value: String) {
     }
 }
 
-@JvmInline
-value class Password(val value: String)
 
 data class AdminUserError(
     val code: AdminUserErrorCode,

@@ -4,13 +4,19 @@ import com.expediagroup.graphql.generator.scalars.ID
 import com.expediagroup.graphql.server.operations.Mutation
 import com.spotteacher.admin.feature.lessonPlan.domain.LessonLocation
 import com.spotteacher.admin.feature.lessonPlan.domain.LessonPlanDescription
+import com.spotteacher.admin.feature.lessonPlan.domain.LessonPlanEducations
 import com.spotteacher.admin.feature.lessonPlan.domain.LessonPlanErrorCode
+import com.spotteacher.admin.feature.lessonPlan.domain.LessonPlanGrades
 import com.spotteacher.admin.feature.lessonPlan.domain.LessonPlanId
+import com.spotteacher.admin.feature.lessonPlan.domain.LessonPlanSubjects
 import com.spotteacher.admin.feature.lessonPlan.domain.LessonPlanTitle
 import com.spotteacher.admin.feature.lessonPlan.domain.LessonType
 import com.spotteacher.admin.feature.lessonPlan.handler.LessonPlanDateInput
 import com.spotteacher.admin.feature.lessonPlan.usecase.UpdateLessonPlanUseCase
 import com.spotteacher.admin.feature.lessonPlan.usecase.UpdateLessonPlanUseCaseInput
+import com.spotteacher.admin.feature.lessonTag.domain.EducationId
+import com.spotteacher.admin.feature.lessonTag.domain.Grade
+import com.spotteacher.admin.feature.lessonTag.domain.Subject
 import com.spotteacher.admin.feature.uploadFile.domain.UploadFileId
 import com.spotteacher.graphql.NonEmptyString
 import com.spotteacher.graphql.toDomainId
@@ -24,7 +30,10 @@ data class UpdateLessonPlanMutationInput(
     val type: LessonType?,
     val location: NonEmptyString?,
     val annualMaxExecutions: Int?,
-    val lessonPlanDates: List<LessonPlanDateInput>?
+    val lessonPlanDates: List<LessonPlanDateInput>?,
+    val educations: List<ID>,
+    val subjects: List<Subject>,
+    val grades: List<Grade>
 )
 
 sealed interface UpdateLessonPlanMutationOutput
@@ -47,7 +56,10 @@ class UpdateLessonPlanMutation(
                 lessonType = input.type,
                 location = input.location?.let { LessonLocation(it.value) },
                 annualMaxExecutions = input.annualMaxExecutions,
-                images = input.images.map { it.toDomainId { UploadFileId(it) } }
+                images = input.images.map { it.toDomainId { UploadFileId(it) } },
+                educations = LessonPlanEducations(input.educations.map{it.toDomainId(::EducationId)}.toSet()),
+                subjects = LessonPlanSubjects(input.subjects.toSet()),
+                grades = LessonPlanGrades(input.grades.toSet()),
             )
         ).fold(
             ifLeft = { UpdateLessonPlanMutationError(it.message, it.code) },

@@ -108,7 +108,10 @@ class LessonPlanRepositoryImplTest(
                     lessonType = draftLessonPlan.lessonType!!,
                     location = draftLessonPlan.location!!,
                     annualMaxExecutions = draftLessonPlan.annualMaxExecutions!!,
-                    lessonPlanDates = draftLessonPlan.lessonPlanDates!!
+                    lessonPlanDates = draftLessonPlan.lessonPlanDates!!,
+                    educations = draftLessonPlan.educations,
+                    subjects = draftLessonPlan.subjects,
+                    grades = draftLessonPlan.grades,
                 )
 
                 // Update status to published
@@ -160,7 +163,10 @@ class LessonPlanRepositoryImplTest(
                     lessonType = draftLessonPlan.lessonType!!,
                     location = draftLessonPlan.location!!,
                     annualMaxExecutions = draftLessonPlan.annualMaxExecutions!!,
-                    lessonPlanDates = draftLessonPlan.lessonPlanDates!!
+                    lessonPlanDates = draftLessonPlan.lessonPlanDates!!,
+                    educations = draftLessonPlan.educations,
+                    subjects = draftLessonPlan.subjects,
+                    grades = draftLessonPlan.grades,
                 )
 
                 // Update status to published
@@ -200,7 +206,10 @@ class LessonPlanRepositoryImplTest(
                     lessonType = draftLessonPlan.lessonType!!,
                     location = draftLessonPlan.location!!,
                     annualMaxExecutions = draftLessonPlan.annualMaxExecutions!!,
-                    lessonPlanDates = draftLessonPlan.lessonPlanDates!!
+                    lessonPlanDates = draftLessonPlan.lessonPlanDates!!,
+                    educations = draftLessonPlan.educations,
+                    subjects = draftLessonPlan.subjects,
+                    grades = draftLessonPlan.grades,
                 )
 
                 // Update status to published
@@ -217,7 +226,10 @@ class LessonPlanRepositoryImplTest(
                     lessonType = publishedLessonPlan.lessonType,
                     location = publishedLessonPlan.location,
                     annualMaxExecutions = publishedLessonPlan.annualMaxExecutions,
-                    lessonPlanDates = publishedLessonPlan.lessonPlanDates
+                    lessonPlanDates = publishedLessonPlan.lessonPlanDates,
+                    educations = draftLessonPlan.educations,
+                    subjects = draftLessonPlan.subjects,
+                    grades = draftLessonPlan.grades,
                 )
 
                 // Update status to draft

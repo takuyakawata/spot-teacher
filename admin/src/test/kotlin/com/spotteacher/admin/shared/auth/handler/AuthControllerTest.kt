@@ -7,7 +7,6 @@ import org.springframework.http.MediaType
 import org.springframework.test.web.reactive.server.WebTestClient
 
 // TODO 500 errorだが、テスト実行はできているので、後で調査する
-
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureWebTestClient
 class AuthControllerTest(
@@ -34,7 +33,7 @@ class AuthControllerTest(
                 // --- 準備 (Arrange) ---
                 val loginRequest = LoginRequest("wrong@example.com", "wrong_password")
                 // --- 実行 (Act) & 検証 (Assert) ---
-                webTestClient.post().uri("/api/auth/login")
+                webTestClient.post().uri("/api/admin/auth/login")
                     .contentType(MediaType.APPLICATION_JSON)
                     .bodyValue(loginRequest)
                     .exchange()

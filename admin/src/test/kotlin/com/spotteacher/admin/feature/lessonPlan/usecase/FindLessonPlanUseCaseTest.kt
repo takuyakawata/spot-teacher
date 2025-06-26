@@ -7,13 +7,19 @@ import com.spotteacher.admin.feature.lessonPlan.domain.DraftLessonPlan
 import com.spotteacher.admin.feature.lessonPlan.domain.LessonLocation
 import com.spotteacher.admin.feature.lessonPlan.domain.LessonPlanDate
 import com.spotteacher.admin.feature.lessonPlan.domain.LessonPlanDescription
+import com.spotteacher.admin.feature.lessonPlan.domain.LessonPlanEducations
 import com.spotteacher.admin.feature.lessonPlan.domain.LessonPlanError
 import com.spotteacher.admin.feature.lessonPlan.domain.LessonPlanErrorCode
+import com.spotteacher.admin.feature.lessonPlan.domain.LessonPlanGrades
 import com.spotteacher.admin.feature.lessonPlan.domain.LessonPlanId
 import com.spotteacher.admin.feature.lessonPlan.domain.LessonPlanRepository
+import com.spotteacher.admin.feature.lessonPlan.domain.LessonPlanSubjects
 import com.spotteacher.admin.feature.lessonPlan.domain.LessonPlanTitle
 import com.spotteacher.admin.feature.lessonPlan.domain.LessonType
 import com.spotteacher.admin.feature.lessonPlan.domain.PublishedLessonPlan
+import com.spotteacher.admin.feature.lessonTag.domain.EducationId
+import com.spotteacher.admin.feature.lessonTag.domain.Grade
+import com.spotteacher.admin.feature.lessonTag.domain.Subject
 import io.kotest.core.spec.style.DescribeSpec
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.types.shouldBeTypeOf
@@ -45,6 +51,24 @@ class FindLessonPlanUseCaseTest : DescribeSpec({
         )
         val lessonPlanDates = listOf(lessonPlanDate).toNonEmptyListOrNull()!!
 
+        val educations = LessonPlanEducations(
+            setOf(
+                EducationId(1),
+            )
+        )
+
+        val subjects = LessonPlanSubjects(
+            setOf(
+                Subject.SOCIAL_STUDIES,
+            )
+        )
+
+        val grades = LessonPlanGrades(
+            setOf(
+                Grade.ELEMENTARY_1
+            )
+        )
+
         describe("call") {
             it("should return Right with PublishedLessonPlan when found") {
                 // Arrange
@@ -58,7 +82,10 @@ class FindLessonPlanUseCaseTest : DescribeSpec({
                     lessonType = LessonType.ONLINE,
                     location = LessonLocation("Test Location"),
                     annualMaxExecutions = 10,
-                    lessonPlanDates = lessonPlanDates
+                    lessonPlanDates = lessonPlanDates,
+                    educations = educations,
+                    subjects = subjects,
+                    grades = grades,
                 )
 
                 coEvery { lessonPlanRepository.findById(lessonPlanId) } returns publishedLessonPlan
@@ -85,7 +112,10 @@ class FindLessonPlanUseCaseTest : DescribeSpec({
                     lessonType = LessonType.OFFLINE,
                     location = LessonLocation("Draft Location"),
                     annualMaxExecutions = 5,
-                    lessonPlanDates = lessonPlanDates
+                    lessonPlanDates = lessonPlanDates,
+                    educations = educations,
+                    subjects = subjects,
+                    grades = grades,
                 )
 
                 coEvery { lessonPlanRepository.findById(lessonPlanId) } returns draftLessonPlan

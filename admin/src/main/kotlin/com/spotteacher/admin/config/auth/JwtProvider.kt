@@ -31,6 +31,4 @@ class JwtProvider(
             .signWith(secretKey)
             .compact()
     }
-
-    // 他にRefreshToken生成や、トークン検証メソッドなどをここに実装
 }

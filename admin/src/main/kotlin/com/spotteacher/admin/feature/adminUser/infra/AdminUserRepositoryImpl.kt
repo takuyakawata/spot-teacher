@@ -6,19 +6,21 @@ import com.spotteacher.admin.feature.adminUser.domain.AdminUserId
 import com.spotteacher.admin.feature.adminUser.domain.AdminUserName
 import com.spotteacher.admin.feature.adminUser.domain.AdminUserRepository
 import com.spotteacher.admin.feature.adminUser.domain.InActiveAdminUser
-import com.spotteacher.admin.feature.adminUser.domain.Password
+import com.spotteacher.admin.shared.domain.Password
 import com.spotteacher.admin.shared.infra.TransactionAwareDSLContext
 import com.spotteacher.domain.EmailAddress
 import com.spotteacher.extension.nonBlockingFetch
 import com.spotteacher.extension.nonBlockingFetchOne
 import com.spotteacher.infra.db.enums.UsersRole
 import com.spotteacher.infra.db.tables.AdminUsers.Companion.ADMIN_USERS
+import com.spotteacher.infra.db.tables.UserCredentials.Companion.USER_CREDENTIALS
 import com.spotteacher.infra.db.tables.Users.Companion.USERS
 import com.spotteacher.infra.db.tables.records.AdminUsersRecord
 import com.spotteacher.infra.db.tables.records.UsersRecord
 import kotlinx.coroutines.reactive.awaitFirstOrNull
 import kotlinx.coroutines.reactive.awaitLast
 import org.springframework.stereotype.Repository
+import java.time.LocalDateTime
 import java.util.UUID
 
 @Repository
@@ -54,30 +56,40 @@ class AdminUserRepositoryImpl(
         return toEntity(adminUser, userRecord)
     }
 
-    override suspend fun create(user: ActiveAdminUser):ActiveAdminUser {
-                val userId = dslContext.get().insertInto(
-                    USERS,
-                    USERS.UUID,
-                    USERS.FIRST_NAME,
-                    USERS.LAST_NAME,
-                    USERS.EMAIL,
-                    USERS.PASSWORD_HASH,
-                    USERS.ROLE
-                ).values(
-                    UUID.randomUUID().toString(),
-                    user.firstName.value,
-                    user.lastName.value,
-                    user.email.value,
-                    user.password.value,
-                    UsersRole.ADMIN
-                ).returning(USERS.ID).awaitFirstOrNull()?.id!!
+    override suspend fun create(user: ActiveAdminUser,password: String):ActiveAdminUser {
+            val userId = dslContext.get().insertInto(
+                USERS,
+                USERS.UUID,
+                USERS.FIRST_NAME,
+                USERS.LAST_NAME,
+                USERS.EMAIL,
+                USERS.ROLE
+            ).values(
+                UUID.randomUUID().toString(),
+                user.firstName.value,
+                user.lastName.value,
+                user.email.value,
+                UsersRole.ADMIN
+            ).returning(USERS.ID).awaitFirstOrNull()?.id!!
 
-                dslContext.get().insertInto(
-                    ADMIN_USERS,
-                    ADMIN_USERS.USER_ID
-                ).values(
-                    userId
-                ).awaitLast()
+            dslContext.get().insertInto(
+                ADMIN_USERS,
+                ADMIN_USERS.USER_ID
+            ).values(
+                userId
+            ).awaitLast()
+
+            //user credentials
+            dslContext.get().insertInto(
+                USER_CREDENTIALS,
+                USER_CREDENTIALS.USER_ID,
+                USER_CREDENTIALS.PASSWORD_HASH,
+                USER_CREDENTIALS.LAST_PASSWORD_CHANGE_AT
+            ).values(
+                userId,
+                password,
+                LocalDateTime.now()
+            ).awaitLast()
 
         return user.copy(id = AdminUserId(userId))
     }
@@ -92,12 +104,8 @@ class AdminUserRepositoryImpl(
     }
 
     override suspend fun updatePassword(password: Password) {
-        dslContext.get().update(USERS)
-            .set(USERS.PASSWORD_HASH, password.value)
-            .where(USERS.ROLE.eq(UsersRole.ADMIN))
-            .awaitLast()
+        TODO("Impl")
     }
-
 
     override suspend fun delete(id: AdminUserId) {
         // First find the user_id from admin_users table
@@ -156,7 +164,6 @@ class AdminUserRepositoryImpl(
                 firstName = AdminUserName(user.firstName),
                 lastName = AdminUserName(user.lastName),
                 email = EmailAddress(user.email),
-                password = Password(user.passwordHash)
             )
         }
     }

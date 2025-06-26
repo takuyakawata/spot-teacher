@@ -4,14 +4,20 @@ import arrow.core.Either
 import com.spotteacher.admin.feature.lessonPlan.domain.DraftLessonPlan
 import com.spotteacher.admin.feature.lessonPlan.domain.LessonLocation
 import com.spotteacher.admin.feature.lessonPlan.domain.LessonPlanDescription
+import com.spotteacher.admin.feature.lessonPlan.domain.LessonPlanEducations
 import com.spotteacher.admin.feature.lessonPlan.domain.LessonPlanError
 import com.spotteacher.admin.feature.lessonPlan.domain.LessonPlanErrorCode
+import com.spotteacher.admin.feature.lessonPlan.domain.LessonPlanGrades
 import com.spotteacher.admin.feature.lessonPlan.domain.LessonPlanId
 import com.spotteacher.admin.feature.lessonPlan.domain.LessonPlanRepository
+import com.spotteacher.admin.feature.lessonPlan.domain.LessonPlanSubjects
 import com.spotteacher.admin.feature.lessonPlan.domain.LessonPlanTitle
 import com.spotteacher.admin.feature.lessonPlan.domain.LessonType
 import com.spotteacher.admin.feature.lessonPlan.domain.PublishedLessonPlan
 import com.spotteacher.admin.feature.lessonPlan.domain.update
+import com.spotteacher.admin.feature.lessonTag.domain.EducationId
+import com.spotteacher.admin.feature.lessonTag.domain.Grade
+import com.spotteacher.admin.feature.lessonTag.domain.Subject
 import com.spotteacher.admin.feature.uploadFile.domain.UploadFileId
 import com.spotteacher.admin.fixture.LessonPlanFixture
 import io.kotest.core.spec.style.DescribeSpec
@@ -58,6 +64,24 @@ class UpdateLessonPlanUseCaseTest : DescribeSpec({
         val updatedAnnualMaxExecutions = 15
         val updatedImages = listOf(UploadFileId(1), UploadFileId(2))
 
+        val educations = LessonPlanEducations(
+            setOf(
+                EducationId(1),
+            )
+        )
+
+        val subjects = LessonPlanSubjects(
+            setOf(
+                Subject.SOCIAL_STUDIES,
+            )
+        )
+
+        val grades = LessonPlanGrades(
+            setOf(
+                Grade.ELEMENTARY_1
+            )
+        )
+
         describe("call") {
             context("when updating a PublishedLessonPlan") {
                 context("when all specified fields") {
@@ -71,7 +95,10 @@ class UpdateLessonPlanUseCaseTest : DescribeSpec({
                             lessonType = updatedLessonType,
                             location = updatedLocation,
                             annualMaxExecutions = updatedAnnualMaxExecutions,
-                            images = updatedImages
+                            images = updatedImages,
+                            educations = educations,
+                            subjects = subjects,
+                            grades = grades
                         )
 
                         coEvery { lessonPlanRepository.update(updatedOriginalPublishedLessonPlan) } returns Unit
@@ -85,7 +112,10 @@ class UpdateLessonPlanUseCaseTest : DescribeSpec({
                                 lessonType = updatedLessonType,
                                 location = updatedLocation,
                                 annualMaxExecutions = updatedAnnualMaxExecutions,
-                                images = updatedImages
+                                images = updatedImages,
+                                educations = educations,
+                                subjects = subjects,
+                                grades = grades
                             )
                         )
 
@@ -105,7 +135,10 @@ class UpdateLessonPlanUseCaseTest : DescribeSpec({
                             lessonType = null,
                             location = null,
                             annualMaxExecutions = null,
-                            images = null
+                            images = null,
+                            educations = null,
+                            subjects = null,
+                            grades = null
                         )
 
                         coEvery { lessonPlanRepository.update(updatedOriginalPublishedLessonPlan) } returns Unit
@@ -121,7 +154,10 @@ class UpdateLessonPlanUseCaseTest : DescribeSpec({
                                 lessonType = null,
                                 location = null,
                                 annualMaxExecutions = null,
-                                images = null
+                                images = null,
+                                educations = educations,
+                                subjects = subjects,
+                                grades = grades
                             )
                         )
 
@@ -143,7 +179,10 @@ class UpdateLessonPlanUseCaseTest : DescribeSpec({
                             lessonType = updatedLessonType,
                             location = updatedLocation,
                             annualMaxExecutions = updatedAnnualMaxExecutions,
-                            images = updatedImages
+                            images = updatedImages,
+                            educations = educations,
+                            subjects = subjects,
+                            grades = grades
                         )
 
                         coEvery { lessonPlanRepository.update(updatedOriginalDraftLessonPlan) } returns Unit
@@ -159,7 +198,10 @@ class UpdateLessonPlanUseCaseTest : DescribeSpec({
                                 lessonType = updatedLessonType,
                                 location = updatedLocation,
                                 annualMaxExecutions = updatedAnnualMaxExecutions,
-                                images = updatedImages
+                                images = updatedImages,
+                                educations = educations,
+                                subjects = subjects,
+                                grades = grades
                             )
                         )
 
@@ -179,7 +221,10 @@ class UpdateLessonPlanUseCaseTest : DescribeSpec({
                             lessonType = null,
                             location = updatedLocation,
                             annualMaxExecutions = updatedAnnualMaxExecutions,
-                            images = null
+                            images = null,
+                            educations = null,
+                            subjects = null,
+                            grades = null
                         )
                         coEvery { lessonPlanRepository.update(updatedOriginalDraftLessonPlan) } returns Unit
 
@@ -194,7 +239,10 @@ class UpdateLessonPlanUseCaseTest : DescribeSpec({
                                 lessonType = null,
                                 location = updatedLocation,
                                 annualMaxExecutions = updatedAnnualMaxExecutions,
-                                images = null
+                                images = null,
+                                educations = educations,
+                                subjects = subjects,
+                                grades = grades
                             )
                         )
 
@@ -217,7 +265,10 @@ class UpdateLessonPlanUseCaseTest : DescribeSpec({
                                 lessonType = updatedLessonType,
                                 location = updatedLocation,
                                 annualMaxExecutions = updatedAnnualMaxExecutions,
-                                images = updatedImages
+                                images = updatedImages,
+                                educations = educations,
+                                subjects = subjects,
+                                grades = grades
                             )
                         )
 

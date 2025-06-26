@@ -22,7 +22,7 @@ class RefreshTokenManagerImpl(
     override suspend fun createAndSaveRefreshToken(email: EmailAddress): RefreshToken {
         val adminUser = userRepository.findByEmailAndActiveUser(email) ?: throw ResourceNotFoundException(
             clazz = AdminUser::class,
-            params = mapOf("email" to email)
+            params = mapOf("email" to email.value)
         )
 
         val newRefreshToken = RefreshToken.create(
@@ -31,6 +31,7 @@ class RefreshTokenManagerImpl(
             expiresAt =  LocalDateTime.now().plusNanos(refreshTokenExpirationMs)
         )
 
-        return refreshTokenRepository.save(newRefreshToken)
+        refreshTokenRepository.save(newRefreshToken)
+        return newRefreshToken
     }
 }

@@ -2,11 +2,11 @@ package com.spotteacher.admin.feature.adminUser.handler.mutation
 
 import com.expediagroup.graphql.server.operations.Mutation
 import com.spotteacher.admin.feature.adminUser.domain.AdminUserName
-import com.spotteacher.admin.feature.adminUser.domain.Password
 import com.spotteacher.admin.feature.adminUser.usecase.CreateAdminUserUseCase
 import com.spotteacher.admin.feature.adminUser.usecase.CreateAdminUserUseCaseError
 import com.spotteacher.admin.feature.adminUser.usecase.CreateAdminUserUseCaseInput
 import com.spotteacher.admin.feature.adminUser.usecase.CreateAdminUserUseCaseSuccess
+import com.spotteacher.admin.shared.domain.Password
 import com.spotteacher.domain.EmailAddress
 import org.springframework.stereotype.Component
 
@@ -35,10 +35,11 @@ class CreateAdminUserMutation(
             lastName = AdminUserName(input.lastName),
             email = EmailAddress(input.email),
             password = Password(input.password),
-            confirm = Password(input.confirmPassword)
+            confirmPassword = Password(input.confirmPassword)
+
         )
 
-        return when (val result = createAdminUserUseCase.execute(useCaseInput)) {
+        return when (val result = createAdminUserUseCase.call(useCaseInput)) {
             is CreateAdminUserUseCaseSuccess -> CreateAdminUserMutationSuccess(Unit)
             is CreateAdminUserUseCaseError -> CreateAdminUserMutationError(
                 message = result.message,

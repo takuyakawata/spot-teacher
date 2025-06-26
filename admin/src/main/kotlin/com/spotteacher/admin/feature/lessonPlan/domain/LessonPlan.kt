@@ -2,6 +2,9 @@ package com.spotteacher.admin.feature.lessonPlan.domain
 
 import arrow.core.Nel
 import com.spotteacher.admin.feature.company.domain.CompanyId
+import com.spotteacher.admin.feature.lessonTag.domain.EducationId
+import com.spotteacher.admin.feature.lessonTag.domain.Grade
+import com.spotteacher.admin.feature.lessonTag.domain.Subject
 import com.spotteacher.admin.feature.uploadFile.domain.UploadFileId
 import com.spotteacher.util.Identity
 import java.time.LocalDateTime
@@ -12,6 +15,9 @@ sealed interface LessonPlan {
     val companyId: CompanyId
     val images: List<UploadFileId>
     val createdAt: LocalDateTime
+    val educations : LessonPlanEducations
+    val subjects : LessonPlanSubjects
+    val grades : LessonPlanGrades
 }
 
 data class PublishedLessonPlan(
@@ -19,6 +25,9 @@ data class PublishedLessonPlan(
     override val companyId: CompanyId,
     override val images: List<UploadFileId>,
     override val createdAt: LocalDateTime,
+    override val educations: LessonPlanEducations,
+    override val subjects: LessonPlanSubjects,
+    override val grades: LessonPlanGrades,
     val title: LessonPlanTitle,
     val description: LessonPlanDescription,
     val lessonType: LessonType,
@@ -34,11 +43,17 @@ fun PublishedLessonPlan.update(
     location: LessonLocation?,
     annualMaxExecutions: Int?,
     images: List<UploadFileId>?,
+    educations: LessonPlanEducations?,
+    subjects: LessonPlanSubjects?,
+    grades: LessonPlanGrades?
 ) = PublishedLessonPlan(
     id = this.id,
     companyId = this.companyId,
     images = images ?: this.images,
     createdAt = this.createdAt,
+    educations = educations?: this.educations,
+    subjects = subjects?: this.subjects,
+    grades = grades ?:this.grades,
     title = title ?: this.title,
     description = description ?: this.description,
     lessonType = lessonType ?: this.lessonType,
@@ -57,7 +72,10 @@ fun PublishedLessonPlan.toDraftLessonPlan() = DraftLessonPlan(
     lessonType = lessonType,
     location = location,
     annualMaxExecutions = annualMaxExecutions,
-    lessonPlanDates = lessonPlanDates
+    lessonPlanDates = lessonPlanDates,
+    educations = educations,
+    subjects = subjects,
+    grades = grades,
 )
 
 data class DraftLessonPlan(
@@ -65,6 +83,9 @@ data class DraftLessonPlan(
     override val companyId: CompanyId,
     override val images: List<UploadFileId>,
     override val createdAt: LocalDateTime,
+    override val educations: LessonPlanEducations,
+    override val subjects: LessonPlanSubjects,
+    override val grades: LessonPlanGrades,
     val title: LessonPlanTitle?,
     val description: LessonPlanDescription?,
     val lessonType: LessonType?,
@@ -75,6 +96,9 @@ data class DraftLessonPlan(
     companion object {
         fun create(
             companyId: CompanyId,
+            educations: LessonPlanEducations,
+            subjects: LessonPlanSubjects,
+            grades: LessonPlanGrades,
             title: LessonPlanTitle?,
             description: LessonPlanDescription?,
             lessonType: LessonType?,
@@ -91,7 +115,10 @@ data class DraftLessonPlan(
             description = description,
             lessonType = lessonType,
             annualMaxExecutions = annualMaxExecutions,
-            lessonPlanDates = lessonPlanDates
+            lessonPlanDates = lessonPlanDates,
+            educations = educations,
+            subjects = subjects,
+            grades = grades
         )
     }
 
@@ -101,7 +128,10 @@ data class DraftLessonPlan(
         lessonType: LessonType?,
         location: LessonLocation?,
         annualMaxExecutions: Int?,
-        images: List<UploadFileId>?
+        images: List<UploadFileId>?,
+        educations: LessonPlanEducations?,
+        subjects:LessonPlanSubjects?,
+        grades: LessonPlanGrades?
     ) = DraftLessonPlan(
         id = this.id,
         companyId = this.companyId,
@@ -112,7 +142,10 @@ data class DraftLessonPlan(
         lessonType = lessonType ?: this.lessonType,
         location = location ?: this.location,
         annualMaxExecutions = annualMaxExecutions ?: this.annualMaxExecutions,
-        lessonPlanDates = this.lessonPlanDates
+        lessonPlanDates = this.lessonPlanDates,
+        educations = educations?: this.educations,
+        subjects = subjects?: this.subjects,
+        grades = grades ?:this.grades,
     )
 
     fun toPublishedLessonPlan() = PublishedLessonPlan(
@@ -125,7 +158,10 @@ data class DraftLessonPlan(
         lessonType = lessonType!!,
         location = location!!,
         annualMaxExecutions = annualMaxExecutions!!,
-        lessonPlanDates = lessonPlanDates!!
+        lessonPlanDates = lessonPlanDates!!,
+        educations = educations!!,
+        subjects = subjects!!,
+        grades = grades!!,
     )
 }
 
@@ -144,7 +180,10 @@ value class LessonPlanDescription(val value: String) {
 @JvmInline
 value class LessonPlanTitle(val value: String) {
     companion object {
-        const val MAX_LENGTH = 100
+        const val MAX_LENGTH = 200
+    }
+    init {
+        require(value.length <= MAX_LENGTH) { "Title must be less than $MAX_LENGTH characters" }
     }
 }
 
@@ -186,6 +225,15 @@ data class LessonPlanDate(
         require(endDay in MINI_DATE..MAX_DATE) { "End day must be between $MINI_DATE and $MAX_DATE" }
     }
 }
+
+@JvmInline
+value class LessonPlanEducations(val value: Set<EducationId>)
+
+@JvmInline
+value class LessonPlanSubjects(val value: Set<Subject>)
+
+@JvmInline
+value class LessonPlanGrades(val value: Set<Grade>)
 
 data class LessonPlanError(
     val code: LessonPlanErrorCode,

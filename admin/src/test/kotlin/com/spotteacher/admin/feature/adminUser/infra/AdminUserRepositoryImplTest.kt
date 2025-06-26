@@ -1,24 +1,25 @@
 package com.spotteacher.admin.feature.adminUser.infra
 
 import com.spotteacher.admin.feature.adminUser.domain.ActiveAdminUser
-import com.spotteacher.admin.feature.adminUser.domain.AdminUserId
 import com.spotteacher.admin.feature.adminUser.domain.AdminUserName
 import com.spotteacher.admin.feature.adminUser.domain.AdminUserRepository
-import com.spotteacher.admin.feature.adminUser.domain.InActiveAdminUser
-import com.spotteacher.admin.feature.adminUser.domain.Password
 import com.spotteacher.admin.fixture.AdminUserFixture
+import com.spotteacher.admin.shared.domain.Password
 import com.spotteacher.backend.DatabaseDescribeSpec
 import com.spotteacher.domain.EmailAddress
 import io.kotest.matchers.collections.shouldNotBeEmpty
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.shouldNotBe
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment.NONE
+import org.springframework.security.crypto.password.PasswordEncoder
 
 @SpringBootTest(webEnvironment = NONE)
 class AdminUserRepositoryImplTest(
     private val adminUserRepository: AdminUserRepository,
-    private val adminUserFixture: AdminUserFixture
+    private val adminUserFixture: AdminUserFixture,
+    @Autowired private val passwordEncoder: PasswordEncoder
 ) : DatabaseDescribeSpec({
 
     describe("AdminUserRepository") {
@@ -29,11 +30,12 @@ class AdminUserRepositoryImplTest(
                     firstName = AdminUserName("John"),
                     lastName = AdminUserName("Doe"),
                     email = EmailAddress("john.doe@example.com"),
-                    password = Password("securePassword123")
                 )
+                val  password = Password("securePassword123")
 
+                
                 // Create the user in the repository
-                adminUserRepository.create(activeUser)
+                adminUserRepository.create(activeUser, passwordEncoder.encode(password.value))
 
                 // Find the user by ID
                 val foundUser = adminUserRepository.findById(activeUser.id)
@@ -44,7 +46,6 @@ class AdminUserRepositoryImplTest(
                 foundUser.firstName.value shouldBe "John"
                 foundUser.lastName.value shouldBe "Doe"
                 foundUser.email.value shouldBe "john.doe@example.com"
-                foundUser.password.value shouldBe "securePassword123"
             }
         }
 
@@ -55,18 +56,17 @@ class AdminUserRepositoryImplTest(
                     firstName = AdminUserName("Update"),
                     lastName = AdminUserName("Test"),
                     email = EmailAddress("update.test@example.com"),
-                    password = Password("originalPassword")
                 )
+                val  password = Password("securePassword123")
 
                 // Create the user in the repository
-                adminUserRepository.create(activeUser)
+                adminUserRepository.create(activeUser, password.value)
 
                 // Update the user
                 val updatedUser = activeUser.copy(
                     firstName = AdminUserName("Updated"),
                     lastName = AdminUserName("Name"),
                     email = EmailAddress("updated.email@example.com"),
-                    password = Password("newPassword")
                 )
                 adminUserRepository.update(updatedUser)
 
@@ -79,7 +79,6 @@ class AdminUserRepositoryImplTest(
                 foundUser.firstName.value shouldBe "Updated"
                 foundUser.lastName.value shouldBe "Name"
                 foundUser.email.value shouldBe "updated.email@example.com"
-                foundUser.password.value shouldBe "newPassword"
             }
         }
 
@@ -90,11 +89,11 @@ class AdminUserRepositoryImplTest(
                     firstName = AdminUserName("Password"),
                     lastName = AdminUserName("Test"),
                     email = EmailAddress("password.test@example.com"),
-                    password = Password("originalPassword")
                 )
+                val  password = Password("<PASSWORD>")
 
                 // Create the user in the repository
-                adminUserRepository.create(activeUser)
+                adminUserRepository.create(activeUser, password.value)
 
                 // Update password
                 val newPassword = Password("newPassword123")
@@ -106,7 +105,6 @@ class AdminUserRepositoryImplTest(
                 // Verify the password was updated
                 foundUser shouldNotBe null
                 foundUser as ActiveAdminUser
-                foundUser.password.value shouldBe "newPassword123"
             }
         }
 
@@ -117,11 +115,11 @@ class AdminUserRepositoryImplTest(
                     firstName = AdminUserName("Delete"),
                     lastName = AdminUserName("Test"),
                     email = EmailAddress("delete.test@example.com"),
-                    password = Password("deletePassword")
                 )
+                val  password = Password("<PASSWORD>")
 
                 // Create the user in the repository
-                adminUserRepository.create(activeUser)
+                adminUserRepository.create(activeUser, password.value)
 
                 // Verify the user exists
                 val foundUser = adminUserRepository.findById(activeUser.id)
@@ -143,18 +141,18 @@ class AdminUserRepositoryImplTest(
                     firstName = AdminUserName("User"),
                     lastName = AdminUserName("One"),
                     email = EmailAddress("user.one@example.com"),
-                    password = Password("password1")
                 )
+                val  password1 = Password("<PASSWORD>")
                 val user2 = adminUserFixture.buildActiveAdminUser(
                     firstName = AdminUserName("User"),
                     lastName = AdminUserName("Two"),
                     email = EmailAddress("user.two@example.com"),
-                    password = Password("password2")
                 )
+                val password2 = Password("password2")
 
                 // Create the users in the repository
-                adminUserRepository.create(user1)
-                adminUserRepository.create(user2)
+                adminUserRepository.create(user1, password1.value)
+                adminUserRepository.create(user2, password2.value)
 
                 // Get all users
                 val allUsers = adminUserRepository.getAll()
@@ -187,11 +185,11 @@ class AdminUserRepositoryImplTest(
                     firstName = AdminUserName("Email"),
                     lastName = AdminUserName("Test"),
                     email = EmailAddress("email.test@example.com"),
-                    password = Password("emailPassword")
                 )
+                val  password = Password("<PASSWORD>")
 
                 // Create the user in the repository
-                adminUserRepository.create(activeUser)
+                adminUserRepository.create(activeUser, password.value)
 
                 // Find the user by email
                 val foundUser = adminUserRepository.findByEmailAndActiveUser(EmailAddress("email.test@example.com"))
@@ -201,8 +199,9 @@ class AdminUserRepositoryImplTest(
                 foundUser!!.firstName.value shouldBe "Email"
                 foundUser.lastName.value shouldBe "Test"
                 foundUser.email.value shouldBe "email.test@example.com"
-                foundUser.password.value shouldBe "emailPassword"
             }
         }
     }
-})
+}) {
+
+}

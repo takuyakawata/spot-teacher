@@ -3,8 +3,8 @@ package com.spotteacher.admin.feature.adminUser.usecase
 import com.spotteacher.admin.feature.adminUser.domain.ActiveAdminUser
 import com.spotteacher.admin.feature.adminUser.domain.AdminUserName
 import com.spotteacher.admin.feature.adminUser.domain.AdminUserRepository
-import com.spotteacher.admin.feature.adminUser.domain.Password
 import com.spotteacher.admin.fixture.AdminUserFixture
+import com.spotteacher.admin.shared.domain.Password
 import com.spotteacher.domain.EmailAddress
 import io.kotest.core.spec.style.DescribeSpec
 import io.kotest.matchers.shouldBe
@@ -15,8 +15,12 @@ import org.mockito.Mockito.mock
 class CreateAdminUserUseCaseTest : DescribeSpec({
     describe("CreateAdminUserUseCase") {
         // Arrange
-        val useCase = CreateAdminUserUseCase()
         val adminUserRepository = mock<AdminUserRepository>()
+        val passwordEncoder = mock<org.springframework.security.crypto.password.PasswordEncoder>()
+        val useCase = CreateAdminUserUseCase(
+            adminUserRepository = adminUserRepository,
+            passwordEncoder = passwordEncoder
+        )
         val adminUser = AdminUserFixture().buildActiveAdminUser()
 
         // Test data
@@ -31,16 +35,16 @@ class CreateAdminUserUseCaseTest : DescribeSpec({
             context("when passwords match") {
                 it("should create a new admin user and return success") {
                     // Arrange
-                    coEvery { adminUserRepository.create(any()) } returns adminUser
+                    coEvery { adminUserRepository.create(adminUser, password.value)} returns adminUser
 
                     // Act
-                    val result = useCase.execute(
+                    val result = useCase.call(
                         CreateAdminUserUseCaseInput(
                             firstName = firstName,
                             lastName = lastName,
                             email = email,
                             password = password,
-                            confirm = confirmPassword
+                            confirmPassword = confirmPassword
                         )
                     )
 
@@ -51,20 +55,19 @@ class CreateAdminUserUseCaseTest : DescribeSpec({
                     adminUser.firstName shouldBe firstName
                     adminUser.lastName shouldBe lastName
                     adminUser.email shouldBe email
-                    adminUser.password shouldBe password
                 }
             }
 
             context("when passwords don't match") {
                 it("should return an error") {
                     // Act
-                    val result = useCase.execute(
+                    val result = useCase.call(
                         CreateAdminUserUseCaseInput(
                             firstName = firstName,
                             lastName = lastName,
                             email = email,
                             password = password,
-                            confirm = mismatchPassword
+                            confirmPassword = mismatchPassword
                         )
                     )
 

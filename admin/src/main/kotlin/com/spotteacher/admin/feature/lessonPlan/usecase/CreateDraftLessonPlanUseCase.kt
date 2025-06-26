@@ -6,7 +6,10 @@ import com.spotteacher.admin.feature.lessonPlan.domain.DraftLessonPlan
 import com.spotteacher.admin.feature.lessonPlan.domain.LessonLocation
 import com.spotteacher.admin.feature.lessonPlan.domain.LessonPlanDate
 import com.spotteacher.admin.feature.lessonPlan.domain.LessonPlanDescription
+import com.spotteacher.admin.feature.lessonPlan.domain.LessonPlanEducations
+import com.spotteacher.admin.feature.lessonPlan.domain.LessonPlanGrades
 import com.spotteacher.admin.feature.lessonPlan.domain.LessonPlanRepository
+import com.spotteacher.admin.feature.lessonPlan.domain.LessonPlanSubjects
 import com.spotteacher.admin.feature.lessonPlan.domain.LessonPlanTitle
 import com.spotteacher.admin.feature.lessonPlan.domain.LessonType
 import com.spotteacher.admin.shared.infra.TransactionCoroutine
@@ -20,7 +23,10 @@ data class CreateDraftLessonPlanUseCaseInput(
     val lessonType: LessonType?,
     val location: LessonLocation?,
     val annualMaxExecutions: Int?,
-    val lessonPlanDates: List<LessonPlanDate>?
+    val lessonPlanDates: List<LessonPlanDate>?,
+    val educations: LessonPlanEducations,
+    val subjects: LessonPlanSubjects,
+    val grades: LessonPlanGrades
 )
 
 @UseCase
@@ -36,7 +42,10 @@ class CreateDraftLessonPlanUseCase(
             lessonType = input.lessonType,
             location = input.location,
             annualMaxExecutions = input.annualMaxExecutions,
-            lessonPlanDates = input.lessonPlanDates?.toNonEmptyListOrNull()
+            lessonPlanDates = input.lessonPlanDates?.toNonEmptyListOrNull(),
+            educations = input.educations,
+            subjects = input.subjects,
+            grades = input.grades,
         )
 
         lessonPlanRepository.createDraft(draftLessonPlan)

@@ -6,9 +6,15 @@ import com.spotteacher.admin.feature.lessonPlan.domain.DraftLessonPlan
 import com.spotteacher.admin.feature.lessonPlan.domain.LessonLocation
 import com.spotteacher.admin.feature.lessonPlan.domain.LessonPlanDate
 import com.spotteacher.admin.feature.lessonPlan.domain.LessonPlanDescription
+import com.spotteacher.admin.feature.lessonPlan.domain.LessonPlanEducations
+import com.spotteacher.admin.feature.lessonPlan.domain.LessonPlanGrades
 import com.spotteacher.admin.feature.lessonPlan.domain.LessonPlanRepository
+import com.spotteacher.admin.feature.lessonPlan.domain.LessonPlanSubjects
 import com.spotteacher.admin.feature.lessonPlan.domain.LessonPlanTitle
 import com.spotteacher.admin.feature.lessonPlan.domain.LessonType
+import com.spotteacher.admin.feature.lessonTag.domain.EducationId
+import com.spotteacher.admin.feature.lessonTag.domain.Grade
+import com.spotteacher.admin.feature.lessonTag.domain.Subject
 import io.kotest.core.spec.style.DescribeSpec
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -38,6 +44,24 @@ class CreateDraftLessonPlanUseCaseTest : DescribeSpec({
         )
         val lessonPlanDates = listOf(lessonPlanDate).toNonEmptyListOrNull()
 
+        val educations = LessonPlanEducations(
+            setOf(
+                EducationId(1),
+            )
+        )
+
+        val subjects = LessonPlanSubjects(
+            setOf(
+                Subject.SOCIAL_STUDIES,
+            )
+        )
+
+        val grades = LessonPlanGrades(
+            setOf(
+                Grade.ELEMENTARY_1
+            )
+        )
+
         describe("call") {
             it("should create a draft lesson plan") {
                 // Arrange
@@ -48,7 +72,10 @@ class CreateDraftLessonPlanUseCaseTest : DescribeSpec({
                     lessonType = lessonType,
                     location = location,
                     annualMaxExecutions = annualMaxExecutions,
-                    lessonPlanDates = lessonPlanDates
+                    lessonPlanDates = lessonPlanDates,
+                    educations = educations,
+                    subjects = subjects,
+                    grades = grades,
                 )
 
                 coEvery { lessonPlanRepository.createDraft(any()) } returns draftLessonPlan
@@ -63,7 +90,10 @@ class CreateDraftLessonPlanUseCaseTest : DescribeSpec({
                         lessonType = lessonType,
                         location = location,
                         annualMaxExecutions = annualMaxExecutions,
-                        lessonPlanDates = lessonPlanDates?.toList()
+                        lessonPlanDates = lessonPlanDates?.toList(),
+                        educations = educations,
+                        subjects = subjects,
+                        grades = grades,
                     )
                 )
 
@@ -92,7 +122,10 @@ class CreateDraftLessonPlanUseCaseTest : DescribeSpec({
                     lessonType = null,
                     location = null,
                     annualMaxExecutions = null,
-                    lessonPlanDates = null
+                    lessonPlanDates = null,
+                    educations = educations,
+                    subjects = subjects,
+                    grades = grades,
                 )
 
                 coEvery { lessonPlanRepository.createDraft(any()) } returns minimalDraftLessonPlan
@@ -107,7 +140,10 @@ class CreateDraftLessonPlanUseCaseTest : DescribeSpec({
                         lessonType = null,
                         location = null,
                         annualMaxExecutions = null,
-                        lessonPlanDates = null
+                        lessonPlanDates = null,
+                        educations = educations,
+                        subjects = subjects,
+                        grades = grades,
                     )
                 )
 
