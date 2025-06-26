@@ -1,7 +1,7 @@
 package com.spotteacher.admin.feature.uploadFile.domain
 
 import com.spotteacher.util.Identity
-import java.util.UUID
+import java.util.*
 
 class UploadFileId(override val value: Long) : Identity<Long>(value)
 

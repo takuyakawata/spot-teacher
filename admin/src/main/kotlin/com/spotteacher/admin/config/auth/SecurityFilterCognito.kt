@@ -1,17 +1,5 @@
 package com.spotteacher.admin.config.auth
 
-import com.spotteacher.util.logInfo
-import org.springframework.core.io.buffer.DataBuffer
-import org.springframework.core.io.buffer.DataBufferUtils
-import org.springframework.http.server.reactive.ServerHttpRequest
-import org.springframework.http.server.reactive.ServerHttpRequestDecorator
-import org.springframework.stereotype.Component
-import org.springframework.web.server.ServerWebExchange
-import org.springframework.web.server.WebFilter
-import org.springframework.web.server.WebFilterChain
-import reactor.core.publisher.Flux
-import reactor.core.publisher.Mono
-
 //@Component
 //class SecurityFilterWithCognito : WebFilter {
 ////    @Value("\${api.secret-key}")

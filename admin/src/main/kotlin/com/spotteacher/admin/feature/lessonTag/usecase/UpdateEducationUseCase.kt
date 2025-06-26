@@ -1,7 +1,6 @@
 package com.spotteacher.admin.feature.lessonTag.usecase
 
 import arrow.core.Either
-import arrow.core.Nel
 import arrow.core.left
 import arrow.core.nonEmptyListOf
 import arrow.core.right

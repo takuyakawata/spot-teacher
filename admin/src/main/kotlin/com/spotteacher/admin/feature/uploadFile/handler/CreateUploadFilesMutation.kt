@@ -10,7 +10,6 @@ import com.spotteacher.admin.feature.uploadFile.usecase.UploadFileInput
 import com.spotteacher.graphql.NonEmptyString
 import graphql.schema.DataFetchingEnvironment
 import org.springframework.stereotype.Component
-import kotlin.collections.map
 
 data class CreateUploadFilesMutationInput(
     val fileInputs: List<CreateUploadFileInput>

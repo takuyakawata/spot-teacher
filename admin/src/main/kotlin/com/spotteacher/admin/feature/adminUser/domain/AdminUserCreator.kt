@@ -1,9 +1,7 @@
 package com.spotteacher.admin.feature.adminUser.domain
 
-import com.spotteacher.admin.shared.auth.domain.AuthUser
 import com.spotteacher.admin.shared.auth.domain.AuthUserRepository
 import com.spotteacher.admin.shared.domain.Password
-import com.spotteacher.exception.ResourceNotFoundException
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
 

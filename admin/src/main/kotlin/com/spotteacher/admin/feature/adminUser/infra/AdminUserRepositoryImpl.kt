@@ -5,7 +5,6 @@ import com.spotteacher.admin.feature.adminUser.domain.AdminUser
 import com.spotteacher.admin.feature.adminUser.domain.AdminUserId
 import com.spotteacher.admin.feature.adminUser.domain.AdminUserName
 import com.spotteacher.admin.feature.adminUser.domain.AdminUserRepository
-import com.spotteacher.admin.feature.adminUser.domain.InActiveAdminUser
 import com.spotteacher.admin.shared.domain.Password
 import com.spotteacher.admin.shared.infra.TransactionAwareDSLContext
 import com.spotteacher.domain.EmailAddress
@@ -15,13 +14,12 @@ import com.spotteacher.infra.db.enums.UsersRole
 import com.spotteacher.infra.db.tables.AdminUsers.Companion.ADMIN_USERS
 import com.spotteacher.infra.db.tables.UserCredentials.Companion.USER_CREDENTIALS
 import com.spotteacher.infra.db.tables.Users.Companion.USERS
-import com.spotteacher.infra.db.tables.records.AdminUsersRecord
 import com.spotteacher.infra.db.tables.records.UsersRecord
 import kotlinx.coroutines.reactive.awaitFirstOrNull
 import kotlinx.coroutines.reactive.awaitLast
 import org.springframework.stereotype.Repository
 import java.time.LocalDateTime
-import java.util.UUID
+import java.util.*
 
 @Repository
 class AdminUserRepositoryImpl(
@@ -108,7 +106,6 @@ class AdminUserRepositoryImpl(
     }
 
     override suspend fun delete(id: AdminUserId) {
-        // First find the user_id from admin_users table
         val adminUser = dslContext.get().nonBlockingFetchOne(
             ADMIN_USERS,
             ADMIN_USERS.ID.eq(id.value)
@@ -117,12 +114,10 @@ class AdminUserRepositoryImpl(
         if (adminUser != null) {
             val userId = adminUser.userId
 
-            // Delete from admin_users table first (due to foreign key constraint)
             dslContext.get().deleteFrom(ADMIN_USERS)
                 .where(ADMIN_USERS.ID.eq(id.value))
                 .awaitLast()
 
-            // Then delete from users table
             dslContext.get().deleteFrom(USERS)
                 .where(USERS.ID.eq(userId))
                 .awaitLast()
@@ -130,20 +125,17 @@ class AdminUserRepositoryImpl(
     }
 
     override suspend fun findByEmailAndActiveUser(emailAddress: EmailAddress): ActiveAdminUser? {
-        // Find the user by email
         val userRecord = dslContext.get().nonBlockingFetchOne(
             USERS,
             USERS.EMAIL.eq(emailAddress.value),
             USERS.ROLE.eq(UsersRole.ADMIN)
         ) ?: return null
 
-        // Find the corresponding admin user
-        val adminUser = dslContext.get().nonBlockingFetchOne(
+            dslContext.get().nonBlockingFetchOne(
             ADMIN_USERS,
             ADMIN_USERS.USER_ID.eq(userRecord.id)
         ) ?: return null
 
-        // Create and return the admin user if it's active
         val user = toEntity(userRecord)
         return user
     }

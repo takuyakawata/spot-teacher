@@ -1,7 +1,6 @@
 package com.spotteacher.admin.shared.auth.infra
 
 import com.spotteacher.admin.config.auth.JwtProvider
-import com.spotteacher.admin.feature.adminUser.domain.ActiveAdminUser
 import com.spotteacher.admin.shared.auth.domain.AuthUser
 import com.spotteacher.admin.shared.auth.domain.RefreshTokenManager
 import com.spotteacher.admin.shared.auth.domain.TokenIssuer

@@ -1,12 +1,6 @@
 package com.spotteacher.admin.feature.uploadFile.handler
 
-import arrow.core.Nel
 import com.spotteacher.admin.feature.uploadFile.domain.UploadFileId
-import com.spotteacher.admin.feature.uploadFile.domain.UploadFileRepository
-import com.spotteacher.admin.shared.graphql.KotlinCoroutineDataLoader
-import graphql.schema.DataFetchingEnvironment
-import org.dataloader.DataLoader
-import org.springframework.stereotype.Component
 
 private const val DATA_LOADER_NAME = "UploadFileDataLoader"
 

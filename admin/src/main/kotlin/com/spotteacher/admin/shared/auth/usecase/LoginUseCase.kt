@@ -6,7 +6,6 @@ import com.spotteacher.admin.shared.auth.domain.TokenPair
 import com.spotteacher.admin.shared.domain.Password
 import com.spotteacher.domain.EmailAddress
 import com.spotteacher.usecase.UseCase
-import org.springframework.security.crypto.password.PasswordEncoder
 
 data class LoginUseCaseInput(
     val email: EmailAddress,

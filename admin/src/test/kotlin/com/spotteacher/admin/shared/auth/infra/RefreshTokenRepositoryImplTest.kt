@@ -2,7 +2,6 @@ package com.spotteacher.admin.shared.auth.infra
 
 import com.spotteacher.admin.fixture.AdminUserFixture
 import com.spotteacher.admin.shared.auth.domain.RefreshToken
-import com.spotteacher.admin.shared.auth.domain.RefreshTokenId
 import com.spotteacher.backend.DatabaseDescribeSpec
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.shouldNotBe

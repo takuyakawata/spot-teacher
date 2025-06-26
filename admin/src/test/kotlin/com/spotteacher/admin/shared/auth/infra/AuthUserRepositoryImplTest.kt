@@ -1,13 +1,11 @@
 package com.spotteacher.admin.shared.auth.infra
 
 import com.spotteacher.admin.fixture.AdminUserFixture
-import com.spotteacher.admin.shared.auth.domain.AuthUser
 import com.spotteacher.admin.shared.domain.Password
 import com.spotteacher.backend.DatabaseDescribeSpec
 import com.spotteacher.domain.EmailAddress
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.matchers.shouldBe
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.security.crypto.password.PasswordEncoder
 

@@ -1,17 +1,12 @@
 package com.spotteacher.admin.feature.adminUser.usecase
 
-import arrow.core.Either
 import com.spotteacher.admin.feature.adminUser.domain.ActiveAdminUser
-import com.spotteacher.admin.feature.adminUser.domain.AdminUser
 import com.spotteacher.admin.feature.adminUser.domain.AdminUserCreator
-import com.spotteacher.admin.feature.adminUser.domain.AdminUserError
 import com.spotteacher.admin.feature.adminUser.domain.AdminUserName
-import com.spotteacher.admin.feature.adminUser.domain.AdminUserRepository
 import com.spotteacher.admin.shared.domain.Password
 import com.spotteacher.admin.shared.infra.TransactionCoroutine
 import com.spotteacher.domain.EmailAddress
 import com.spotteacher.usecase.UseCase
-import org.springframework.security.crypto.password.PasswordEncoder
 
 data class CreateAdminUserUseCaseInput(
     val firstName: AdminUserName,

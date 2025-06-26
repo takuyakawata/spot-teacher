@@ -3,7 +3,6 @@ package com.spotteacher.admin.feature.school.usecase
 import arrow.core.Either
 import arrow.core.left
 import arrow.core.right
-import com.spotteacher.admin.feature.school.domain.School
 import com.spotteacher.admin.feature.school.domain.SchoolCategory
 import com.spotteacher.admin.feature.school.domain.SchoolError
 import com.spotteacher.admin.feature.school.domain.SchoolErrorCode

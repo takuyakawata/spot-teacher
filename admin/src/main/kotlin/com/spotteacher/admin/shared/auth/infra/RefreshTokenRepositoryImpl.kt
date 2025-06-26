@@ -6,7 +6,6 @@ import com.spotteacher.admin.shared.auth.domain.RefreshTokenRepository
 import com.spotteacher.admin.shared.infra.TransactionAwareDSLContext
 import com.spotteacher.infra.db.tables.RefreshTokens.Companion.REFRESH_TOKENS
 import kotlinx.coroutines.reactive.awaitFirstOrNull
-import org.springframework.stereotype.Component
 import org.springframework.stereotype.Repository
 
 @Repository
