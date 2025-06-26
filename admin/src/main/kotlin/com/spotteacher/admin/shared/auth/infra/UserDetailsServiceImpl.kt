@@ -1,6 +1,5 @@
 package com.spotteacher.admin.shared.auth.infra
 
-import com.spotteacher.admin.feature.adminUser.domain.AdminUserRepository
 import com.spotteacher.admin.shared.auth.domain.AuthUserRepository
 import com.spotteacher.domain.EmailAddress
 import kotlinx.coroutines.reactor.mono

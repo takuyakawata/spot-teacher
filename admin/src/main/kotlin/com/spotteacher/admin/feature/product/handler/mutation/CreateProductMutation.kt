@@ -6,6 +6,7 @@ import com.spotteacher.admin.feature.product.domain.ProductName
 import com.spotteacher.admin.feature.product.domain.ProductPrice
 import com.spotteacher.admin.feature.product.usecase.CreateProductUseCase
 import com.spotteacher.admin.feature.product.usecase.CreateProductUseCaseInput
+import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.stereotype.Component
 
 data class CreateProductMutationInput(
@@ -18,6 +19,7 @@ data class CreateProductMutationInput(
 class CreateProductMutation(
     private val usecase: CreateProductUseCase
 ) : Mutation {
+    @PreAuthorize("isAuthenticated()")
     suspend fun createProduct(input: CreateProductMutationInput) {
         usecase.call(
             CreateProductUseCaseInput(

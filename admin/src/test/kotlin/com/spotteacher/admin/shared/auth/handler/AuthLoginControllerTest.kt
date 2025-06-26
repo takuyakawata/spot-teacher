@@ -1,13 +1,10 @@
 package com.spotteacher.admin.shared.auth.handler
 
 import com.spotteacher.admin.feature.adminUser.domain.ActiveAdminUser
-import com.spotteacher.admin.feature.adminUser.domain.AdminUser
 import com.spotteacher.admin.fixture.AdminUserFixture
 import com.spotteacher.admin.shared.domain.Password
 import com.spotteacher.backend.DatabaseDescribeSpec
 import com.spotteacher.domain.EmailAddress
-import io.kotest.core.spec.style.AnnotationSpec
-import io.kotest.datatest.withData
 import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.http.MediaType

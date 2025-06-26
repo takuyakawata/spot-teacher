@@ -9,6 +9,7 @@ import com.spotteacher.admin.feature.company.handler.toGraphQLID
 import com.spotteacher.admin.feature.company.usecase.FindCompaniesUseCase
 import com.spotteacher.admin.feature.company.usecase.FindCompanyUseCase
 import com.spotteacher.graphql.toDomainId
+import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.stereotype.Component
 
 sealed interface CompanyQueryOutput
@@ -23,6 +24,7 @@ class CompanyQuery(
     private val findCompanyUseCase: FindCompanyUseCase,
     private val findCompaniesUseCase: FindCompaniesUseCase
 ) : Query {
+    @PreAuthorize("isAuthenticated()")
     suspend fun company(id: ID): CompanyQueryOutput {
         val result = findCompanyUseCase.call(id.toDomainId { CompanyId(it) }).result
 

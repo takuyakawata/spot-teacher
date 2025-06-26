@@ -29,7 +29,7 @@ import java.security.spec.PKCS8EncodedKeySpec
 import java.time.Duration
 import java.time.Instant
 import java.time.temporal.ChronoUnit
-import java.util.Base64
+import java.util.*
 
 /**
  * AWS S3サービスとの連携を行うクライアントクラス。

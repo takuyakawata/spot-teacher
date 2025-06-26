@@ -1,11 +1,5 @@
 package com.spotteacher.admin.feature.lessonTag.usecase
 
-import io.kotest.core.spec.style.DescribeSpec
-import io.kotest.matchers.shouldBe
-import io.kotest.matchers.types.shouldBeInstanceOf
-import io.mockk.coEvery
-import io.mockk.coVerify
-import io.mockk.mockk
 import arrow.core.Either
 import arrow.core.nonEmptyListOf
 import com.spotteacher.admin.feature.lessonTag.domain.Education
@@ -15,6 +9,11 @@ import com.spotteacher.admin.feature.lessonTag.domain.EducationId
 import com.spotteacher.admin.feature.lessonTag.domain.EducationName
 import com.spotteacher.admin.feature.lessonTag.domain.EducationRepository
 import com.spotteacher.admin.fixture.EducationFixture
+import io.kotest.core.spec.style.DescribeSpec
+import io.kotest.matchers.shouldBe
+import io.kotest.matchers.types.shouldBeInstanceOf
+import io.mockk.coEvery
+import io.mockk.mockk
 
 class UpdateEducationUseCaseTest : DescribeSpec({
 

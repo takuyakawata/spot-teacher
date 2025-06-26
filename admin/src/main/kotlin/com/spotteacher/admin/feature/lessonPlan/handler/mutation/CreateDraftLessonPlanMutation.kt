@@ -1,6 +1,5 @@
 package com.spotteacher.admin.feature.lessonPlan.handler.mutation
 
-import arrow.core.toNonEmptyListOrNull
 import com.expediagroup.graphql.generator.scalars.ID
 import com.expediagroup.graphql.server.operations.Mutation
 import com.spotteacher.admin.feature.company.domain.CompanyId
@@ -10,7 +9,6 @@ import com.spotteacher.admin.feature.lessonPlan.domain.LessonPlanDescription
 import com.spotteacher.admin.feature.lessonPlan.domain.LessonPlanEducations
 import com.spotteacher.admin.feature.lessonPlan.domain.LessonPlanErrorCode
 import com.spotteacher.admin.feature.lessonPlan.domain.LessonPlanGrades
-import com.spotteacher.admin.feature.lessonPlan.domain.LessonPlanId
 import com.spotteacher.admin.feature.lessonPlan.domain.LessonPlanSubjects
 import com.spotteacher.admin.feature.lessonPlan.domain.LessonPlanTitle
 import com.spotteacher.admin.feature.lessonPlan.domain.LessonType

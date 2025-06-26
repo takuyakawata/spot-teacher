@@ -1,7 +1,6 @@
 package com.spotteacher.admin.shared.auth.infra
 
 import com.spotteacher.admin.config.auth.JwtProvider
-import com.spotteacher.admin.feature.adminUser.domain.ActiveAdminUser
 import com.spotteacher.admin.shared.auth.domain.AuthUser
 import com.spotteacher.admin.shared.auth.domain.RefreshTokenManager
 import com.spotteacher.admin.shared.auth.domain.TokenIssuer
@@ -9,7 +8,7 @@ import com.spotteacher.admin.shared.auth.domain.TokenPair
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.stereotype.Component
 
-@Component // インフラ層のSpringコンポーネント
+@Component
 class JwtTokenIssuerAdapter(
     private val jwtProvider: JwtProvider,
     private val refreshTokenManager: RefreshTokenManager
@@ -19,8 +18,8 @@ class JwtTokenIssuerAdapter(
             user.email.value,
             null,
         )
-//        val accessToken = jwtProvider.createAccessToken(authenticationForJwt)
-        val accessToken = "access token"
+
+        val accessToken = jwtProvider.createAccessToken(authenticationForJwt)
         val refreshToken = refreshTokenManager.createAndSaveRefreshToken(user.email)
 
         return TokenPair(

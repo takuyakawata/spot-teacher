@@ -16,9 +16,6 @@ import com.spotteacher.admin.feature.lessonPlan.domain.LessonPlanSubjects
 import com.spotteacher.admin.feature.lessonPlan.domain.LessonPlanTitle
 import com.spotteacher.admin.feature.lessonPlan.domain.LessonType
 import com.spotteacher.admin.feature.lessonPlan.domain.PublishedLessonPlan
-import com.spotteacher.admin.feature.lessonTag.domain.Education
-import com.spotteacher.admin.feature.lessonTag.domain.Grade
-import com.spotteacher.admin.feature.lessonTag.domain.Subject
 import com.spotteacher.admin.shared.infra.TransactionAwareDSLContext
 import com.spotteacher.extension.nonBlockingFetch
 import com.spotteacher.extension.nonBlockingFetchOne
@@ -179,7 +176,7 @@ class LessonPlanRepositoryImpl(private val dslContext: TransactionAwareDSLContex
             ).awaitLast()
         }
 
-//        delete and insert
+        // delete and insert
         bulkDeleteEducations(lessonPlan.id.value)
         bulkDeleteSubjects(lessonPlan.id.value)
         bulkDeleteGrades(lessonPlan.id.value)
@@ -208,7 +205,6 @@ class LessonPlanRepositoryImpl(private val dslContext: TransactionAwareDSLContex
             .where(LESSON_PLAN_DATES.LESSON_PLAN_ID.eq(lessonPlan.id.value))
             .awaitLast()
 
-        // Insert new dates if available
         lessonPlan.lessonPlanDates?.map { date ->
             dslContext.get().insertInto(
                 LESSON_PLAN_DATES,

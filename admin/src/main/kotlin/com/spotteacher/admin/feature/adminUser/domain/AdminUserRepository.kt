@@ -11,4 +11,5 @@ interface AdminUserRepository {
     suspend fun updatePassword(password: Password)
     suspend fun delete(id: AdminUserId)
     suspend fun findByEmailAndActiveUser(emailAddress: EmailAddress): ActiveAdminUser?
+    suspend fun findByEmail(emailAddress: EmailAddress): ActiveAdminUser?
 }
