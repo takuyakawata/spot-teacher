@@ -52,7 +52,7 @@ class CreateAdminUserUseCaseTest : DescribeSpec({
                         )
 
                         // Assert
-                        result.isSuccess shouldBe true
+                        result shouldBe Unit
                     }
                 }
             }

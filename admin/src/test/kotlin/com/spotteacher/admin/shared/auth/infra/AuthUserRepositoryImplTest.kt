@@ -33,7 +33,7 @@ class AuthUserRepositoryImplTest(
                 val authUser = repository.findByEmail(email)
 
                 // Assert
-                authUser.email shouldBe email
+                authUser!!.email shouldBe email
                 authUser.password.value.isNotEmpty() shouldBe true
                 passwordEncoder.matches(password.value, authUser.password.value) shouldBe true
             }
