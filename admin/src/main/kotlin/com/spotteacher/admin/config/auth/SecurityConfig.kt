@@ -45,13 +45,33 @@ class SecurityConfig {
             // /api/auth/** 以外に適用
             .authorizeExchange { exchanges ->
                 exchanges
-                    .pathMatchers("/actuator/health").permitAll() // ヘルスチェックは許可
-                    .anyExchange().authenticated() // その他のエンドポイントはすべて認証必須
+                    .pathMatchers("/actuator/health").permitAll()
+                    .pathMatchers("/graphql").permitAll()
+                    .anyExchange().authenticated()
             }
             .oauth2ResourceServer { oauth2 ->
                 oauth2.jwt { jwt ->
                     // カスタムのJWTデコーダーを設定
-                    jwt.jwtDecoder(jwtDecoder)
+                    jwt.jwtDecoder(jwtDecoder) // API保護用フィルターチェーン (優先度2)
+                    @Bean
+                    @Order(2)
+                    fun apiEndpointsFilterChain(http: ServerHttpSecurity, jwtDecoder: ReactiveJwtDecoder): SecurityWebFilterChain {
+                        return http
+                            // /api/auth/** 以外に適用
+                            .authorizeExchange { exchanges ->
+                                exchanges
+                                    .pathMatchers("/actuator/health").permitAll()
+                                    .anyExchange().authenticated()
+                            }
+                            .oauth2ResourceServer { oauth2 ->
+                                oauth2.jwt { jwt ->
+                                    // カスタムのJWTデコーダーを設定
+                                    jwt.jwtDecoder(jwtDecoder)
+                                }
+                            }
+                            .csrf(ServerHttpSecurity.CsrfSpec::disable)
+                            .build()
+                    }
                 }
             }
             .csrf(ServerHttpSecurity.CsrfSpec::disable)

@@ -45,7 +45,7 @@ class AdminUserRepositoryImpl(
         val adminUser = dslContext.get().nonBlockingFetchOne(
             ADMIN_USERS,
             ADMIN_USERS.ID.eq(id.value)
-        ) ?: return null
+        )?: return null
 
         // Get the corresponding user record
         val userRecord = dslContext.get().nonBlockingFetchOne(
@@ -151,10 +151,10 @@ class AdminUserRepositoryImpl(
     override suspend fun findByEmail(emailAddress: EmailAddress): ActiveAdminUser? {
         val user = dslContext.get().nonBlockingFetchOne(
             USERS,
-            USERS.EMAIL.eq(emailAddress.value),
-        )?: return null
+            USERS.EMAIL.eq(emailAddress.value)
+        )?:return null
 
-        val admin = dslContext.get().nonBlockingFetchOne(
+        dslContext.get().nonBlockingFetchOne(
             ADMIN_USERS,
             ADMIN_USERS.USER_ID.eq(user.id)
         ) ?: return null

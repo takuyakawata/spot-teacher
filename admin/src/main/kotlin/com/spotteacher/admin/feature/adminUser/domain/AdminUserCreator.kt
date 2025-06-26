@@ -14,15 +14,11 @@ class AdminUserCreator(
     private val passwordEncoder: PasswordEncoder,
 ){
     suspend fun createAdminUser(adminUser: ActiveAdminUser, password: Password){
-        adminUserRepository.findByEmail(adminUser.email)?:throw ResourceNotFoundException(
-            clazz = AdminUser::class,
-            params = mapOf("email" to adminUser.email.value)
-        )
+        val exitAuthUser = authUserRepository.findByEmail(adminUser.email)
+        require(exitAuthUser == null){"User does not exist in auth service"}
 
-        authUserRepository.findByEmail(adminUser.email)?:throw ResourceNotFoundException(
-            clazz = AuthUser::class,
-            params = mapOf("email" to adminUser.email.value)
-        )
+        val exitAdminUser = adminUserRepository.findByEmail(adminUser.email)
+        require(exitAdminUser == null){"User already exists in admin service"}
 
         val hashedPassword = passwordEncoder.encode(password.value)
         adminUserRepository.create(adminUser, hashedPassword)

@@ -1,5 +1,6 @@
 package com.spotteacher.admin.feature.adminUser.usecase
 
+import arrow.core.Either
 import com.spotteacher.admin.feature.adminUser.domain.ActiveAdminUser
 import com.spotteacher.admin.feature.adminUser.domain.AdminUser
 import com.spotteacher.admin.feature.adminUser.domain.AdminUserCreator
@@ -25,10 +26,9 @@ class CreateAdminUserUseCase(
     private val adminUserCreator: AdminUserCreator
 ) {
     @TransactionCoroutine
-    suspend fun call(input: CreateAdminUserUseCaseInput): Result<Unit>{
+    suspend fun call(input: CreateAdminUserUseCaseInput){
         require(input.password.value == input.confirmPassword.value){"Password and confirmation do not match"}
 
-        return runCatching {
             val adminUser = ActiveAdminUser.create(
                 firstName = input.firstName,
                 lastName = input.lastName,
@@ -37,5 +37,4 @@ class CreateAdminUserUseCase(
 
             adminUserCreator.createAdminUser(adminUser, input.password)
         }
-    }
 }

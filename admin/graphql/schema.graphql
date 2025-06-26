@@ -37,8 +37,6 @@ interface LessonPlan {
 
 union CompanyQueryOutput = CompanyQueryError | CompanyQuerySuccess
 
-union CreateAdminUserMutationOutput = CreateAdminUserMutationError | CreateAdminUserMutationSuccess
-
 union CreateCompanyMutationOutput = CreateCompanyMutationError | CreateCompanyMutationSuccess
 
 union CreateDraftLessonPlanMutationOutput = CreateDraftLessonPlanMutationError | CreateDraftLessonPlanMutationSuccess
@@ -98,15 +96,6 @@ type CompanyQueryError {
 
 type CompanyQuerySuccess {
   company: Company!
-}
-
-type CreateAdminUserMutationError {
-  code: AdminUserErrorCode!
-  message: String!
-}
-
-type CreateAdminUserMutationSuccess {
-  result: Unit!
 }
 
 type CreateCompanyMutationError {
@@ -227,7 +216,7 @@ type LessonPlanQuerySuccessOutput {
 }
 
 type Mutation {
-  createAdminUser(input: CreateAdminUserMutationInput!): CreateAdminUserMutationOutput!
+  createAdminUser(input: CreateAdminUserMutationInput!): Unit!
   createCompany(input: CreateCompanyMutationInput!): CreateCompanyMutationOutput!
   createDraftLessonPlan(input: CreateDraftLessonPlanMutationInput!): CreateDraftLessonPlanMutationOutput!
   createEducation(name: NonEmptyString!): CreateEducationMutationOutput!

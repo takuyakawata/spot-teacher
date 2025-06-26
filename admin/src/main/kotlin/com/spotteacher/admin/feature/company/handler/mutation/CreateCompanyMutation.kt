@@ -15,6 +15,7 @@ import com.spotteacher.domain.PostCode
 import com.spotteacher.domain.Prefecture
 import com.spotteacher.domain.StreetAddress
 import com.spotteacher.graphql.NonEmptyString
+import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.stereotype.Component
 import java.net.URI
 
