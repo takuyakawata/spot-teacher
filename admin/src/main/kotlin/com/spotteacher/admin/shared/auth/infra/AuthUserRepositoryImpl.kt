@@ -1,13 +1,11 @@
 package com.spotteacher.admin.shared.auth.infra
 
-import com.spotteacher.admin.feature.adminUser.domain.AdminUserId
 import com.spotteacher.admin.shared.auth.domain.AuthUser
 import com.spotteacher.admin.shared.auth.domain.AuthUserRepository
 import com.spotteacher.admin.shared.domain.Password
 import com.spotteacher.admin.shared.infra.TransactionAwareDSLContext
 import com.spotteacher.domain.EmailAddress
 import com.spotteacher.extension.nonBlockingFetchOne
-import com.spotteacher.infra.db.enums.UsersRole
 import com.spotteacher.infra.db.tables.references.USERS
 import com.spotteacher.infra.db.tables.references.USER_CREDENTIALS
 import org.springframework.stereotype.Repository
@@ -16,11 +14,10 @@ import org.springframework.stereotype.Repository
 class AuthUserRepositoryImpl(
     private val dslContext: TransactionAwareDSLContext
 ): AuthUserRepository {
-    override suspend fun findByEmail(email: EmailAddress): AuthUser? {
+    override suspend fun findByEmail(email: EmailAddress): AuthUser {
         val user = dslContext.get().nonBlockingFetchOne(
             USERS,
-            USERS.EMAIL.eq(email.value),
-            USERS.ROLE.eq(UsersRole.ADMIN)
+            USERS.EMAIL.eq(email.value)
         )
 
         val credentials = dslContext.get().nonBlockingFetchOne(
@@ -28,14 +25,9 @@ class AuthUserRepositoryImpl(
             USER_CREDENTIALS.USER_ID.eq(user!!.id)
         )
 
-        return if (credentials != null) {
-            AuthUser(
-                userId = AdminUserId(user.id!!),
+        return AuthUser(
                 email = EmailAddress(user.email),
-                password = Password(credentials.passwordHash),
+                password = Password(credentials!!.passwordHash),
             )
-        } else {
-            null
-        }
     }
 }

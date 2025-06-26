@@ -1,35 +1,35 @@
 package com.spotteacher.admin.shared.auth.infra
 
-import com.spotteacher.admin.feature.adminUser.domain.AdminUserRepository
 import com.spotteacher.admin.shared.auth.domain.AuthUser
-import com.spotteacher.admin.shared.auth.domain.AuthUserRepository
 import com.spotteacher.admin.shared.auth.domain.Authenticator
 import com.spotteacher.admin.shared.domain.Password
 import com.spotteacher.domain.EmailAddress
-import com.spotteacher.exception.ResourceNotFoundException
-import kotlinx.coroutines.reactor.awaitSingleOrNull
+import com.spotteacher.exception.AuthenticationFailedException
+import kotlinx.coroutines.reactor.awaitSingle
 import org.springframework.security.authentication.BadCredentialsException
 import org.springframework.security.authentication.ReactiveAuthenticationManager
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
+import org.springframework.security.core.AuthenticationException
 import org.springframework.stereotype.Component
 
-@Component // インフラ層のSpringコンポーネント
+@Component
 class SpringSecurityAuthenticatorAdapter(
-    private val authenticationManager: ReactiveAuthenticationManager,
-    private val userRepository: AdminUserRepository,
-    private val authUserRepository: AuthUserRepository
+    private val authenticationManager: ReactiveAuthenticationManager
 ) : Authenticator {
-    override suspend fun authenticate(email: EmailAddress, password: Password): AuthUser {
-        val authenticationToken = UsernamePasswordAuthenticationToken(email.value, password.value)
+    override suspend fun authenticate(email: EmailAddress, password:String): AuthUser {
+        try {
+            val authenticationToken = UsernamePasswordAuthenticationToken(email.value, password)
+            val authenticated = authenticationManager.authenticate(authenticationToken).awaitSingle()
+            val userDetails = authenticated.principal as org.springframework.security.core.userdetails.User
 
-        authenticationManager.authenticate(authenticationToken).awaitSingleOrNull()
-            ?: throw BadCredentialsException("Authentication failed: Bad credentials")
-
-      val authUser = authUserRepository.findByEmail(email) ?: throw ResourceNotFoundException(
-          clazz = AuthUser::class,
-          params = mapOf("email" to email.value)
-      )
-
-        return authUser
+            return AuthUser(
+                email = EmailAddress(userDetails.username),
+                password = Password(password)
+            )
+        } catch (e: BadCredentialsException) {
+            throw AuthenticationFailedException("Invalid credentials")
+        } catch (e: AuthenticationException) {
+            throw AuthenticationFailedException(e.message ?: "Authentication failed")
+        }
     }
 }

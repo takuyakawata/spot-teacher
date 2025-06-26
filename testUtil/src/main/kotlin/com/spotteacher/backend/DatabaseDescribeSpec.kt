@@ -12,8 +12,9 @@ import org.springframework.test.context.ActiveProfiles
 open class DatabaseDescribeSpec(
     body: DescribeSpec.() -> Unit = {},
 ) : DescribeSpec(body) {
-    @Autowired
+
 //    private lateinit var internalJdbcTemplate: JdbcTemplate
+    @Autowired
     protected lateinit var databaseClient: DatabaseClient
 
     @Value("\${aurora.writer.url}")

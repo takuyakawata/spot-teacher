@@ -19,7 +19,8 @@ class JwtTokenIssuerAdapter(
             user.email.value,
             null,
         )
-        val accessToken = jwtProvider.createAccessToken(authenticationForJwt)
+//        val accessToken = jwtProvider.createAccessToken(authenticationForJwt)
+        val accessToken = "access token"
         val refreshToken = refreshTokenManager.createAndSaveRefreshToken(user.email)
 
         return TokenPair(

@@ -14,24 +14,15 @@ import reactor.core.publisher.Mono
 
 @Component
 class UserDetailsServiceImpl(
-    private val adminUserRepository: AdminUserRepository,
     private val authUserRepository: AuthUserRepository
 ) : ReactiveUserDetailsService {
-    override fun findByUsername(username: String?): Mono<UserDetails> {
-        if (username == null) {
-            return Mono.empty()
-        }
-
+    override fun findByUsername(username: String): Mono<UserDetails> {
         return mono {
-            // このブロック内ではsuspend関数を安全に呼び出せる
-            val user = adminUserRepository.findByEmailAndActiveUser(EmailAddress(username))?: throw UsernameNotFoundException("User not found")
+            val authAdminUser =  authUserRepository.findByEmail(EmailAddress(username))
+                ?: throw UsernameNotFoundException("User not found")
 
-            val authAdminUser =  authUserRepository.findByEmail(EmailAddress(username))?: throw UsernameNotFoundException(
-                "User not found"
-            )
-            // UserDetailsオブジェクトを構築して返す
-            // このブロックの最後の式の結果が、Monoが発行する値になる
             val authorities = listOf(SimpleGrantedAuthority("ADMIN"))
+
             User.builder()
                 .username(authAdminUser.email.value)
                 .password(authAdminUser.password.value)

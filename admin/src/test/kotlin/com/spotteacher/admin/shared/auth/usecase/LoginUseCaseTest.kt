@@ -19,7 +19,7 @@ class LoginUseCaseTest : DescribeSpec({
         val authenticator = mockk<Authenticator>()
         val tokenIssuer = mockk<TokenIssuer>()
         val passwordEncoder = mockk<PasswordEncoder>()
-        val useCase = LoginUseCase(authenticator, tokenIssuer, passwordEncoder)
+        val useCase = LoginUseCase(authenticator, tokenIssuer)
 
         describe("call") {
             context("when authentication is successful") {

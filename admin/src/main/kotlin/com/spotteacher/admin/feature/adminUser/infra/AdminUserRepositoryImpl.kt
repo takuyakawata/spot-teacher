@@ -20,6 +20,7 @@ import com.spotteacher.infra.db.tables.records.UsersRecord
 import kotlinx.coroutines.reactive.awaitFirstOrNull
 import kotlinx.coroutines.reactive.awaitLast
 import org.springframework.stereotype.Repository
+import java.time.LocalDateTime
 import java.util.UUID
 
 @Repository
@@ -56,37 +57,39 @@ class AdminUserRepositoryImpl(
     }
 
     override suspend fun create(user: ActiveAdminUser,password: String):ActiveAdminUser {
-                val userId = dslContext.get().insertInto(
-                    USERS,
-                    USERS.UUID,
-                    USERS.FIRST_NAME,
-                    USERS.LAST_NAME,
-                    USERS.EMAIL,
-                    USERS.ROLE
-                ).values(
-                    UUID.randomUUID().toString(),
-                    user.firstName.value,
-                    user.lastName.value,
-                    user.email.value,
-                    UsersRole.ADMIN
-                ).returning(USERS.ID).awaitFirstOrNull()?.id!!
+            val userId = dslContext.get().insertInto(
+                USERS,
+                USERS.UUID,
+                USERS.FIRST_NAME,
+                USERS.LAST_NAME,
+                USERS.EMAIL,
+                USERS.ROLE
+            ).values(
+                UUID.randomUUID().toString(),
+                user.firstName.value,
+                user.lastName.value,
+                user.email.value,
+                UsersRole.ADMIN
+            ).returning(USERS.ID).awaitFirstOrNull()?.id!!
 
-                dslContext.get().insertInto(
-                    ADMIN_USERS,
-                    ADMIN_USERS.USER_ID
-                ).values(
-                    userId
-                ).awaitLast()
+            dslContext.get().insertInto(
+                ADMIN_USERS,
+                ADMIN_USERS.USER_ID
+            ).values(
+                userId
+            ).awaitLast()
 
-        //user credentials
-                dslContext.get().insertInto(
-                    USER_CREDENTIALS,
-                    USER_CREDENTIALS.USER_ID,
-                    USER_CREDENTIALS.PASSWORD_HASH,
-                ).values(
-                    userId,
-                    password
-                ).awaitLast()
+            //user credentials
+            dslContext.get().insertInto(
+                USER_CREDENTIALS,
+                USER_CREDENTIALS.USER_ID,
+                USER_CREDENTIALS.PASSWORD_HASH,
+                USER_CREDENTIALS.LAST_PASSWORD_CHANGE_AT
+            ).values(
+                userId,
+                password,
+                LocalDateTime.now()
+            ).awaitLast()
 
         return user.copy(id = AdminUserId(userId))
     }

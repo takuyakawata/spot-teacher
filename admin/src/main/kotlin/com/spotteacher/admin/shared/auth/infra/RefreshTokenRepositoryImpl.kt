@@ -18,9 +18,11 @@ class RefreshTokenRepositoryImpl(
             REFRESH_TOKENS,
             REFRESH_TOKENS.TOKEN,
             REFRESH_TOKENS.USER_ID,
+            REFRESH_TOKENS.EXPIRES_AT
         ).values(
             refreshToken.token,
             refreshToken.userId.value,
+            refreshToken.expiresAt,
         ).returning(REFRESH_TOKENS.ID).awaitFirstOrNull()?.id!!
 
         return refreshToken.copy(id = RefreshTokenId(id))

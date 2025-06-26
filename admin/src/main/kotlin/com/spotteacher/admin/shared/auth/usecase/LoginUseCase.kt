@@ -17,17 +17,15 @@ data class LoginUseCaseInput(
 class LoginUseCase(
     private val authenticator: Authenticator,
     private val tokenIssuer: TokenIssuer,
-    private val passwordEncoder: PasswordEncoder,
 ) {
     suspend fun call(input: LoginUseCaseInput): Result<TokenPair> {
-        // 1. 認証処理を依頼
         return  runCatching {
-            val authenticatedUser = authenticator.authenticate(input.email, input.password)
+            // 1. 認証処理を依頼
+            // パスワードはそのままAuthenticatorに渡す（エンコードはAuthenticatorの責任）
+            val authenticatedUser = authenticator.authenticate(input.email, input.password.value)
 
             // 2. 認証されたユーザー情報に基づいてトークン発行を依頼
             tokenIssuer.issueToken(authenticatedUser)
         }
-
-
     }
 }
