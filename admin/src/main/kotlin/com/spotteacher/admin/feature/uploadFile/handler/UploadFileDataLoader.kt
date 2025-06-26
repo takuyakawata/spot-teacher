@@ -1,12 +1,12 @@
 package com.spotteacher.admin.feature.uploadFile.handler
 
-import com.spotteacher.admin.feature.uploadFile.domain.UploadFileId
+//import com.spotteacher.admin.feature.uploadFile.domain.UploadFileId
 
-private const val DATA_LOADER_NAME = "UploadFileDataLoader"
+//private const val DATA_LOADER_NAME = "UploadFileDataLoader"
 
-data class UploadFileDataLoaderKey(
-    val uploadFileId: UploadFileId,
-)
+//data class UploadFileDataLoaderKey(
+//    val uploadFileId: UploadFileId,
+//)
 
 //@Component
 //class UploadFileDataLoader(private val repository: UploadFileRepository) :
