@@ -31,7 +31,9 @@ class LessonPlanQuery(
     private val findLessonPlanUseCase: FindLessonPlanUseCase
 ) : Query {
     suspend fun lessonPlan(id: ID): LessonPlanQueryOutput {
-        val result = findLessonPlanUseCase.call(FindLessonPlanUseCaseInput(id.toDomainId { LessonPlanId(it) }))
+        val result = findLessonPlanUseCase.call(
+            FindLessonPlanUseCaseInput(id.toDomainId { LessonPlanId(it) })
+        )
 
         return result.fold(
             ifLeft = {
@@ -63,6 +65,9 @@ class LessonPlanQuery(
                             },
                             images = it.images,
                             createdAt = it.createdAt,
+                            lessonPlanEducations = it.educations.value.toList(),
+                            lessonPlanSubjects = it.subjects.value.toList(),
+                            lessonPlanGrades = it.grades.value.toList(),
                         )
 
                         is PublishedLessonPlan -> PublishedLessonPlanType(
@@ -85,6 +90,9 @@ class LessonPlanQuery(
                             },
                             images = it.images,
                             createdAt = it.createdAt,
+                            lessonPlanEducations = it.educations.value.toList(),
+                            lessonPlanSubjects = it.subjects.value.toList(),
+                            lessonPlanGrades = it.grades.value.toList(),
                         )
                     }
                 )

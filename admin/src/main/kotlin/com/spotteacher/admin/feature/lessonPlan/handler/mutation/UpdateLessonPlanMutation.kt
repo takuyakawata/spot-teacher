@@ -20,6 +20,7 @@ import com.spotteacher.admin.feature.lessonTag.domain.Subject
 import com.spotteacher.admin.feature.uploadFile.domain.UploadFileId
 import com.spotteacher.graphql.NonEmptyString
 import com.spotteacher.graphql.toDomainId
+import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.stereotype.Component
 
 data class UpdateLessonPlanMutationInput(
@@ -47,6 +48,7 @@ data class UpdateLessonPlanMutationError(
 class UpdateLessonPlanMutation(
     private val updateLessonPlanUseCase: UpdateLessonPlanUseCase
 ) : Mutation {
+    @PreAuthorize("isAuthenticated()")
     suspend fun updateLessonPlan(input: UpdateLessonPlanMutationInput): UpdateLessonPlanMutationOutput {
         return updateLessonPlanUseCase.call(
             UpdateLessonPlanUseCaseInput(
@@ -56,8 +58,8 @@ class UpdateLessonPlanMutation(
                 lessonType = input.type,
                 location = input.location?.let { LessonLocation(it.value) },
                 annualMaxExecutions = input.annualMaxExecutions,
-                images = input.images.map { it.toDomainId { UploadFileId(it) } },
-                educations = LessonPlanEducations(input.educations.map{it.toDomainId(::EducationId)}.toSet()),
+                images = input.images.map { it.toDomainId { Id -> UploadFileId(Id) } },
+                educations = LessonPlanEducations(input.educations.map { it.toDomainId(::EducationId) }.toSet()),
                 subjects = LessonPlanSubjects(input.subjects.toSet()),
                 grades = LessonPlanGrades(input.grades.toSet()),
             )

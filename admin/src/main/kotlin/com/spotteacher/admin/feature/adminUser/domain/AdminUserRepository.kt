@@ -6,7 +6,7 @@ import com.spotteacher.domain.EmailAddress
 interface AdminUserRepository {
     suspend fun getAll(): List<AdminUser>
     suspend fun findById(id: AdminUserId): AdminUser?
-    suspend fun create(user: ActiveAdminUser,password: String): ActiveAdminUser
+    suspend fun create(user: ActiveAdminUser, password: String): ActiveAdminUser
     suspend fun update(user: ActiveAdminUser)
     suspend fun updatePassword(password: Password)
     suspend fun delete(id: AdminUserId)

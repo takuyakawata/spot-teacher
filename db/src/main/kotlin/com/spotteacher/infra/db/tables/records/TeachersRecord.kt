@@ -3,14 +3,10 @@
  */
 package com.spotteacher.infra.db.tables.records
 
-
 import com.spotteacher.infra.db.tables.Teachers
-
-import java.time.LocalDateTime
-
 import org.jooq.Record1
 import org.jooq.impl.UpdatableRecordImpl
-
+import java.time.LocalDateTime
 
 /**
  * Teacherロールを持つユーザーの情報
@@ -47,7 +43,7 @@ open class TeachersRecord private constructor() : UpdatableRecordImpl<TeachersRe
     /**
      * Create a detached, initialised TeachersRecord
      */
-    constructor(id: Long? = null, userId: Long, schoolId: Long, createdAt: LocalDateTime? = null, updatedAt: LocalDateTime? = null): this() {
+    constructor(id: Long? = null, userId: Long, schoolId: Long, createdAt: LocalDateTime? = null, updatedAt: LocalDateTime? = null) : this() {
         this.id = id
         this.userId = userId
         this.schoolId = schoolId

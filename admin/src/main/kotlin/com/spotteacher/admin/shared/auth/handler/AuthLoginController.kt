@@ -1,6 +1,5 @@
 package com.spotteacher.admin.shared.auth.handler
 
-
 import com.spotteacher.admin.shared.auth.usecase.LoginUseCase
 import com.spotteacher.admin.shared.auth.usecase.LoginUseCaseInput
 import com.spotteacher.admin.shared.domain.Password

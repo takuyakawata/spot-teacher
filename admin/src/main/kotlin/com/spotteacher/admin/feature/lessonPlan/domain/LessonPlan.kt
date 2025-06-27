@@ -15,9 +15,9 @@ sealed interface LessonPlan {
     val companyId: CompanyId
     val images: List<UploadFileId>
     val createdAt: LocalDateTime
-    val educations : LessonPlanEducations
-    val subjects : LessonPlanSubjects
-    val grades : LessonPlanGrades
+    val educations: LessonPlanEducations
+    val subjects: LessonPlanSubjects
+    val grades: LessonPlanGrades
 }
 
 data class PublishedLessonPlan(
@@ -51,9 +51,9 @@ fun PublishedLessonPlan.update(
     companyId = this.companyId,
     images = images ?: this.images,
     createdAt = this.createdAt,
-    educations = educations?: this.educations,
-    subjects = subjects?: this.subjects,
-    grades = grades ?:this.grades,
+    educations = educations ?: this.educations,
+    subjects = subjects ?: this.subjects,
+    grades = grades ?: this.grades,
     title = title ?: this.title,
     description = description ?: this.description,
     lessonType = lessonType ?: this.lessonType,
@@ -130,7 +130,7 @@ data class DraftLessonPlan(
         annualMaxExecutions: Int?,
         images: List<UploadFileId>?,
         educations: LessonPlanEducations?,
-        subjects:LessonPlanSubjects?,
+        subjects: LessonPlanSubjects?,
         grades: LessonPlanGrades?
     ) = DraftLessonPlan(
         id = this.id,
@@ -143,9 +143,9 @@ data class DraftLessonPlan(
         location = location ?: this.location,
         annualMaxExecutions = annualMaxExecutions ?: this.annualMaxExecutions,
         lessonPlanDates = this.lessonPlanDates,
-        educations = educations?: this.educations,
-        subjects = subjects?: this.subjects,
-        grades = grades ?:this.grades,
+        educations = educations ?: this.educations,
+        subjects = subjects ?: this.subjects,
+        grades = grades ?: this.grades,
     )
 
     fun toPublishedLessonPlan() = PublishedLessonPlan(

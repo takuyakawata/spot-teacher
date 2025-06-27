@@ -13,23 +13,23 @@ class RefreshTokenRepositoryImplTest(
     private val repository: RefreshTokenRepositoryImpl,
     private val adminUserFixture: AdminUserFixture
 ) : DatabaseDescribeSpec({
-    
+
     describe("save") {
         it("should save a refresh token and return it with a generated ID") {
             // Arrange
             val adminUser = adminUserFixture.createActiveAdminUser()
             val token = "test-refresh-token"
             val expiresAt = LocalDateTime.now().plusDays(7)
-            
+
             val refreshToken = RefreshToken.create(
                 adminUserId = adminUser.id,
                 token = token,
                 expiresAt = expiresAt
             )
-            
+
             // Act
             val savedToken = repository.save(refreshToken)
-            
+
             // Assert
             savedToken.id.value shouldNotBe 0L // ID should be generated
             savedToken.userId shouldBe adminUser.id

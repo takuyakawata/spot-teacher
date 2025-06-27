@@ -39,8 +39,8 @@ class AdminUserFixture {
         firstName: AdminUserName = AdminUserName("Test"),
         lastName: AdminUserName = AdminUserName("User"),
         email: EmailAddress = EmailAddress("test@example.com"),
-        password:Password = Password("password123")
-    ): ActiveAdminUser{
+        password: Password = Password("password123")
+    ): ActiveAdminUser {
         val adminUser = buildActiveAdminUser(
             firstName = firstName,
             lastName = lastName,
@@ -53,4 +53,3 @@ class AdminUserFixture {
         return adminUser
     }
 }
-

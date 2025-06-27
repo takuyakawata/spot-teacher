@@ -13,10 +13,12 @@ class DeleteSchoolMutation(
 ) : Mutation {
     suspend fun deleteSchool(input: DeleteSchoolInput): DeleteSchoolPayload {
         // Convert input to domain objects
-        val schoolId = SchoolId(input.id.toLongOrNull() ?: return DeleteSchoolPayload(
-            success = false,
-            errors = listOf("Invalid school ID format")
-        ))
+        val schoolId = SchoolId(
+            input.id.toLongOrNull() ?: return DeleteSchoolPayload(
+                success = false,
+                errors = listOf("Invalid school ID format")
+            )
+        )
 
         // Create use case input
         val useCaseInput = DeleteSchoolUseCaseInput(schoolId)
@@ -26,13 +28,13 @@ class DeleteSchoolMutation(
 
         // Handle result
         return output.result.fold(
-            { error -> 
+            { error ->
                 DeleteSchoolPayload(
                     success = false,
                     errors = listOf(error.message)
                 )
             },
-            { 
+            {
                 DeleteSchoolPayload(
                     success = true,
                     errors = emptyList()

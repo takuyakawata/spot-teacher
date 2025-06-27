@@ -13,7 +13,6 @@ import com.spotteacher.graphql.toDomainId
 import com.spotteacher.graphql.toID
 import org.springframework.beans.factory.annotation.Autowired
 
-
 const val UPLOAD_FILE_TYPE_GRAPHQL_NAME = "uploadFile"
 
 @GraphQLName(UPLOAD_FILE_TYPE_GRAPHQL_NAME)

@@ -10,7 +10,6 @@ import io.mockk.mockk
 
 class FindEducationsFilterByNameUseCaseTest : DescribeSpec({
 
-
     val educationRepository = mockk<EducationRepository>()
     val useCase = FindEducationsFilterByNameUseCase(educationRepository)
     val educationFixture = EducationFixture()
@@ -43,5 +42,4 @@ class FindEducationsFilterByNameUseCaseTest : DescribeSpec({
             }
         }
     }
-
 })

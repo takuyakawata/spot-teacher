@@ -24,7 +24,7 @@ class DeleteEducationUseCase(
                 message = "Education not found"
             ).left()
 
-        //TODO  Check if any lessons are using this education
+        // TODO  Check if any lessons are using this education
 
         educationRepository.delete(id)
 

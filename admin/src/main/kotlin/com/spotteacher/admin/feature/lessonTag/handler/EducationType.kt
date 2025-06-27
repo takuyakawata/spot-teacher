@@ -16,7 +16,7 @@ data class EducationType(
     val name: String,
     val isActive: Boolean,
     val displayOrder: Int,
-){
+) {
 //    fun educations(): List<Education> = FindEducationsUseCase().findEducations()
     fun subjects(): List<Subject> = Subject.entries
     fun grades(): List<Grade> = Grade.entries

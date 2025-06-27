@@ -65,7 +65,6 @@ class LoginUseCaseTest : DescribeSpec({
                     // Assert
                     result.isFailure shouldBe true
                     result.exceptionOrNull()?.message shouldBe "Authentication failed"
-
                 }
             }
         }

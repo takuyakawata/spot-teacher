@@ -16,6 +16,7 @@ import com.spotteacher.domain.Prefecture
 import com.spotteacher.domain.StreetAddress
 import com.spotteacher.graphql.NonEmptyString
 import com.spotteacher.graphql.toDomainId
+import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.stereotype.Component
 import java.net.URI
 
@@ -39,6 +40,7 @@ data class UpdateCompanyMutationError(
 ) : UpdateCompanyMutationOutput
 
 @Component
+@PreAuthorize("isAuthenticated()")
 class UpdateCompanyMutation(
     private val useCase: UpdateCompanyUseCase
 ) : Mutation {

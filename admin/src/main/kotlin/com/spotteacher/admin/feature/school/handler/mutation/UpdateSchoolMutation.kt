@@ -27,10 +27,12 @@ class UpdateSchoolMutation(
 ) : Mutation {
     suspend fun updateSchool(input: UpdateSchoolInput): UpdateSchoolPayload {
         // Convert input to domain objects
-        val schoolId = SchoolId(input.id.toLongOrNull() ?: return UpdateSchoolPayload(
-            school = null,
-            errors = listOf("Invalid school ID format")
-        ))
+        val schoolId = SchoolId(
+            input.id.toLongOrNull() ?: return UpdateSchoolPayload(
+                school = null,
+                errors = listOf("Invalid school ID format")
+            )
+        )
 
         // Create use case input with optional fields
         val useCaseInput = UpdateSchoolUseCaseInput(
@@ -47,17 +49,17 @@ class UpdateSchoolMutation(
 
         // Handle result
         return output.result.fold(
-            { error -> 
+            { error ->
                 UpdateSchoolPayload(
                     school = null,
                     errors = listOf(error.message)
                 )
             },
-            { 
+            {
                 // Fetch the updated school to return it
                 val findOutput = findSchoolUseCase.call(FindSchoolUseCaseInput(schoolId))
                 findOutput.result.fold(
-                    { 
+                    {
                         UpdateSchoolPayload(
                             school = null,
                             errors = listOf("School updated but could not be retrieved")
@@ -76,8 +78,9 @@ class UpdateSchoolMutation(
 
     private suspend fun createAddressIfNeeded(input: UpdateSchoolInput): Address? {
         // Only create an Address if at least one address field is provided
-        if (input.city == null && input.postalCode == null && input.prefecture == null && 
-            input.streetAddress == null && input.buildingName == null) {
+        if (input.city == null && input.postalCode == null && input.prefecture == null &&
+            input.streetAddress == null && input.buildingName == null
+        ) {
             return null
         }
 

@@ -13,9 +13,9 @@ import org.springframework.stereotype.Component
 class EducationQuery(
     private val findEducationsFilterByNameUseCase: FindEducationsFilterByNameUseCase,
     private val getAllEducationsUseCase: GetAllEducationsUseCase
-): Query {
-    suspend fun educationFindByName(name: NonEmptyString):EducationType? =
+) : Query {
+    suspend fun educationFindByName(name: NonEmptyString): EducationType? =
         findEducationsFilterByNameUseCase.call(EducationName(name.value))?.toEducationType()
 
-    suspend fun educationGetAll():List<EducationType> = getAllEducationsUseCase.call().map { it.toEducationType() }
+    suspend fun educationGetAll(): List<EducationType> = getAllEducationsUseCase.call().map { it.toEducationType() }
 }

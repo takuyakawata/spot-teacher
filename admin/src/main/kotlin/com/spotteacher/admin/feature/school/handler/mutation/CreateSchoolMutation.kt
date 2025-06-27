@@ -50,7 +50,7 @@ class CreateSchoolMutation(
 
         // Handle result
         return output.result.fold(
-            { error -> 
+            { error ->
                 CreateSchoolPayload(
                     school = null,
                     errors = listOf(error.message)

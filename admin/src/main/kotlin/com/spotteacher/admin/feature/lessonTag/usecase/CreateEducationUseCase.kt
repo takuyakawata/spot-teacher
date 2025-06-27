@@ -16,7 +16,7 @@ class CreateEducationUseCase(
     private val educationRepository: EducationRepository
 ) {
     @TransactionCoroutine
-    suspend fun call(name: EducationName): Either<EducationError,Unit> {
+    suspend fun call(name: EducationName): Either<EducationError, Unit> {
         val existingEducation = educationRepository.findByName(name)
         if (existingEducation != null) {
             return EducationError(

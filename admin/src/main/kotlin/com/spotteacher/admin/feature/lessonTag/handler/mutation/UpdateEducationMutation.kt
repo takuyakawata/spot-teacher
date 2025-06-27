@@ -19,12 +19,11 @@ data class UpdateEducationMutationInput(
 )
 
 sealed interface UpdateEducationMutationOutput
-data class UpdateEducationMutationSuccess(val result:Unit) : UpdateEducationMutationOutput
+data class UpdateEducationMutationSuccess(val result: Unit) : UpdateEducationMutationOutput
 data class UpdateEducationMutationError(
     val code: EducationErrorCode,
     val message: String
 ) : UpdateEducationMutationOutput
-
 
 @Component
 class UpdateEducationMutation(
@@ -33,7 +32,7 @@ class UpdateEducationMutation(
     suspend fun updateEducation(input: UpdateEducationMutationInput): UpdateEducationMutationOutput {
         val result = usecase.call(
             UpdateEducationUseCaseInput(
-                id = input.id.toDomainId { EducationId(it)},
+                id = input.id.toDomainId { EducationId(it) },
                 name = input.name?.let { EducationName(it.value) },
                 isActive = input.isActive,
                 displayOrder = input.displayOrder

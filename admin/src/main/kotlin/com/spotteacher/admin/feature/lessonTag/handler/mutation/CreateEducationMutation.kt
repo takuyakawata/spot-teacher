@@ -8,7 +8,7 @@ import com.spotteacher.graphql.NonEmptyString
 import org.springframework.stereotype.Component
 
 sealed interface CreateEducationMutationOutput {
-    data class CreateEducationMutationSuccess(val result:Unit) : CreateEducationMutationOutput
+    data class CreateEducationMutationSuccess(val result: Unit) : CreateEducationMutationOutput
     data class CreateEducationMutationError(
         val code: EducationErrorCode,
         val message: String
@@ -23,7 +23,7 @@ class CreateEducationMutation(
         val result = usecase.call(EducationName(name.value))
 
         return result.fold(
-            ifLeft = { CreateEducationMutationOutput.CreateEducationMutationError(it.code,it.message) },
+            ifLeft = { CreateEducationMutationOutput.CreateEducationMutationError(it.code, it.message) },
             ifRight = { CreateEducationMutationOutput.CreateEducationMutationSuccess(Unit) }
         )
     }

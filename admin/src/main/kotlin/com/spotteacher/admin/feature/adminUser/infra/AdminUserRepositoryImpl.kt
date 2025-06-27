@@ -43,7 +43,7 @@ class AdminUserRepositoryImpl(
         val adminUser = dslContext.get().nonBlockingFetchOne(
             ADMIN_USERS,
             ADMIN_USERS.ID.eq(id.value)
-        )?: return null
+        ) ?: return null
 
         // Get the corresponding user record
         val userRecord = dslContext.get().nonBlockingFetchOne(
@@ -54,51 +54,51 @@ class AdminUserRepositoryImpl(
         return toEntity(userRecord)
     }
 
-    override suspend fun create(user: ActiveAdminUser,password: String):ActiveAdminUser {
-            val userId = dslContext.get().insertInto(
-                USERS,
-                USERS.UUID,
-                USERS.FIRST_NAME,
-                USERS.LAST_NAME,
-                USERS.EMAIL,
-                USERS.ROLE
-            ).values(
-                UUID.randomUUID().toString(),
-                user.firstName.value,
-                user.lastName.value,
-                user.email.value,
-                UsersRole.ADMIN
-            ).returning(USERS.ID).awaitFirstOrNull()?.id!!
+    override suspend fun create(user: ActiveAdminUser, password: String): ActiveAdminUser {
+        val userId = dslContext.get().insertInto(
+            USERS,
+            USERS.UUID,
+            USERS.FIRST_NAME,
+            USERS.LAST_NAME,
+            USERS.EMAIL,
+            USERS.ROLE
+        ).values(
+            UUID.randomUUID().toString(),
+            user.firstName.value,
+            user.lastName.value,
+            user.email.value,
+            UsersRole.ADMIN
+        ).returning(USERS.ID).awaitFirstOrNull()?.id!!
 
-            dslContext.get().insertInto(
-                ADMIN_USERS,
-                ADMIN_USERS.USER_ID
-            ).values(
-                userId
-            ).awaitLast()
+        dslContext.get().insertInto(
+            ADMIN_USERS,
+            ADMIN_USERS.USER_ID
+        ).values(
+            userId
+        ).awaitLast()
 
-            //user credentials
-            dslContext.get().insertInto(
-                USER_CREDENTIALS,
-                USER_CREDENTIALS.USER_ID,
-                USER_CREDENTIALS.PASSWORD_HASH,
-                USER_CREDENTIALS.LAST_PASSWORD_CHANGE_AT
-            ).values(
-                userId,
-                password,
-                LocalDateTime.now()
-            ).awaitLast()
+        // user credentials
+        dslContext.get().insertInto(
+            USER_CREDENTIALS,
+            USER_CREDENTIALS.USER_ID,
+            USER_CREDENTIALS.PASSWORD_HASH,
+            USER_CREDENTIALS.LAST_PASSWORD_CHANGE_AT
+        ).values(
+            userId,
+            password,
+            LocalDateTime.now()
+        ).awaitLast()
 
         return user.copy(id = AdminUserId(userId))
     }
 
     override suspend fun update(user: ActiveAdminUser) {
-            dslContext.get().update(USERS)
-                .set(USERS.FIRST_NAME, user.firstName.value)
-                .set(USERS.LAST_NAME, user.lastName.value)
-                .set(USERS.EMAIL, user.email.value)
-                .where(USERS.ID.eq(user.id.value))
-                .awaitLast()
+        dslContext.get().update(USERS)
+            .set(USERS.FIRST_NAME, user.firstName.value)
+            .set(USERS.LAST_NAME, user.lastName.value)
+            .set(USERS.EMAIL, user.email.value)
+            .where(USERS.ID.eq(user.id.value))
+            .awaitLast()
     }
 
     override suspend fun updatePassword(password: Password) {
@@ -131,7 +131,7 @@ class AdminUserRepositoryImpl(
             USERS.ROLE.eq(UsersRole.ADMIN)
         ) ?: return null
 
-            dslContext.get().nonBlockingFetchOne(
+        dslContext.get().nonBlockingFetchOne(
             ADMIN_USERS,
             ADMIN_USERS.USER_ID.eq(userRecord.id)
         ) ?: return null
@@ -144,7 +144,7 @@ class AdminUserRepositoryImpl(
         val user = dslContext.get().nonBlockingFetchOne(
             USERS,
             USERS.EMAIL.eq(emailAddress.value)
-        )?:return null
+        ) ?: return null
 
         dslContext.get().nonBlockingFetchOne(
             ADMIN_USERS,
@@ -154,13 +154,13 @@ class AdminUserRepositoryImpl(
         return toEntity(user)
     }
 
-    private fun toEntity(user: UsersRecord): ActiveAdminUser{
+    private fun toEntity(user: UsersRecord): ActiveAdminUser {
         // Check if this is an active user (has valid email)
         return ActiveAdminUser(
-                id = AdminUserId(user.id!!),
-                firstName = AdminUserName(user.firstName),
-                lastName = AdminUserName(user.lastName),
-                email = EmailAddress(user.email),
-            )
-        }
+            id = AdminUserId(user.id!!),
+            firstName = AdminUserName(user.firstName),
+            lastName = AdminUserName(user.lastName),
+            email = EmailAddress(user.email),
+        )
     }
+}

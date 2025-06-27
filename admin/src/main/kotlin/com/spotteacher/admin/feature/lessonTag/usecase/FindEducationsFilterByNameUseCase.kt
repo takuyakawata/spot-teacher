@@ -5,7 +5,6 @@ import com.spotteacher.admin.feature.lessonTag.domain.EducationName
 import com.spotteacher.admin.feature.lessonTag.domain.EducationRepository
 import com.spotteacher.usecase.UseCase
 
-
 @UseCase
 class FindEducationsFilterByNameUseCase(
     private val educationRepository: EducationRepository

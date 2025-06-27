@@ -6,7 +6,7 @@ import java.time.LocalDateTime
 
 data class TokenPair(
     val accessToken: String,
-    val refreshToken: String //todo RefreshTokenにする
+    val refreshToken: String // todo RefreshTokenにする
 )
 
 data class RefreshToken(

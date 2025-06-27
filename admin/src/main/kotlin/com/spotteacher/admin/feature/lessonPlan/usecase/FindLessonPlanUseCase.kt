@@ -17,14 +17,13 @@ class FindLessonPlanUseCase(
     private val lessonPlanRepository: LessonPlanRepository
 ) {
     suspend fun call(input: FindLessonPlanUseCaseInput): Either<LessonPlanError, LessonPlan> {
-        val lessonPlan =  lessonPlanRepository.findById(input.id)
-
-        return lessonPlan?.let { Either.Right(it) }
-            ?: Either.Left(
-                LessonPlanError( // nullの場合はLeftを返す
-                    code = LessonPlanErrorCode.LESSON_PLAN_NOT_FOUND,
-                    message = "Lesson plan not found"
-                )
+        val result = lessonPlanRepository.findById(input.id)
+        result?.let { return Either.Right(it) }
+        return Either.Left(
+            LessonPlanError(
+                code = LessonPlanErrorCode.LESSON_PLAN_NOT_FOUND,
+                message = "Lesson plan with ID ${input.id.value} not found"
             )
+        )
     }
 }

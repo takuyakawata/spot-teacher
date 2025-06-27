@@ -8,9 +8,8 @@ import com.spotteacher.admin.feature.lessonTag.usecase.DeleteEducationUseCase
 import com.spotteacher.graphql.toDomainId
 import org.springframework.stereotype.Component
 
-
 sealed interface DeleteEducationMutationOutput
-data class DeleteEducationMutationSuccess(val result:Unit) : DeleteEducationMutationOutput
+data class DeleteEducationMutationSuccess(val result: Unit) : DeleteEducationMutationOutput
 data class DeleteEducationMutationError(
     val code: EducationErrorCode,
     val message: String
@@ -24,7 +23,7 @@ class DeleteEducationMutation(
         val result = usecase.call(id.toDomainId(::EducationId))
 
         return result.fold(
-            ifLeft = { DeleteEducationMutationError(it.code,it.message) },
+            ifLeft = { DeleteEducationMutationError(it.code, it.message) },
             ifRight = { DeleteEducationMutationSuccess(Unit) }
         )
     }

@@ -27,7 +27,7 @@ data class UpdatePassWordMutationError(
 class UpdatePasswordMutation(
     val usecase: UpdatePasswordUseCase
 ) : Mutation {
-    suspend fun updatePassword(input: UpdatePasswordMutationInput) : UpdatePassWordMutationOutput {
+    suspend fun updatePassword(input: UpdatePasswordMutationInput): UpdatePassWordMutationOutput {
         val result = usecase.call(
             UpdatePasswordUseCaseInput(
                 adminUserId = input.adminUserId.toDomainId { AdminUserId(it) },
@@ -42,5 +42,3 @@ class UpdatePasswordMutation(
         )
     }
 }
-
-
