@@ -14,6 +14,7 @@ include(":db")
 include(":admin")
 include(":shared")
 include(":testUtil")
+include(":teacher")
 
 //project(":db").projectDir = file("db")
 //project(":admin").projectDir = file("admin")

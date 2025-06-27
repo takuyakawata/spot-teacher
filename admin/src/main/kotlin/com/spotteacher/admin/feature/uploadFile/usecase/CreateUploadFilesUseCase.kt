@@ -1,4 +1,4 @@
-package  com.spotteacher.admin.feature.uploadFile.usecase
+package com.spotteacher.admin.feature.uploadFile.usecase
 
 import arrow.core.Nel
 import com.spotteacher.admin.feature.uploadFile.domain.ContentType
