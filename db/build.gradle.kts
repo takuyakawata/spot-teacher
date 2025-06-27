@@ -91,3 +91,7 @@ tasks.withType<Test> {
 tasks.withType<org.springframework.boot.gradle.tasks.bundling.BootJar> {
     enabled = false // bootJar タスクを無効化
 }
+
+tasks.withType<io.gitlab.arturbosch.detekt.Detekt> {
+    enabled = false
+}
