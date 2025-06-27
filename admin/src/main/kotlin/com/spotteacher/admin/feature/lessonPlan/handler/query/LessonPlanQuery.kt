@@ -63,6 +63,9 @@ class LessonPlanQuery(
                             },
                             images = it.images,
                             createdAt = it.createdAt,
+                            lessonPlanEducations = it.educations.value.toList(),
+                            lessonPlanSubjects = it.subjects.value.toList(),
+                            lessonPlanGrades = it.grades.value.toList(),
                         )
 
                         is PublishedLessonPlan -> PublishedLessonPlanType(
@@ -85,6 +88,9 @@ class LessonPlanQuery(
                             },
                             images = it.images,
                             createdAt = it.createdAt,
+                            lessonPlanEducations = it.educations.value.toList(),
+                            lessonPlanSubjects = it.subjects.value.toList(),
+                            lessonPlanGrades = it.grades.value.toList(),
                         )
                     }
                 )

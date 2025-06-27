@@ -6,6 +6,9 @@ import com.expediagroup.graphql.generator.scalars.ID
 import com.spotteacher.admin.feature.company.domain.CompanyId
 import com.spotteacher.admin.feature.lessonPlan.domain.LessonPlanId
 import com.spotteacher.admin.feature.lessonPlan.domain.LessonType
+import com.spotteacher.admin.feature.lessonTag.domain.EducationId
+import com.spotteacher.admin.feature.lessonTag.domain.Grade
+import com.spotteacher.admin.feature.lessonTag.domain.Subject
 import com.spotteacher.admin.feature.uploadFile.domain.UploadFileId
 import com.spotteacher.graphql.toID
 import java.time.LocalDateTime
@@ -43,8 +46,17 @@ data class PublishedLessonPlanType(
     val lessonType: LessonType,
     val location: String,
     val annualMaxExecutions: Int,
-    val lessonPlanDates: List<LessonPlanDateType>
-) : LessonPlanType
+    val lessonPlanDates: List<LessonPlanDateType>,
+    @GraphQLIgnore
+    val lessonPlanEducations: List<EducationId>,
+    val lessonPlanSubjects: List<Subject>,
+    val lessonPlanGrades: List<Grade>
+) : LessonPlanType{
+    // todo add date loader
+    // educations
+    // uploadFile
+    // companyは必要なら
+}
 
 @GraphQLName(DRAFT_LESSON_PLAN_TYPE)
 data class DraftLessonPlanType(
@@ -59,8 +71,17 @@ data class DraftLessonPlanType(
     val lessonType: LessonType?,
     val location: String?,
     val annualMaxExecutions: Int?,
-    val lessonPlanDates: List<LessonPlanDateType>?
-) : LessonPlanType
+    val lessonPlanDates: List<LessonPlanDateType>?,
+    @GraphQLIgnore
+    val lessonPlanEducations: List<EducationId>,
+    val lessonPlanSubjects: List<Subject>,
+    val lessonPlanGrades: List<Grade>
+) : LessonPlanType {
+    // todo add date loader
+    // educations
+    // uploadFiles
+    // companyは必要なら
+}
 
 @GraphQLName(LESSON_PLAN_DATE_TYPE)
 data class LessonPlanDateType(
