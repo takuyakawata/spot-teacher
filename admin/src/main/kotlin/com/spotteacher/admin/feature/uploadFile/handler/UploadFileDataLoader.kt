@@ -1,15 +1,15 @@
 package com.spotteacher.admin.feature.uploadFile.handler
 
-//import com.spotteacher.admin.feature.uploadFile.domain.UploadFileId
+// import com.spotteacher.admin.feature.uploadFile.domain.UploadFileId
 
-//private const val DATA_LOADER_NAME = "UploadFileDataLoader"
+// private const val DATA_LOADER_NAME = "UploadFileDataLoader"
 
-//data class UploadFileDataLoaderKey(
+// data class UploadFileDataLoaderKey(
 //    val uploadFileId: UploadFileId,
-//)
+// )
 
-//@Component
-//class UploadFileDataLoader(private val repository: UploadFileRepository) :
+// @Component
+// class UploadFileDataLoader(private val repository: UploadFileRepository) :
 //    KotlinCoroutineDataLoader<UploadFileDataLoaderKey, UploadFileType?> {
 //    override val dataLoaderName = DATA_LOADER_NAME
 //
@@ -32,8 +32,8 @@ package com.spotteacher.admin.feature.uploadFile.handler
 //            }
 //        }
 //    }
-//}
+// }
 //
-//fun DataFetchingEnvironment.getUploadFileDataLoader(): DataLoader<UploadFileDataLoaderKey, UploadFileType> {
+// fun DataFetchingEnvironment.getUploadFileDataLoader(): DataLoader<UploadFileDataLoaderKey, UploadFileType> {
 //    return this.getDataLoader<UploadFileDataLoaderKey, UploadFileType>(DATA_LOADER_NAME)!!
-//}
+// }

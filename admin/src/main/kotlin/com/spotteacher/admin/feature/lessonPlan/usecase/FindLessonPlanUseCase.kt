@@ -15,14 +15,15 @@ data class FindLessonPlanUseCaseInput(
 @UseCase
 class FindLessonPlanUseCase(
     private val lessonPlanRepository: LessonPlanRepository
-){
-    suspend fun call(input: FindLessonPlanUseCaseInput): Either<LessonPlanError,LessonPlan> {
-
+) {
+    suspend fun call(input: FindLessonPlanUseCaseInput): Either<LessonPlanError, LessonPlan> {
         val result = lessonPlanRepository.findById(input.id)
         result?.let { return Either.Right(it) }
-        return Either.Left(LessonPlanError(
-            code = LessonPlanErrorCode.LESSON_PLAN_NOT_FOUND,
-            message = "Lesson plan with ID ${input.id.value} not found"
-        ))
+        return Either.Left(
+            LessonPlanError(
+                code = LessonPlanErrorCode.LESSON_PLAN_NOT_FOUND,
+                message = "Lesson plan with ID ${input.id.value} not found"
+            )
+        )
     }
 }

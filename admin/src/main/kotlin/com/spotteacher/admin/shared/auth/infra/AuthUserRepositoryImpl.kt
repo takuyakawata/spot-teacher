@@ -13,21 +13,21 @@ import org.springframework.stereotype.Repository
 @Repository
 class AuthUserRepositoryImpl(
     private val dslContext: TransactionAwareDSLContext
-): AuthUserRepository {
+) : AuthUserRepository {
     override suspend fun findByEmail(email: EmailAddress): AuthUser? {
         val user = dslContext.get().nonBlockingFetchOne(
             USERS,
             USERS.EMAIL.eq(email.value)
-        )?:return null
+        ) ?: return null
 
         val credentials = dslContext.get().nonBlockingFetchOne(
             USER_CREDENTIALS,
             USER_CREDENTIALS.USER_ID.eq(user.id)
-        )?:return null
+        ) ?: return null
 
         return AuthUser(
-                email = EmailAddress(user.email),
-                password = Password(credentials.passwordHash),
-            )
+            email = EmailAddress(user.email),
+            password = Password(credentials.passwordHash),
+        )
     }
 }

@@ -41,5 +41,4 @@ class GetAllEducationsUseCaseTest : DescribeSpec({
             }
         }
     }
-
 })

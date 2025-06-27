@@ -8,7 +8,6 @@ import com.spotteacher.admin.feature.uploadFile.domain.UploadFileRepository
 import com.spotteacher.admin.shared.infra.TransactionCoroutine
 import com.spotteacher.usecase.UseCase
 
-
 data class CreateUploadFilesUseCaseInput(
     val fileInputs: Nel<UploadFileInput>
 )

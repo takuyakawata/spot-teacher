@@ -31,7 +31,9 @@ class LessonPlanQuery(
     private val findLessonPlanUseCase: FindLessonPlanUseCase
 ) : Query {
     suspend fun lessonPlan(id: ID): LessonPlanQueryOutput {
-        val result = findLessonPlanUseCase.call(FindLessonPlanUseCaseInput(id.toDomainId { LessonPlanId(it) }))
+        val result = findLessonPlanUseCase.call(
+            FindLessonPlanUseCaseInput(id.toDomainId { LessonPlanId(it) })
+        )
 
         return result.fold(
             ifLeft = {

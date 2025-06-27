@@ -1,8 +1,8 @@
 package com.spotteacher.admin.config.auth
 
-//@Component
-//class SecurityFilterWithCognito : WebFilter {
-////    @Value("\${api.secret-key}")
+// @Component
+// class SecurityFilterWithCognito : WebFilter {
+// //    @Value("\${api.secret-key}")
 //    private lateinit var secretKey: String
 //
 //    override fun filter(exchange: ServerWebExchange, chain: WebFilterChain): Mono<Void> {
@@ -23,13 +23,13 @@ package com.spotteacher.admin.config.auth
 //
 //                // HMACの検証ロジックだが、サンプルなので実装していない
 //                // 　一旦不要なため、コメントアウト
-////                val clientHmac = exchange.request.headers.getFirst("X-HMAC-Signature") ?: ""
-////                if (clientHmac != generateHmac(query, secretKey)) {
-////                    logWarn { "HMAC verification failed. Query: $query" }
-////                    exchange.response.statusCode = HttpStatus.UNAUTHORIZED
-////                    val buffer = exchange.response.bufferFactory().wrap("Invalid HMAC signature".toByteArray())
-////                    return@flatMap exchange.response.writeWith(Mono.just(buffer))
-////                }
+// //                val clientHmac = exchange.request.headers.getFirst("X-HMAC-Signature") ?: ""
+// //                if (clientHmac != generateHmac(query, secretKey)) {
+// //                    logWarn { "HMAC verification failed. Query: $query" }
+// //                    exchange.response.statusCode = HttpStatus.UNAUTHORIZED
+// //                    val buffer = exchange.response.bufferFactory().wrap("Invalid HMAC signature".toByteArray())
+// //                    return@flatMap exchange.response.writeWith(Mono.just(buffer))
+// //                }
 //
 //                val cachedRequest = CachedBodyServerHttpRequest(exchange.request, bodyBytes, exchange)
 //                val mutatedExchange = exchange.mutate().request(cachedRequest).build()
@@ -49,21 +49,21 @@ package com.spotteacher.admin.config.auth
 //            ?: ""
 //    }
 //
-////    private fun generateHmac(query: String, secretKey: String): String {
-////        val hmacSha256 = "HmacSHA256"
-////        val secretKeySpec = SecretKeySpec(secretKey.toByteArray(), hmacSha256)
-////        val mac = Mac.getInstance(hmacSha256)
-////        mac.init(secretKeySpec)
-////        val hmacBytes = mac.doFinal(query.toByteArray())
-////        return Base64.getEncoder().encodeToString(hmacBytes)
-////    }
-//}
+// //    private fun generateHmac(query: String, secretKey: String): String {
+// //        val hmacSha256 = "HmacSHA256"
+// //        val secretKeySpec = SecretKeySpec(secretKey.toByteArray(), hmacSha256)
+// //        val mac = Mac.getInstance(hmacSha256)
+// //        mac.init(secretKeySpec)
+// //        val hmacBytes = mac.doFinal(query.toByteArray())
+// //        return Base64.getEncoder().encodeToString(hmacBytes)
+// //    }
+// }
 //
-//class CachedBodyServerHttpRequest(
+// class CachedBodyServerHttpRequest(
 //    delegate: ServerHttpRequest,
 //    private val bodyBytes: ByteArray,
 //    private val exchange: ServerWebExchange
-//) : ServerHttpRequestDecorator(delegate) {
+// ) : ServerHttpRequestDecorator(delegate) {
 //
 //    override fun getBody(): Flux<DataBuffer> {
 //        val bufferFactory = exchange.response.bufferFactory()
@@ -72,4 +72,4 @@ package com.spotteacher.admin.config.auth
 //            Flux.just(buffer)
 //        }
 //    }
-//}
+// }

@@ -88,7 +88,6 @@ value class AdminUserName(val value: String) {
     }
 }
 
-
 data class AdminUserError(
     val code: AdminUserErrorCode,
     val message: String

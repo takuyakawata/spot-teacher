@@ -2,7 +2,6 @@ package com.spotteacher.admin.feature.lessonTag.domain
 
 import com.spotteacher.util.Identity
 
-
 /**
  * OO教育のタグ情報
  *
@@ -16,8 +15,8 @@ data class Education(
     val name: EducationName,
     val isActive: Boolean = false,
     val displayOrder: Int = 0,
-){
-    companion object{
+) {
+    companion object {
         fun create(
             name: EducationName,
         ) = Education(
@@ -38,9 +37,7 @@ data class Education(
     )
 }
 
-
-
-class EducationId(override val value: Long): Identity<Long>(value)
+class EducationId(override val value: Long) : Identity<Long>(value)
 
 @JvmInline
 value class EducationName(val value: String)

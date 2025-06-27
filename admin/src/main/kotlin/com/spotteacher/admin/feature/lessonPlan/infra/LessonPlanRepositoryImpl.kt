@@ -86,7 +86,7 @@ class LessonPlanRepositoryImpl(private val dslContext: TransactionAwareDSLContex
         return lessonPlan.copy(LessonPlanId(id))
     }
 
-    private suspend fun LessonPlanEducations.bulkInsertEducations(id:Long){
+    private suspend fun LessonPlanEducations.bulkInsertEducations(id: Long) {
         // Insert educations
         this.value.forEachIndexed { index, educationId ->
             dslContext.get().insertInto(
@@ -102,7 +102,7 @@ class LessonPlanRepositoryImpl(private val dslContext: TransactionAwareDSLContex
         }
     }
 
-    private suspend fun LessonPlanSubjects.bulkInsertSubjects(id:Long){
+    private suspend fun LessonPlanSubjects.bulkInsertSubjects(id: Long) {
         // Insert subjects
         this.value.forEachIndexed { index, subject ->
             dslContext.get().insertInto(
@@ -116,11 +116,9 @@ class LessonPlanRepositoryImpl(private val dslContext: TransactionAwareDSLContex
                 index,
             ).awaitLast()
         }
-
-
     }
 
-    private suspend fun LessonPlanGrades.bulkInsertGrades(id:Long){
+    private suspend fun LessonPlanGrades.bulkInsertGrades(id: Long) {
         // Insert grades
         this.value.forEachIndexed { index, grade ->
             dslContext.get().insertInto(
@@ -265,17 +263,17 @@ class LessonPlanRepositoryImpl(private val dslContext: TransactionAwareDSLContex
         bulkDeleteGrades(id.value)
     }
 
-    private suspend fun bulkDeleteEducations(id:Long){
+    private suspend fun bulkDeleteEducations(id: Long) {
         dslContext.get().deleteFrom(LESSON_PLANS_EDUCATIONS)
             .where(LESSON_PLANS_EDUCATIONS.LESSON_PLAN_ID.eq(id))
     }
 
-    private suspend fun bulkDeleteSubjects(id:Long){
+    private suspend fun bulkDeleteSubjects(id: Long) {
         dslContext.get().deleteFrom(LESSON_PLAN_SUBJECTS)
-            .where( LESSON_PLAN_SUBJECTS.LESSON_PLAN_ID.eq(id))
+            .where(LESSON_PLAN_SUBJECTS.LESSON_PLAN_ID.eq(id))
     }
 
-    private suspend fun bulkDeleteGrades(id:Long){
+    private suspend fun bulkDeleteGrades(id: Long) {
         dslContext.get().deleteFrom(LESSON_PLAN_GRADES)
             .where(LESSON_PLAN_GRADES.LESSON_PLAN_ID.eq(id))
     }
@@ -306,7 +304,7 @@ class LessonPlanRepositoryImpl(private val dslContext: TransactionAwareDSLContex
             .limit(pagination.limit)
 
         val lessonPlanFlow = query.asFlow()
-            .map { record -> 
+            .map { record ->
                 val record = record.into(LessonPlansRecord::class.java)
                 val datesList = getLessonPlanDates(record.id!!)
                 val dates = toNelOrNull(datesList)
@@ -349,7 +347,7 @@ class LessonPlanRepositoryImpl(private val dslContext: TransactionAwareDSLContex
         }
     }
 
-    private fun LessonPlansRecord.toDraftLessonPlanEntity(dates: Nel<LessonPlanDate>?): DraftLessonPlan {
+    private suspend fun LessonPlansRecord.toDraftLessonPlanEntity(dates: Nel<LessonPlanDate>?): DraftLessonPlan {
         return DraftLessonPlan(
             id = LessonPlanId(id!!),
             companyId = CompanyId(companyId),
@@ -367,7 +365,7 @@ class LessonPlanRepositoryImpl(private val dslContext: TransactionAwareDSLContex
         )
     }
 
-    private fun LessonPlansRecord.toPublishedLessonPlanEntity(dates: Nel<LessonPlanDate>) = PublishedLessonPlan(
+    private suspend fun LessonPlansRecord.toPublishedLessonPlanEntity(dates: Nel<LessonPlanDate>) = PublishedLessonPlan(
         id = LessonPlanId(id!!),
         companyId = CompanyId(companyId),
         images = emptyList(), // todo Images are handled at the application level
@@ -383,7 +381,7 @@ class LessonPlanRepositoryImpl(private val dslContext: TransactionAwareDSLContex
         grades = LessonPlanGrades(emptySet()),
     )
 
-    private fun LessonPlanDatesRecord.toEntity(): LessonPlanDate {
+    private suspend fun LessonPlanDatesRecord.toEntity(): LessonPlanDate {
         return LessonPlanDate(
             startMonth = startMonth.toInt(),
             startDay = startDay.toInt(),
@@ -394,7 +392,7 @@ class LessonPlanRepositoryImpl(private val dslContext: TransactionAwareDSLContex
         )
     }
 
-    private fun mapEnumToLessonType(lessonType: LessonPlansLessonType): LessonType {
+    private suspend fun mapEnumToLessonType(lessonType: LessonPlansLessonType): LessonType {
         return when (lessonType) {
             LessonPlansLessonType.ONLINE -> LessonType.ONLINE
             LessonPlansLessonType.OFFLINE -> LessonType.OFFLINE

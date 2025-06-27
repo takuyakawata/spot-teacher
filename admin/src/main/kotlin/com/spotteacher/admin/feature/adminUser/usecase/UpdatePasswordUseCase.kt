@@ -12,7 +12,6 @@ import com.spotteacher.admin.feature.adminUser.domain.changePassword
 import com.spotteacher.admin.shared.domain.Password
 import com.spotteacher.usecase.UseCase
 
-
 data class UpdatePasswordUseCaseInput(
     val adminUserId: AdminUserId,
     val password: Password,
@@ -23,19 +22,20 @@ data class UpdatePasswordUseCaseInput(
 class UpdatePasswordUseCase(
     private val adminUserRepository: AdminUserRepository,
 ) {
-    suspend fun call(input: UpdatePasswordUseCaseInput ): Either<AdminUserError, Unit> {
+    suspend fun call(input: UpdatePasswordUseCaseInput): Either<AdminUserError, Unit> {
+        require(input.password == input.confirmPassword) { "Password and confirmation do not match" }
 
-        require(input.password == input.confirmPassword) {"Password and confirmation do not match"}
-
-        val adminUser = adminUserRepository.findById(input.adminUserId) ?:return AdminUserError(
+        val adminUser = adminUserRepository.findById(input.adminUserId) ?: return AdminUserError(
             code = AdminUserErrorCode.ADMIN_USER_NOT_FOUND,
             message = "Admin user not found"
         ).left()
 
-        require(adminUser is ActiveAdminUser) { return AdminUserError(
-            code = AdminUserErrorCode.ADMIN_USER_NOT_FOUND,
-            message = "Admin user not found"
-        ).left()}
+        require(adminUser is ActiveAdminUser) {
+            return AdminUserError(
+                code = AdminUserErrorCode.ADMIN_USER_NOT_FOUND,
+                message = "Admin user not found"
+            ).left()
+        }
 
         val updatedPasswordAdminUser = adminUser.changePassword()
 

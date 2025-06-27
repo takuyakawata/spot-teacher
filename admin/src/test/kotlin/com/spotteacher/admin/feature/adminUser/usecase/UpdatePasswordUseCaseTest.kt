@@ -40,7 +40,7 @@ class UpdatePasswordUseCaseTest : DescribeSpec({
                         )
                     )
 
-                    // Assert 
+                    // Assert
                     result shouldBe Either.Right(Unit)
                 }
             }

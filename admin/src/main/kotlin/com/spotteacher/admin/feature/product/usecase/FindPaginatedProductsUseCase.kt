@@ -16,8 +16,8 @@ data class FindPaginatedProductsUseCaseInput(
 @UseCase
 class FindPaginatedProductsUseCase(
     private val productRepository: ProductRepository
-){
-    suspend fun call(input: FindPaginatedProductsUseCaseInput):List<Product>{
+) {
+    suspend fun call(input: FindPaginatedProductsUseCaseInput): List<Product> {
         return productRepository.getPaginated(
             pagination = Pagination(
                 limit = input.limit,
@@ -26,7 +26,7 @@ class FindPaginatedProductsUseCase(
                         column = Product::id,
                         lastValue = input.lastId.first?.value,
                         order = input.lastId.second,
-                    ){ it }
+                    ) { it }
                 ).toTypedArray()
             )
         )

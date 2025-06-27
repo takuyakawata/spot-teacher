@@ -21,15 +21,15 @@ class CreateAdminUserUseCase(
     private val adminUserCreator: AdminUserCreator
 ) {
     @TransactionCoroutine
-    suspend fun call(input: CreateAdminUserUseCaseInput){
-        require(input.password.value == input.confirmPassword.value){"Password and confirmation do not match"}
+    suspend fun call(input: CreateAdminUserUseCaseInput) {
+        require(input.password.value == input.confirmPassword.value) { "Password and confirmation do not match" }
 
-            val adminUser = ActiveAdminUser.create(
-                firstName = input.firstName,
-                lastName = input.lastName,
-                email = input.email,
-            )
+        val adminUser = ActiveAdminUser.create(
+            firstName = input.firstName,
+            lastName = input.lastName,
+            email = input.email,
+        )
 
-            adminUserCreator.createAdminUser(adminUser, input.password)
-        }
+        adminUserCreator.createAdminUser(adminUser, input.password)
+    }
 }

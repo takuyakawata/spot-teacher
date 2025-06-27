@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component
 @Component
 class AdminUserQuery : Query {
     @PreAuthorize("isAuthenticated()")
-    suspend fun adminUsers():List<AdminUserType> {
-     return emptyList()
+    suspend fun adminUsers(): List<AdminUserType> {
+        return emptyList()
     }
 }

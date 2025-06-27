@@ -6,5 +6,5 @@ data class DeleteAdminUserUseCaseInput(
     val adminUserId: AdminUserId
 )
 
-//TODO 優先度　低　
+// TODO 優先度　低　
 class DeleteAdminUserUseCase

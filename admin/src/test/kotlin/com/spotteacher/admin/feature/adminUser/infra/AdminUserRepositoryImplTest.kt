@@ -33,7 +33,6 @@ class AdminUserRepositoryImplTest(
                 )
                 val  password = Password("securePassword123")
 
-                
                 // Create the user in the repository
                 adminUserRepository.create(activeUser, passwordEncoder.encode(password.value))
 
@@ -202,6 +201,4 @@ class AdminUserRepositoryImplTest(
             }
         }
     }
-}) {
-
-}
+})

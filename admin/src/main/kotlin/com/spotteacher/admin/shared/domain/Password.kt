@@ -1,8 +1,7 @@
 package com.spotteacher.admin.shared.domain
 
-
 @JvmInline
-value class Password(val value: String){
+value class Password(val value: String) {
     companion object {
         private const val MIN_LENGTH = 8
         private const val MAX_LENGTH = 100

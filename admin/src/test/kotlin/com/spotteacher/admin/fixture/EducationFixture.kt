@@ -33,7 +33,7 @@ class EducationFixture {
         name: EducationName = EducationName("test education"),
         isActive: Boolean = true,
         displayOrder: Int = 0,
-    ) : Education{
+    ): Education {
         return repository.create(
             buildEducation(
                 name = name,

@@ -38,12 +38,12 @@ class SecurityConfig {
     @Order(1)
     fun apiEndpointsFilterChain(http: ServerHttpSecurity, jwtDecoder: ReactiveJwtDecoder): SecurityWebFilterChain {
         return http.authorizeExchange { exchanges ->
-                exchanges
-                    .pathMatchers("/api/admin/auth/**").permitAll()
-                    .pathMatchers("/actuator/health").permitAll()
-                    .pathMatchers("/graphql").permitAll()
-                    .anyExchange().authenticated()
-            }
+            exchanges
+                .pathMatchers("/api/admin/auth/**").permitAll()
+                .pathMatchers("/actuator/health").permitAll()
+                .pathMatchers("/graphql").permitAll()
+                .anyExchange().authenticated()
+        }
             .oauth2ResourceServer { oauth2 ->
                 oauth2.jwt { jwt ->
                     // カスタムのJWTデコーダーを設定

@@ -3,8 +3,6 @@ package com.spotteacher.admin.feature.lessonPlan.usecase
 import com.spotteacher.admin.feature.lessonPlan.domain.LessonPlan
 import com.spotteacher.admin.feature.lessonPlan.domain.LessonPlanId
 import com.spotteacher.admin.feature.lessonPlan.domain.LessonPlanRepository
-import com.spotteacher.admin.feature.lessonPlan.domain.PublishedLessonPlan
-import com.spotteacher.admin.feature.lessonPlan.domain.DraftLessonPlan
 import com.spotteacher.admin.fixture.LessonPlanFixture
 import com.spotteacher.domain.Pagination
 import com.spotteacher.domain.SortOrder
@@ -20,7 +18,7 @@ class FindPaginatedLessonPlansUseCaseTest : DescribeSpec({
         val lessonPlanRepository = mockk<LessonPlanRepository>()
         val useCase = FindPaginatedLessonPlansUseCase(lessonPlanRepository)
         val fixture = LessonPlanFixture()
-        
+
         // Create test data
         val lessonPlans = listOf(
             fixture.buildPublishedLessonPlan(id = LessonPlanId(1)),

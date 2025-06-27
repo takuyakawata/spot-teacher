@@ -8,7 +8,6 @@ import com.spotteacher.admin.feature.uploadFile.usecase.DeleteUploadFilesUseCase
 import com.spotteacher.graphql.toDomainId
 import org.springframework.stereotype.Component
 
-
 data class DeleteUploadFilesMutationInput(
     val uploadFileIDs: List<ID>,
 )

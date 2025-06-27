@@ -9,14 +9,14 @@ import com.spotteacher.domain.SortOrder
 import com.spotteacher.usecase.UseCase
 
 data class FindPaginatedLessonPlansUseCaseInput(
-    val lastId:Pair<LessonPlanId?, SortOrder>,
+    val lastId: Pair<LessonPlanId?, SortOrder>,
     val limit: Int
 )
 
 @UseCase
 class FindPaginatedLessonPlansUseCase(
     private val lessonPlanRepository: LessonPlanRepository
-){
+) {
     suspend fun call(input: FindPaginatedLessonPlansUseCaseInput): List<LessonPlan> {
         return lessonPlanRepository.getPaginated(
             pagination = Pagination(
@@ -26,7 +26,8 @@ class FindPaginatedLessonPlansUseCase(
                         column = LessonPlan::id,
                         lastValue = input.lastId.first?.value,
                         order = input.lastId.second,
-                    ){it}).toTypedArray()
+                    ) { it }
+                ).toTypedArray()
             )
         )
     }

@@ -59,7 +59,7 @@ class UpdateLessonPlanMutation(
                 location = input.location?.let { LessonLocation(it.value) },
                 annualMaxExecutions = input.annualMaxExecutions,
                 images = input.images.map { it.toDomainId { Id -> UploadFileId(Id) } },
-                educations = LessonPlanEducations(input.educations.map{it.toDomainId(::EducationId)}.toSet()),
+                educations = LessonPlanEducations(input.educations.map { it.toDomainId(::EducationId) }.toSet()),
                 subjects = LessonPlanSubjects(input.subjects.toSet()),
                 grades = LessonPlanGrades(input.grades.toSet()),
             )

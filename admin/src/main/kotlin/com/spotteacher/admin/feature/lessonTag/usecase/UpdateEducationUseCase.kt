@@ -24,7 +24,7 @@ class UpdateEducationUseCase(
     private val educationRepository: EducationRepository
 ) {
     @TransactionCoroutine
-    suspend fun call(input: UpdateEducationUseCaseInput):Either<EducationError,Unit> {
+    suspend fun call(input: UpdateEducationUseCaseInput): Either<EducationError, Unit> {
         val education = educationRepository.filterByIds(nonEmptyListOf(input.id)).firstOrNull()
             ?: return EducationError(
                 code = EducationErrorCode.EDUCATION_NOT_FOUND,

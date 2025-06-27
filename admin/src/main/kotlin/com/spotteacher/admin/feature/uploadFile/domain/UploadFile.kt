@@ -26,7 +26,7 @@ value class FileKey(val value: String) {
                 UploadFileDirectoryFeatureName.WORK_PLAN,
                 UploadFileDirectoryFeatureName.WORK_TICKET,
                 UploadFileDirectoryFeatureName.REAL_ESTATE,
-                    -> {
+                -> {
                     FileKey("one-hour-cache/${directoryFeatureName.name}/${UUID.randomUUID()}.$contentType")
                 }
             }
@@ -46,7 +46,7 @@ data class UploadFile(
         ): UploadFile {
             return UploadFile(
                 id = UploadFileId(0L), // ID will be set by the repository
-                fileKey = FileKey.from(uploadFileDirectoryFeatureName,contentType),
+                fileKey = FileKey.from(uploadFileDirectoryFeatureName, contentType),
                 status = UploadStatus.PENDING
             )
         }

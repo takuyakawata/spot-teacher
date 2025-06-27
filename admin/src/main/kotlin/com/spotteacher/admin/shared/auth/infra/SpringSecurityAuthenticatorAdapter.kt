@@ -16,7 +16,7 @@ import org.springframework.stereotype.Component
 class SpringSecurityAuthenticatorAdapter(
     private val authenticationManager: ReactiveAuthenticationManager
 ) : Authenticator {
-    override suspend fun authenticate(email: EmailAddress, password:String): AuthUser {
+    override suspend fun authenticate(email: EmailAddress, password: String): AuthUser {
         try {
             val authenticationToken = UsernamePasswordAuthenticationToken(email.value, password)
             val authenticated = authenticationManager.authenticate(authenticationToken).awaitSingle()

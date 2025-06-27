@@ -62,7 +62,7 @@ class AuthLoginControllerTest(
             }
         }
 
-        //TODO 本当は、500エラーが良いが一旦オッケー
+        // TODO 本当は、500エラーが良いが一旦オッケー
         context("存在しないユーザーの場合") {
             it("500 を返す") {
                 val loginRequest = LoginRequest("nonexistent@example.com", "any_password")
