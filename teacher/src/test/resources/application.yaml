@@ -1,0 +1,54 @@
+jwt:
+  # 環境変数 JWT_SECRET から値を取得。なければ開発用のデフォルト値を使用。
+  secret: "bXktbG9uZy1zZWNyZXQtZm9yLXRlc3RpbmctMTIzNDU="
+  # アクセストークンの有効期限 (ミリ秒単位。この例では1時間)
+  access-token-expiration-ms: 3600000
+  refresh-token-expiration-ms: 2592000000
+
+spring:
+  r2dbc:
+#    url: "r2dbc:mysql://localhost:3306/spot_teacher_test?autoReconnect=true&useSSL=false&allowPublicKeyRetrieval=true"
+#    username: "user"
+#    password: "password"
+#    pool:
+#      enabled: true
+#      initial-size: 5
+#      max-size: 10
+  flyway:
+    enabled: false
+
+graphql:
+  packages:
+    - "com.cosoji.backend"
+
+aws:
+  cloudfront:
+    distribution-domain: test
+    key-pair-id: test
+    private-key: test
+  s3:
+    bucket: test
+
+aurora:
+  writer:
+    url: "r2dbc:pool:mysql://localhost:3306/spot_teacher_test?autoReconnect=true&useSSL=false&allowPublicKeyRetrieval=true" # ここをspot_teacherに修正
+    username: "user"
+    password: "password"
+  reader:
+    url: "r2dbc:pool:mysql://localhost:3306/spot_teacher_test?autoReconnect=true&useSSL=false&allowPublicKeyRetrieval=true" # ここをspot_teacherに修正
+    username: "root" # または user
+    password: "root" # または password
+
+
+#  flyway:
+#    enabled: true # テスト時にマイグレーションを有効化
+#    url: "jdbc:mysql://localhost:3306/spot_teacher_test?autoReconnect=true&useSSL=false&allowPublicKeyRetrieval=true"
+#    user: "user"
+#    password: "password"
+
+#  datasource:
+#    url: "jdbc:mysql://localhost:3306/spot_teacher_test?autoReconnect=true&useSSL=false&allowPublicKeyRetrieval=true"
+#    username: "user"
+#    password: "password"
+#    hikari:
+#      maximum-pool-size: 1
