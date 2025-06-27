@@ -7,6 +7,7 @@ import com.spotteacher.admin.feature.company.domain.CompanyId
 import com.spotteacher.admin.feature.company.usecase.DeleteCompanyUseCase
 import com.spotteacher.admin.feature.company.usecase.DeleteCompanyUseCaseInput
 import com.spotteacher.graphql.toDomainId
+import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.stereotype.Component
 
 sealed interface DeleteCompanyMutationOutput
@@ -17,6 +18,7 @@ data class DeleteCompanyMutationError(
 ) : DeleteCompanyMutationOutput
 
 @Component
+@PreAuthorize("isAuthenticated()")
 class DeleteCompanyMutation(
     private val usecase: DeleteCompanyUseCase
 ) : Mutation {

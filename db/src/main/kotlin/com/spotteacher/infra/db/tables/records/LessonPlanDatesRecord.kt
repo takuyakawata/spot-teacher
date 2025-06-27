@@ -3,14 +3,10 @@
  */
 package com.spotteacher.infra.db.tables.records
 
-
 import com.spotteacher.infra.db.tables.LessonPlanDates
-
-import java.time.LocalDateTime
-
 import org.jooq.Record1
 import org.jooq.impl.UpdatableRecordImpl
-
+import java.time.LocalDateTime
 
 /**
  * 授業計画の日付
@@ -67,7 +63,18 @@ open class LessonPlanDatesRecord private constructor() : UpdatableRecordImpl<Les
     /**
      * Create a detached, initialised LessonPlanDatesRecord
      */
-    constructor(id: Long? = null, lessonPlanId: Long, startMonth: Long, startDay: Long, endMonth: Long, endDay: Long, startTime: LocalDateTime, endTime: LocalDateTime, createdAt: LocalDateTime? = null, updatedAt: LocalDateTime? = null): this() {
+    constructor(
+        id: Long? = null,
+        lessonPlanId: Long,
+        startMonth: Long,
+        startDay: Long,
+        endMonth: Long,
+        endDay: Long,
+        startTime: LocalDateTime,
+        endTime: LocalDateTime,
+        createdAt: LocalDateTime? = null,
+        updatedAt: LocalDateTime? = null
+    ) : this() {
         this.id = id
         this.lessonPlanId = lessonPlanId
         this.startMonth = startMonth

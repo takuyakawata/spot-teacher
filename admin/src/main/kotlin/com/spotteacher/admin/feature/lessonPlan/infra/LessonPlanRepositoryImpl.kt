@@ -17,6 +17,8 @@ import com.spotteacher.admin.feature.lessonPlan.domain.LessonPlanTitle
 import com.spotteacher.admin.feature.lessonPlan.domain.LessonType
 import com.spotteacher.admin.feature.lessonPlan.domain.PublishedLessonPlan
 import com.spotteacher.admin.shared.infra.TransactionAwareDSLContext
+import com.spotteacher.domain.Pagination
+import com.spotteacher.domain.SortOrder
 import com.spotteacher.extension.nonBlockingFetch
 import com.spotteacher.extension.nonBlockingFetchOne
 import com.spotteacher.infra.db.enums.LessonPlansLessonType
@@ -27,6 +29,9 @@ import com.spotteacher.infra.db.tables.LessonPlans.Companion.LESSON_PLANS
 import com.spotteacher.infra.db.tables.LessonPlansEducations.Companion.LESSON_PLANS_EDUCATIONS
 import com.spotteacher.infra.db.tables.records.LessonPlanDatesRecord
 import com.spotteacher.infra.db.tables.records.LessonPlansRecord
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.toList
+import kotlinx.coroutines.reactive.asFlow
 import kotlinx.coroutines.reactive.awaitFirstOrNull
 import kotlinx.coroutines.reactive.awaitLast
 import org.springframework.stereotype.Repository
@@ -283,6 +288,31 @@ class LessonPlanRepositoryImpl(private val dslContext: TransactionAwareDSLContex
             val dates = toNelOrNull(datesList)
             record.toEntity(dates)
         }
+    }
+
+    /* getPaginated */
+    override suspend fun getPaginated(pagination: Pagination<LessonPlan>): List<LessonPlan> {
+        val paginationFields = pagination.cursorColumns.mapNotNull {
+            LESSON_PLANS.field(it.getDbColumnName())?.let { column ->
+                when (it.order) {
+                    SortOrder.ASC -> column.asc()
+                    SortOrder.DESC -> column.desc()
+                } to it.getPrimitiveValue()
+            }
+        }
+        val query = dslContext.get().selectFrom(LESSON_PLANS)
+            .orderBy(*paginationFields.map { it.first }.toTypedArray())
+            .seek(*paginationFields.map { it.second }.toTypedArray())
+            .limit(pagination.limit)
+
+        val lessonPlanFlow = query.asFlow()
+            .map { record -> 
+                val record = record.into(LessonPlansRecord::class.java)
+                val datesList = getLessonPlanDates(record.id!!)
+                val dates = toNelOrNull(datesList)
+                record.toEntity(dates)
+            }
+        return lessonPlanFlow.toList()
     }
 
     /*findById */

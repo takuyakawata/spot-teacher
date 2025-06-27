@@ -20,6 +20,7 @@ import com.spotteacher.admin.feature.lessonTag.domain.Grade
 import com.spotteacher.admin.feature.lessonTag.domain.Subject
 import com.spotteacher.graphql.NonEmptyString
 import com.spotteacher.graphql.toDomainId
+import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.stereotype.Component
 
 data class CreateDraftLessonPlanMutationInput(
@@ -47,6 +48,7 @@ data class CreateDraftLessonPlanMutationError(
 class CreateDraftLessonPlanMutation(
     private val createDraftLessonPlanUseCase: CreateDraftLessonPlanUseCase
 ) : Mutation {
+    @PreAuthorize("isAuthenticated()")
     suspend fun createDraftLessonPlan(
         input: CreateDraftLessonPlanMutationInput
     ): CreateDraftLessonPlanMutationOutput {
