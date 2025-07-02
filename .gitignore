@@ -1,47 +1,8 @@
-HELP.md
-.gradle
-build/
-!gradle/wrapper/gradle-wrapper.jar
-!**/src/main/**/build/
-!**/src/test/**/build/
-
-### STS ###
-.apt_generated
-.classpath
-.factorypath
-.project
-.settings
-.springBeans
-.sts4-cache
-bin/
-!**/src/main/**/bin/
-!**/src/test/**/bin/
-
-### IntelliJ IDEA ###
+/backend/build
+/backend/mysql
+/backend/.gradle
+/backend/.kotlin
 .idea
-*.iws
-*.iml
-*.ipr
-out/
-!**/src/main/**/out/
-!**/src/test/**/out/
-
-### NetBeans ###
-/nbproject/private/
-/nbbuild/
-/dist/
-/nbdist/
-/.nb-gradle/
-
-### VS Code ###
-.vscode/
-
-### Kotlin ###
-.kotlin
-
-# Ignore Gradle build output directory
-build
-
 /local-db/mysql/
 /.idea/*
 /.idea
@@ -54,4 +15,27 @@ build
 backend/**/bin
 .envrc
 local-db/minio/**
-/local-db/mysql/
+
+frontend/.yarn
+frontend/.npm
+admin-frontend/.yarn
+admin-frontend/.npm
+
+/terraform/envs/dev/.terraform.lock.hcl
+/terraform/envs/stag/.terraform.lock.hcl
+/terraform/envs/prod/.terraform.lock.hcl
+/terraform/envs/global/vercel/.terraform.lock.hcl
+/terraform/envs/dev/.terraform/**
+/terraform/envs/prod/.terraform/**
+/terraform/envs/stag/.terraform/**
+/terraform/envs/global/vercel/.terraform/**
+
+/node_modules/**
+
+.DS_Store
+
+# Ignore Gradle project-specific cache directory
+.gradle
+
+# Ignore Gradle build output directory
+build
