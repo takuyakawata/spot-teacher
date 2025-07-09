@@ -1,6 +1,6 @@
 package com.spotteacher.teacher.feature.teacher.infra
 
-import com.spotteacher.admin.shared.infra.TransactionAwareDSLContext
+import com.spotteacher.teacher.shared.infra.TransactionAwareDSLContext
 import com.spotteacher.extension.nonBlockingFetch
 import com.spotteacher.extension.nonBlockingFetchOne
 import com.spotteacher.infra.db.tables.Teachers.Companion.TEACHERS

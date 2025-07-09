@@ -3,7 +3,7 @@ package com.spotteacher.teacher.feature.teacher.usecase
 
 import com.spotteacher.teacher.feature.teacher.domain.ActiveTeacher
 import com.spotteacher.teacher.feature.teacher.domain.TeacherRepository
-import com.spotteacher.admin.shared.infra.TransactionCoroutine
+import com.spotteacher.teacher.shared.infra.TransactionCoroutine
 import com.spotteacher.usecase.UseCase
 
 data class CreateTeacherUseCaseInput(

@@ -1,6 +1,6 @@
 package com.spotteacher.teacher.shared.auth.domain
 
-import com.spotteacher.admin.feature.adminUser.domain.AdminUserId
+import com.spotteacher.teacher.shared.auth.domain.AuthUserId
 import com.spotteacher.util.Identity
 import java.time.LocalDateTime
 
@@ -11,18 +11,18 @@ data class TokenPair(
 
 data class RefreshToken(
     val id: RefreshTokenId,
-    val userId: AdminUserId,
+    val userId: AuthUserId,
     val token: String,
     val expiresAt: LocalDateTime,
 ) {
     companion object {
         fun create(
-            adminUserId: AdminUserId,
+            userId: AuthUserId,
             token: String,
             expiresAt: LocalDateTime,
         ) = RefreshToken(
             id = RefreshTokenId(0),
-            userId = adminUserId,
+            userId = userId,
             token = token,
             expiresAt = expiresAt
         )

@@ -1,10 +1,11 @@
 package com.spotteacher.teacher.shared.auth.infra
 
-import com.spotteacher.admin.shared.auth.domain.RefreshToken
-import com.spotteacher.admin.shared.auth.domain.RefreshTokenId
-import com.spotteacher.admin.shared.auth.domain.RefreshTokenRepository
-import com.spotteacher.admin.shared.infra.TransactionAwareDSLContext
+
 import com.spotteacher.infra.db.tables.RefreshTokens.Companion.REFRESH_TOKENS
+import com.spotteacher.teacher.shared.auth.domain.RefreshToken
+import com.spotteacher.teacher.shared.auth.domain.RefreshTokenId
+import com.spotteacher.teacher.shared.auth.domain.RefreshTokenRepository
+import com.spotteacher.teacher.shared.infra.TransactionAwareDSLContext
 import kotlinx.coroutines.reactive.awaitFirstOrNull
 import org.springframework.stereotype.Repository
 

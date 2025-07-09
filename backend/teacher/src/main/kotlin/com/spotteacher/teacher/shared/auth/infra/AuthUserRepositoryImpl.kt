@@ -1,13 +1,14 @@
 package com.spotteacher.teacher.shared.auth.infra
 
-import com.spotteacher.admin.shared.auth.domain.AuthUser
-import com.spotteacher.admin.shared.auth.domain.AuthUserRepository
-import com.spotteacher.admin.shared.domain.Password
-import com.spotteacher.admin.shared.infra.TransactionAwareDSLContext
 import com.spotteacher.domain.EmailAddress
 import com.spotteacher.extension.nonBlockingFetchOne
 import com.spotteacher.infra.db.tables.references.USERS
 import com.spotteacher.infra.db.tables.references.USER_CREDENTIALS
+import com.spotteacher.teacher.shared.auth.domain.AuthUser
+import com.spotteacher.teacher.shared.auth.domain.AuthUserId
+import com.spotteacher.teacher.shared.auth.domain.AuthUserRepository
+import com.spotteacher.teacher.shared.domain.Password
+import com.spotteacher.teacher.shared.infra.TransactionAwareDSLContext
 import org.springframework.stereotype.Repository
 
 @Repository
@@ -26,8 +27,12 @@ class AuthUserRepositoryImpl(
         ) ?: return null
 
         return AuthUser(
+            id = AuthUserId(user.id!!),
             email = EmailAddress(user.email),
             password = Password(credentials.passwordHash),
         )
+    }
+    override suspend fun findByEmailAndActiveUser(email: EmailAddress): AuthUser? {
+        return findByEmail(email)
     }
 }
