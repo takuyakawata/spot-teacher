@@ -1,4 +1,5 @@
 import { gql } from '@apollo/client';
+import * as Apollo from '@apollo/client';
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
@@ -6,6 +7,7 @@ export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: 
 export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
 export type MakeEmpty<T extends { [key: string]: unknown }, K extends keyof T> = { [_ in K]?: never };
 export type Incremental<T> = T | { [P in keyof T]?: P extends ' $fragmentName' | '__typename' ? T[P] : never };
+const defaultOptions = {} as const;
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
   ID: { input: string; output: string; }
@@ -13,1325 +15,1091 @@ export type Scalars = {
   Boolean: { input: boolean; output: boolean; }
   Int: { input: number; output: number; }
   Float: { input: number; output: number; }
-  Date: { input: any; output: any; }
-  ObjectID: { input: any; output: any; }
-  _Any: { input: any; output: any; }
-  federation__FieldSet: { input: any; output: any; }
-  link__Import: { input: any; output: any; }
-  timestamptz: { input: any; output: any; }
-  uuid: { input: any; output: any; }
+  /** LocalDateTime */
+  LocalDateTime: { input: any; output: any; }
+  /** String that is not empty */
+  NonEmptyString: { input: any; output: any; }
+  /** An RFC-3339 compliant Full Time Scalar */
+  Time: { input: any; output: any; }
+  /** meaningless value. Necessary just for graphql limitation. Only used for output. */
+  Unit: { input: any; output: any; }
 };
 
-export type Address = {
-  __typename?: 'Address';
-  address?: Maybe<Scalars['String']['output']>;
-  city?: Maybe<Scalars['String']['output']>;
-  state?: Maybe<Scalars['String']['output']>;
+export type AdminUser = {
+  __typename?: 'AdminUser';
+  email: Scalars['String']['output'];
+  firstName: Scalars['String']['output'];
+  id: Scalars['ID']['output'];
+  isActive: Scalars['Boolean']['output'];
+  lastName: Scalars['String']['output'];
+  password: Scalars['String']['output'];
 };
 
-export type Capsule = {
-  __typename?: 'Capsule';
-  /** @deprecated This is not available in the REST API after MongoDB has been deprecated */
-  dragon?: Maybe<Dragon>;
-  id?: Maybe<Scalars['ID']['output']>;
-  landings?: Maybe<Scalars['Int']['output']>;
-  missions?: Maybe<Array<Maybe<CapsuleMission>>>;
-  original_launch?: Maybe<Scalars['Date']['output']>;
-  reuse_count?: Maybe<Scalars['Int']['output']>;
-  status?: Maybe<Scalars['String']['output']>;
-  type?: Maybe<Scalars['String']['output']>;
+export enum AdminUserErrorCode {
+  AdminUserAlreadyExists = 'ADMIN_USER_ALREADY_EXISTS',
+  AdminUserNotFound = 'ADMIN_USER_NOT_FOUND'
+}
+
+export type Company = {
+  __typename?: 'Company';
+  buildingName?: Maybe<Scalars['String']['output']>;
+  city: Scalars['String']['output'];
+  createdAt: Scalars['LocalDateTime']['output'];
+  id: Scalars['ID']['output'];
+  name: Scalars['String']['output'];
+  phoneNumber?: Maybe<Scalars['String']['output']>;
+  postalCode: Scalars['String']['output'];
+  prefecture: Scalars['String']['output'];
+  streetAddress: Scalars['String']['output'];
+  url?: Maybe<Scalars['String']['output']>;
 };
 
-export type CapsuleMission = {
-  __typename?: 'CapsuleMission';
-  flight?: Maybe<Scalars['Int']['output']>;
-  name?: Maybe<Scalars['String']['output']>;
+export enum CompanyErrorCode {
+  CompanyAlreadyExists = 'COMPANY_ALREADY_EXISTS',
+  CompanyNotFound = 'COMPANY_NOT_FOUND'
+}
+
+export type CompanyQueryError = {
+  __typename?: 'CompanyQueryError';
+  error: CompanyErrorCode;
+  message?: Maybe<Scalars['String']['output']>;
 };
 
-export type CapsulesFind = {
-  id?: InputMaybe<Scalars['ID']['input']>;
-  landings?: InputMaybe<Scalars['Int']['input']>;
-  mission?: InputMaybe<Scalars['String']['input']>;
-  original_launch?: InputMaybe<Scalars['Date']['input']>;
-  reuse_count?: InputMaybe<Scalars['Int']['input']>;
-  status?: InputMaybe<Scalars['String']['input']>;
-  type?: InputMaybe<Scalars['String']['input']>;
+export type CompanyQueryOutput = CompanyQueryError | CompanyQuerySuccess;
+
+export type CompanyQuerySuccess = {
+  __typename?: 'CompanyQuerySuccess';
+  company: Company;
 };
 
-export type Core = {
-  __typename?: 'Core';
-  asds_attempts?: Maybe<Scalars['Int']['output']>;
-  asds_landings?: Maybe<Scalars['Int']['output']>;
-  block?: Maybe<Scalars['Int']['output']>;
-  id?: Maybe<Scalars['ID']['output']>;
-  missions?: Maybe<Array<Maybe<CapsuleMission>>>;
-  original_launch?: Maybe<Scalars['Date']['output']>;
-  reuse_count?: Maybe<Scalars['Int']['output']>;
-  rtls_attempts?: Maybe<Scalars['Int']['output']>;
-  rtls_landings?: Maybe<Scalars['Int']['output']>;
-  status?: Maybe<Scalars['String']['output']>;
-  water_landing?: Maybe<Scalars['Boolean']['output']>;
+export type CreateAdminUserMutationInput = {
+  confirmPassword: Scalars['String']['input'];
+  email: Scalars['String']['input'];
+  firstName: Scalars['String']['input'];
+  lastName: Scalars['String']['input'];
+  password: Scalars['String']['input'];
 };
 
-export type CoreMission = {
-  __typename?: 'CoreMission';
-  flight?: Maybe<Scalars['Int']['output']>;
-  name?: Maybe<Scalars['String']['output']>;
+export type CreateCompanyMutationError = {
+  __typename?: 'CreateCompanyMutationError';
+  code: CompanyErrorCode;
+  message: Scalars['String']['output'];
 };
 
-export type CoresFind = {
-  asds_attempts?: InputMaybe<Scalars['Int']['input']>;
-  asds_landings?: InputMaybe<Scalars['Int']['input']>;
-  block?: InputMaybe<Scalars['Int']['input']>;
-  id?: InputMaybe<Scalars['String']['input']>;
-  missions?: InputMaybe<Scalars['String']['input']>;
-  original_launch?: InputMaybe<Scalars['Date']['input']>;
-  reuse_count?: InputMaybe<Scalars['Int']['input']>;
-  rtls_attempts?: InputMaybe<Scalars['Int']['input']>;
-  rtls_landings?: InputMaybe<Scalars['Int']['input']>;
-  status?: InputMaybe<Scalars['String']['input']>;
-  water_landing?: InputMaybe<Scalars['Boolean']['input']>;
+export type CreateCompanyMutationInput = {
+  buildingName?: InputMaybe<Scalars['NonEmptyString']['input']>;
+  city: Scalars['NonEmptyString']['input'];
+  name: Scalars['NonEmptyString']['input'];
+  phoneNumber: Scalars['NonEmptyString']['input'];
+  postalCode: Scalars['NonEmptyString']['input'];
+  prefecture: Scalars['NonEmptyString']['input'];
+  streetAddress: Scalars['NonEmptyString']['input'];
+  url?: InputMaybe<Scalars['NonEmptyString']['input']>;
 };
 
-export type Distance = {
-  __typename?: 'Distance';
-  feet?: Maybe<Scalars['Float']['output']>;
-  meters?: Maybe<Scalars['Float']['output']>;
+export type CreateCompanyMutationOutput = CreateCompanyMutationError | CreateCompanyMutationSuccess;
+
+export type CreateCompanyMutationSuccess = {
+  __typename?: 'CreateCompanyMutationSuccess';
+  company: Company;
 };
 
-export type Dragon = {
-  __typename?: 'Dragon';
-  active?: Maybe<Scalars['Boolean']['output']>;
-  crew_capacity?: Maybe<Scalars['Int']['output']>;
+export type CreateDraftLessonPlanMutationError = {
+  __typename?: 'CreateDraftLessonPlanMutationError';
+  code: LessonPlanErrorCode;
+  message: Scalars['String']['output'];
+};
+
+export type CreateDraftLessonPlanMutationInput = {
+  annualMaxExecutions?: InputMaybe<Scalars['Int']['input']>;
+  companyId: Scalars['ID']['input'];
+  description?: InputMaybe<Scalars['NonEmptyString']['input']>;
+  educations: Array<Scalars['ID']['input']>;
+  grades: Array<Grade>;
+  lessonPlanDates?: InputMaybe<Array<LessonPlanDateInput>>;
+  lessonType?: InputMaybe<LessonType>;
+  location?: InputMaybe<Scalars['NonEmptyString']['input']>;
+  publish: Scalars['Boolean']['input'];
+  subjects: Array<Subject>;
+  title?: InputMaybe<Scalars['NonEmptyString']['input']>;
+};
+
+export type CreateDraftLessonPlanMutationOutput = CreateDraftLessonPlanMutationError | CreateDraftLessonPlanMutationSuccess;
+
+export type CreateDraftLessonPlanMutationSuccess = {
+  __typename?: 'CreateDraftLessonPlanMutationSuccess';
+  result: Scalars['Unit']['output'];
+};
+
+export type CreateEducationMutationError = {
+  __typename?: 'CreateEducationMutationError';
+  code: EducationErrorCode;
+  message: Scalars['String']['output'];
+};
+
+export type CreateEducationMutationOutput = CreateEducationMutationError | CreateEducationMutationSuccess;
+
+export type CreateEducationMutationSuccess = {
+  __typename?: 'CreateEducationMutationSuccess';
+  result: Scalars['Unit']['output'];
+};
+
+export type CreateProductMutationInput = {
+  description?: InputMaybe<Scalars['String']['input']>;
+  name: Scalars['String']['input'];
+  price: Scalars['Int']['input'];
+};
+
+export type CreateSchoolInput = {
+  buildingName?: InputMaybe<Scalars['String']['input']>;
+  city: Scalars['String']['input'];
+  name: Scalars['String']['input'];
+  phoneNumber: Scalars['String']['input'];
+  postalCode: Scalars['String']['input'];
+  prefecture: Prefecture;
+  schoolCategory: SchoolCategory;
+  streetAddress: Scalars['String']['input'];
+  url?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type CreateSchoolPayload = {
+  __typename?: 'CreateSchoolPayload';
+  errors: Array<Scalars['String']['output']>;
+  school?: Maybe<School>;
+};
+
+export type CreateUploadFileInput = {
+  contentType: Scalars['NonEmptyString']['input'];
+  featureName: UploadFileDirectoryFeatureName;
+};
+
+export type CreateUploadFilesMutationInput = {
+  fileInputs: Array<CreateUploadFileInput>;
+};
+
+export type DeleteCompanyMutationError = {
+  __typename?: 'DeleteCompanyMutationError';
+  code: CompanyErrorCode;
+  message: Scalars['String']['output'];
+};
+
+export type DeleteCompanyMutationOutput = DeleteCompanyMutationError | DeleteCompanyMutationSuccess;
+
+export type DeleteCompanyMutationSuccess = {
+  __typename?: 'DeleteCompanyMutationSuccess';
+  result: Scalars['Unit']['output'];
+};
+
+export type DeleteEducationMutationError = {
+  __typename?: 'DeleteEducationMutationError';
+  code: EducationErrorCode;
+  message: Scalars['String']['output'];
+};
+
+export type DeleteEducationMutationOutput = DeleteEducationMutationError | DeleteEducationMutationSuccess;
+
+export type DeleteEducationMutationSuccess = {
+  __typename?: 'DeleteEducationMutationSuccess';
+  result: Scalars['Unit']['output'];
+};
+
+export type DeleteProductMutationError = {
+  __typename?: 'DeleteProductMutationError';
+  error: ProductError;
+};
+
+export type DeleteProductMutationInput = {
+  id: Scalars['ID']['input'];
+};
+
+export type DeleteProductMutationOutput = DeleteProductMutationError | DeleteProductMutationSuccess;
+
+export type DeleteProductMutationSuccess = {
+  __typename?: 'DeleteProductMutationSuccess';
+  success: Scalars['Boolean']['output'];
+};
+
+export type DeleteSchoolInput = {
+  id: Scalars['String']['input'];
+};
+
+export type DeleteSchoolPayload = {
+  __typename?: 'DeleteSchoolPayload';
+  errors: Array<Scalars['String']['output']>;
+  success: Scalars['Boolean']['output'];
+};
+
+export type DeleteUploadFilesMutationInput = {
+  uploadFileIDs: Array<Scalars['ID']['input']>;
+};
+
+export type DraftLessonPlan = LessonPlan & {
+  __typename?: 'DraftLessonPlan';
+  annualMaxExecutions?: Maybe<Scalars['Int']['output']>;
+  createdAt: Scalars['LocalDateTime']['output'];
   description?: Maybe<Scalars['String']['output']>;
-  diameter?: Maybe<Distance>;
-  dry_mass_kg?: Maybe<Scalars['Int']['output']>;
-  dry_mass_lb?: Maybe<Scalars['Int']['output']>;
-  first_flight?: Maybe<Scalars['String']['output']>;
-  heat_shield?: Maybe<DragonHeatShield>;
-  height_w_trunk?: Maybe<Distance>;
-  id?: Maybe<Scalars['ID']['output']>;
-  launch_payload_mass?: Maybe<Mass>;
-  launch_payload_vol?: Maybe<Volume>;
-  name?: Maybe<Scalars['String']['output']>;
-  orbit_duration_yr?: Maybe<Scalars['Int']['output']>;
-  pressurized_capsule?: Maybe<DragonPressurizedCapsule>;
-  return_payload_mass?: Maybe<Mass>;
-  return_payload_vol?: Maybe<Volume>;
-  sidewall_angle_deg?: Maybe<Scalars['Float']['output']>;
-  thrusters?: Maybe<Array<Maybe<DragonThrust>>>;
-  trunk?: Maybe<DragonTrunk>;
-  type?: Maybe<Scalars['String']['output']>;
-  wikipedia?: Maybe<Scalars['String']['output']>;
-};
-
-export type DragonHeatShield = {
-  __typename?: 'DragonHeatShield';
-  dev_partner?: Maybe<Scalars['String']['output']>;
-  material?: Maybe<Scalars['String']['output']>;
-  size_meters?: Maybe<Scalars['Float']['output']>;
-  temp_degrees?: Maybe<Scalars['Int']['output']>;
-};
-
-export type DragonPressurizedCapsule = {
-  __typename?: 'DragonPressurizedCapsule';
-  payload_volume?: Maybe<Volume>;
-};
-
-export type DragonThrust = {
-  __typename?: 'DragonThrust';
-  amount?: Maybe<Scalars['Int']['output']>;
-  fuel_1?: Maybe<Scalars['String']['output']>;
-  fuel_2?: Maybe<Scalars['String']['output']>;
-  pods?: Maybe<Scalars['Int']['output']>;
-  thrust?: Maybe<Force>;
-  type?: Maybe<Scalars['String']['output']>;
-};
-
-export type DragonTrunk = {
-  __typename?: 'DragonTrunk';
-  cargo?: Maybe<DragonTrunkCargo>;
-  trunk_volume?: Maybe<Volume>;
-};
-
-export type DragonTrunkCargo = {
-  __typename?: 'DragonTrunkCargo';
-  solar_array?: Maybe<Scalars['Int']['output']>;
-  unpressurized_cargo?: Maybe<Scalars['Boolean']['output']>;
-};
-
-export type Force = {
-  __typename?: 'Force';
-  kN?: Maybe<Scalars['Float']['output']>;
-  lbf?: Maybe<Scalars['Float']['output']>;
-};
-
-export type HistoriesResult = {
-  __typename?: 'HistoriesResult';
-  data?: Maybe<Array<Maybe<History>>>;
-  result?: Maybe<Result>;
-};
-
-export type History = {
-  __typename?: 'History';
-  details?: Maybe<Scalars['String']['output']>;
-  event_date_unix?: Maybe<Scalars['Date']['output']>;
-  event_date_utc?: Maybe<Scalars['Date']['output']>;
-  flight?: Maybe<Launch>;
-  id?: Maybe<Scalars['ID']['output']>;
-  links?: Maybe<Link>;
+  id: Scalars['ID']['output'];
+  lessonPlanDates?: Maybe<Array<LessonPlanDate>>;
+  lessonType?: Maybe<LessonType>;
+  location?: Maybe<Scalars['String']['output']>;
   title?: Maybe<Scalars['String']['output']>;
 };
 
-export type HistoryFind = {
-  end?: InputMaybe<Scalars['Date']['input']>;
-  flight_number?: InputMaybe<Scalars['Int']['input']>;
-  id?: InputMaybe<Scalars['ID']['input']>;
-  start?: InputMaybe<Scalars['Date']['input']>;
+export enum EducationErrorCode {
+  EducationAlreadyExists = 'EDUCATION_ALREADY_EXISTS',
+  EducationNotFound = 'EDUCATION_NOT_FOUND'
+}
+
+export type EducationType = {
+  __typename?: 'EducationType';
+  displayOrder: Scalars['Int']['output'];
+  grades: Array<Grade>;
+  id: Scalars['ID']['output'];
+  isActive: Scalars['Boolean']['output'];
+  name: Scalars['String']['output'];
+  subjects: Array<Subject>;
 };
 
-export type Info = {
-  __typename?: 'Info';
-  ceo?: Maybe<Scalars['String']['output']>;
-  coo?: Maybe<Scalars['String']['output']>;
-  cto?: Maybe<Scalars['String']['output']>;
-  cto_propulsion?: Maybe<Scalars['String']['output']>;
-  employees?: Maybe<Scalars['Int']['output']>;
-  founded?: Maybe<Scalars['Int']['output']>;
-  founder?: Maybe<Scalars['String']['output']>;
-  headquarters?: Maybe<Address>;
-  launch_sites?: Maybe<Scalars['Int']['output']>;
-  links?: Maybe<InfoLinks>;
-  name?: Maybe<Scalars['String']['output']>;
-  summary?: Maybe<Scalars['String']['output']>;
-  test_sites?: Maybe<Scalars['Int']['output']>;
-  valuation?: Maybe<Scalars['Float']['output']>;
-  vehicles?: Maybe<Scalars['Int']['output']>;
+export type FindProductQueryError = {
+  __typename?: 'FindProductQueryError';
+  error: ProductError;
 };
 
-export type InfoLinks = {
-  __typename?: 'InfoLinks';
-  elon_twitter?: Maybe<Scalars['String']['output']>;
-  flickr?: Maybe<Scalars['String']['output']>;
-  twitter?: Maybe<Scalars['String']['output']>;
-  website?: Maybe<Scalars['String']['output']>;
+export type FindProductQueryOutput = FindProductQueryError | FindProductQuerySuccess;
+
+export type FindProductQuerySuccess = {
+  __typename?: 'FindProductQuerySuccess';
+  product: Product;
 };
 
-export type Landpad = {
-  __typename?: 'Landpad';
-  attempted_landings?: Maybe<Scalars['String']['output']>;
-  details?: Maybe<Scalars['String']['output']>;
-  full_name?: Maybe<Scalars['String']['output']>;
-  id?: Maybe<Scalars['ID']['output']>;
-  landing_type?: Maybe<Scalars['String']['output']>;
-  location?: Maybe<Location>;
-  status?: Maybe<Scalars['String']['output']>;
-  successful_landings?: Maybe<Scalars['String']['output']>;
-  wikipedia?: Maybe<Scalars['String']['output']>;
+export type FindProductsQueryError = {
+  __typename?: 'FindProductsQueryError';
+  error: ProductError;
 };
 
-export type Launch = {
-  __typename?: 'Launch';
-  details?: Maybe<Scalars['String']['output']>;
-  id?: Maybe<Scalars['ID']['output']>;
-  is_tentative?: Maybe<Scalars['Boolean']['output']>;
-  launch_date_local?: Maybe<Scalars['Date']['output']>;
-  launch_date_unix?: Maybe<Scalars['Date']['output']>;
-  launch_date_utc?: Maybe<Scalars['Date']['output']>;
-  launch_site?: Maybe<LaunchSite>;
-  launch_success?: Maybe<Scalars['Boolean']['output']>;
-  launch_year?: Maybe<Scalars['String']['output']>;
-  links?: Maybe<LaunchLinks>;
-  mission_id?: Maybe<Array<Maybe<Scalars['String']['output']>>>;
-  mission_name?: Maybe<Scalars['String']['output']>;
-  rocket?: Maybe<LaunchRocket>;
-  ships?: Maybe<Array<Maybe<Ship>>>;
-  static_fire_date_unix?: Maybe<Scalars['Date']['output']>;
-  static_fire_date_utc?: Maybe<Scalars['Date']['output']>;
-  telemetry?: Maybe<LaunchTelemetry>;
-  tentative_max_precision?: Maybe<Scalars['String']['output']>;
-  upcoming?: Maybe<Scalars['Boolean']['output']>;
+export type FindProductsQueryOutput = FindProductsQueryError | FindProductsQuerySuccess;
+
+export type FindProductsQuerySuccess = {
+  __typename?: 'FindProductsQuerySuccess';
+  products: Array<Product>;
 };
 
-export type LaunchFind = {
-  apoapsis_km?: InputMaybe<Scalars['Float']['input']>;
-  block?: InputMaybe<Scalars['Int']['input']>;
-  cap_serial?: InputMaybe<Scalars['String']['input']>;
-  capsule_reuse?: InputMaybe<Scalars['String']['input']>;
-  core_flight?: InputMaybe<Scalars['Int']['input']>;
-  core_reuse?: InputMaybe<Scalars['String']['input']>;
-  core_serial?: InputMaybe<Scalars['String']['input']>;
-  customer?: InputMaybe<Scalars['String']['input']>;
-  eccentricity?: InputMaybe<Scalars['Float']['input']>;
-  end?: InputMaybe<Scalars['Date']['input']>;
-  epoch?: InputMaybe<Scalars['Date']['input']>;
-  fairings_recovered?: InputMaybe<Scalars['String']['input']>;
-  fairings_recovery_attempt?: InputMaybe<Scalars['String']['input']>;
-  fairings_reuse?: InputMaybe<Scalars['String']['input']>;
-  fairings_reused?: InputMaybe<Scalars['String']['input']>;
-  fairings_ship?: InputMaybe<Scalars['String']['input']>;
-  gridfins?: InputMaybe<Scalars['String']['input']>;
-  id?: InputMaybe<Scalars['ID']['input']>;
-  inclination_deg?: InputMaybe<Scalars['Float']['input']>;
-  land_success?: InputMaybe<Scalars['String']['input']>;
-  landing_intent?: InputMaybe<Scalars['String']['input']>;
-  landing_type?: InputMaybe<Scalars['String']['input']>;
-  landing_vehicle?: InputMaybe<Scalars['String']['input']>;
-  launch_date_local?: InputMaybe<Scalars['Date']['input']>;
-  launch_date_utc?: InputMaybe<Scalars['Date']['input']>;
-  launch_success?: InputMaybe<Scalars['String']['input']>;
-  launch_year?: InputMaybe<Scalars['String']['input']>;
-  legs?: InputMaybe<Scalars['String']['input']>;
-  lifespan_years?: InputMaybe<Scalars['Float']['input']>;
-  longitude?: InputMaybe<Scalars['Float']['input']>;
-  manufacturer?: InputMaybe<Scalars['String']['input']>;
-  mean_motion?: InputMaybe<Scalars['Float']['input']>;
-  mission_id?: InputMaybe<Scalars['String']['input']>;
-  mission_name?: InputMaybe<Scalars['String']['input']>;
-  nationality?: InputMaybe<Scalars['String']['input']>;
-  norad_id?: InputMaybe<Scalars['Int']['input']>;
-  orbit?: InputMaybe<Scalars['String']['input']>;
-  payload_id?: InputMaybe<Scalars['String']['input']>;
-  payload_type?: InputMaybe<Scalars['String']['input']>;
-  periapsis_km?: InputMaybe<Scalars['Float']['input']>;
-  period_min?: InputMaybe<Scalars['Float']['input']>;
-  raan?: InputMaybe<Scalars['Float']['input']>;
-  reference_system?: InputMaybe<Scalars['String']['input']>;
-  regime?: InputMaybe<Scalars['String']['input']>;
-  reused?: InputMaybe<Scalars['String']['input']>;
-  rocket_id?: InputMaybe<Scalars['String']['input']>;
-  rocket_name?: InputMaybe<Scalars['String']['input']>;
-  rocket_type?: InputMaybe<Scalars['String']['input']>;
-  second_stage_block?: InputMaybe<Scalars['String']['input']>;
-  semi_major_axis_km?: InputMaybe<Scalars['Float']['input']>;
-  ship?: InputMaybe<Scalars['String']['input']>;
-  side_core1_reuse?: InputMaybe<Scalars['String']['input']>;
-  side_core2_reuse?: InputMaybe<Scalars['String']['input']>;
-  site_id?: InputMaybe<Scalars['String']['input']>;
-  site_name?: InputMaybe<Scalars['String']['input']>;
-  site_name_long?: InputMaybe<Scalars['String']['input']>;
-  start?: InputMaybe<Scalars['Date']['input']>;
-  tbd?: InputMaybe<Scalars['String']['input']>;
-  tentative?: InputMaybe<Scalars['String']['input']>;
-  tentative_max_precision?: InputMaybe<Scalars['String']['input']>;
+export enum Grade {
+  Elementary_1 = 'ELEMENTARY_1',
+  Elementary_2 = 'ELEMENTARY_2',
+  Elementary_3 = 'ELEMENTARY_3',
+  Elementary_4 = 'ELEMENTARY_4',
+  Elementary_5 = 'ELEMENTARY_5',
+  Elementary_6 = 'ELEMENTARY_6',
+  JuniorHigh_1 = 'JUNIOR_HIGH_1',
+  JuniorHigh_2 = 'JUNIOR_HIGH_2',
+  JuniorHigh_3 = 'JUNIOR_HIGH_3'
+}
+
+export type LessonPlan = {
+  createdAt: Scalars['LocalDateTime']['output'];
+  id: Scalars['ID']['output'];
 };
 
-export type LaunchLinks = {
-  __typename?: 'LaunchLinks';
-  article_link?: Maybe<Scalars['String']['output']>;
-  flickr_images?: Maybe<Array<Maybe<Scalars['String']['output']>>>;
-  mission_patch?: Maybe<Scalars['String']['output']>;
-  mission_patch_small?: Maybe<Scalars['String']['output']>;
-  presskit?: Maybe<Scalars['String']['output']>;
-  reddit_campaign?: Maybe<Scalars['String']['output']>;
-  reddit_launch?: Maybe<Scalars['String']['output']>;
-  reddit_media?: Maybe<Scalars['String']['output']>;
-  reddit_recovery?: Maybe<Scalars['String']['output']>;
-  video_link?: Maybe<Scalars['String']['output']>;
-  wikipedia?: Maybe<Scalars['String']['output']>;
+export type LessonPlanDate = {
+  __typename?: 'LessonPlanDate';
+  endDay: Scalars['Int']['output'];
+  endMonth: Scalars['Int']['output'];
+  endTime: Scalars['Time']['output'];
+  startDay: Scalars['Int']['output'];
+  startMonth: Scalars['Int']['output'];
+  startTime: Scalars['Time']['output'];
 };
 
-export type LaunchRocket = {
-  __typename?: 'LaunchRocket';
-  fairings?: Maybe<LaunchRocketFairings>;
-  first_stage?: Maybe<LaunchRocketFirstStage>;
-  rocket?: Maybe<Rocket>;
-  rocket_name?: Maybe<Scalars['String']['output']>;
-  rocket_type?: Maybe<Scalars['String']['output']>;
-  second_stage?: Maybe<LaunchRocketSecondStage>;
+export type LessonPlanDateInput = {
+  endDay: Scalars['Int']['input'];
+  endMonth: Scalars['Int']['input'];
+  endTime: Scalars['Time']['input'];
+  startDay: Scalars['Int']['input'];
+  startMonth: Scalars['Int']['input'];
+  startTime: Scalars['Time']['input'];
 };
 
-export type LaunchRocketFairings = {
-  __typename?: 'LaunchRocketFairings';
-  recovered?: Maybe<Scalars['Boolean']['output']>;
-  recovery_attempt?: Maybe<Scalars['Boolean']['output']>;
-  reused?: Maybe<Scalars['Boolean']['output']>;
-  ship?: Maybe<Scalars['String']['output']>;
+export enum LessonPlanErrorCode {
+  LessonPlanAlreadyExists = 'LESSON_PLAN_ALREADY_EXISTS',
+  LessonPlanNotFound = 'LESSON_PLAN_NOT_FOUND'
+}
+
+export type LessonPlanQueryErrorOutput = {
+  __typename?: 'LessonPlanQueryErrorOutput';
+  code: LessonPlanErrorCode;
+  message: Scalars['String']['output'];
 };
 
-export type LaunchRocketFirstStage = {
-  __typename?: 'LaunchRocketFirstStage';
-  cores?: Maybe<Array<Maybe<LaunchRocketFirstStageCore>>>;
+export type LessonPlanQueryOutput = LessonPlanQueryErrorOutput | LessonPlanQuerySuccessOutput;
+
+export type LessonPlanQuerySuccessOutput = {
+  __typename?: 'LessonPlanQuerySuccessOutput';
+  lessonPlan: LessonPlan;
 };
 
-export type LaunchRocketFirstStageCore = {
-  __typename?: 'LaunchRocketFirstStageCore';
-  block?: Maybe<Scalars['Int']['output']>;
-  core?: Maybe<Core>;
-  flight?: Maybe<Scalars['Int']['output']>;
-  gridfins?: Maybe<Scalars['Boolean']['output']>;
-  land_success?: Maybe<Scalars['Boolean']['output']>;
-  landing_intent?: Maybe<Scalars['Boolean']['output']>;
-  landing_type?: Maybe<Scalars['String']['output']>;
-  landing_vehicle?: Maybe<Scalars['String']['output']>;
-  legs?: Maybe<Scalars['Boolean']['output']>;
-  reused?: Maybe<Scalars['Boolean']['output']>;
-};
-
-export type LaunchRocketSecondStage = {
-  __typename?: 'LaunchRocketSecondStage';
-  block?: Maybe<Scalars['Int']['output']>;
-  payloads?: Maybe<Array<Maybe<Payload>>>;
-};
-
-export type LaunchSite = {
-  __typename?: 'LaunchSite';
-  site_id?: Maybe<Scalars['String']['output']>;
-  site_name?: Maybe<Scalars['String']['output']>;
-  site_name_long?: Maybe<Scalars['String']['output']>;
-};
-
-export type LaunchTelemetry = {
-  __typename?: 'LaunchTelemetry';
-  flight_club?: Maybe<Scalars['String']['output']>;
-};
-
-export type LaunchesPastResult = {
-  __typename?: 'LaunchesPastResult';
-  data?: Maybe<Array<Maybe<Launch>>>;
-  result?: Maybe<Result>;
-};
-
-export type Launchpad = {
-  __typename?: 'Launchpad';
-  attempted_launches?: Maybe<Scalars['Int']['output']>;
-  details?: Maybe<Scalars['String']['output']>;
-  id?: Maybe<Scalars['ID']['output']>;
-  location?: Maybe<Location>;
-  name?: Maybe<Scalars['String']['output']>;
-  status?: Maybe<Scalars['String']['output']>;
-  successful_launches?: Maybe<Scalars['Int']['output']>;
-  vehicles_launched?: Maybe<Array<Maybe<Rocket>>>;
-  wikipedia?: Maybe<Scalars['String']['output']>;
-};
-
-export type Link = {
-  __typename?: 'Link';
-  article?: Maybe<Scalars['String']['output']>;
-  reddit?: Maybe<Scalars['String']['output']>;
-  wikipedia?: Maybe<Scalars['String']['output']>;
-};
-
-export type Location = {
-  __typename?: 'Location';
-  latitude?: Maybe<Scalars['Float']['output']>;
-  longitude?: Maybe<Scalars['Float']['output']>;
-  name?: Maybe<Scalars['String']['output']>;
-  region?: Maybe<Scalars['String']['output']>;
-};
-
-export type Mass = {
-  __typename?: 'Mass';
-  kg?: Maybe<Scalars['Int']['output']>;
-  lb?: Maybe<Scalars['Int']['output']>;
-};
-
-export type Mission = {
-  __typename?: 'Mission';
-  description?: Maybe<Scalars['String']['output']>;
-  id?: Maybe<Scalars['ID']['output']>;
-  manufacturers?: Maybe<Array<Maybe<Scalars['String']['output']>>>;
-  name?: Maybe<Scalars['String']['output']>;
-  payloads?: Maybe<Array<Maybe<Payload>>>;
-  twitter?: Maybe<Scalars['String']['output']>;
-  website?: Maybe<Scalars['String']['output']>;
-  wikipedia?: Maybe<Scalars['String']['output']>;
-};
-
-export type MissionResult = {
-  __typename?: 'MissionResult';
-  data?: Maybe<Array<Maybe<Mission>>>;
-  result?: Maybe<Result>;
-};
-
-export type MissionsFind = {
-  id?: InputMaybe<Scalars['ID']['input']>;
-  manufacturer?: InputMaybe<Scalars['String']['input']>;
-  name?: InputMaybe<Scalars['String']['input']>;
-  payload_id?: InputMaybe<Scalars['String']['input']>;
-};
+export enum LessonType {
+  Offline = 'OFFLINE',
+  Online = 'ONLINE',
+  OnlineAndOffline = 'ONLINE_AND_OFFLINE'
+}
 
 export type Mutation = {
   __typename?: 'Mutation';
-  /** delete data from the table: "users" */
-  delete_users?: Maybe<Users_Mutation_Response>;
-  /** insert data into the table: "users" */
-  insert_users?: Maybe<Users_Mutation_Response>;
-  /** update data of the table: "users" */
-  update_users?: Maybe<Users_Mutation_Response>;
+  createAdminUser: Scalars['Unit']['output'];
+  createCompany: CreateCompanyMutationOutput;
+  createDraftLessonPlan: CreateDraftLessonPlanMutationOutput;
+  createEducation: CreateEducationMutationOutput;
+  createProduct: Scalars['Unit']['output'];
+  createSchool: CreateSchoolPayload;
+  createUploadFiles: Array<UploadFile>;
+  deleteCompany: DeleteCompanyMutationOutput;
+  deleteEducation: DeleteEducationMutationOutput;
+  deleteProduct: DeleteProductMutationOutput;
+  deleteSchool: DeleteSchoolPayload;
+  deleteUploadFiles: Scalars['Unit']['output'];
+  updateCompany: UpdateCompanyMutationOutput;
+  updateEducation: UpdateEducationMutationOutput;
+  updateLessonPlan: UpdateLessonPlanMutationOutput;
+  updateLessonPlanStatus: UpdateLessonPlanStatusMutationOutput;
+  updatePassword: UpdatePassWordMutationOutput;
+  updateProduct: UpdateProductMutationOutput;
+  updateSchool: UpdateSchoolPayload;
 };
 
 
-export type MutationDelete_UsersArgs = {
-  where: Users_Bool_Exp;
+export type MutationCreateAdminUserArgs = {
+  input: CreateAdminUserMutationInput;
 };
 
 
-export type MutationInsert_UsersArgs = {
-  objects: Array<Users_Insert_Input>;
-  on_conflict?: InputMaybe<Users_On_Conflict>;
+export type MutationCreateCompanyArgs = {
+  input: CreateCompanyMutationInput;
 };
 
 
-export type MutationUpdate_UsersArgs = {
-  _set?: InputMaybe<Users_Set_Input>;
-  where: Users_Bool_Exp;
+export type MutationCreateDraftLessonPlanArgs = {
+  input: CreateDraftLessonPlanMutationInput;
 };
 
-export type Payload = {
-  __typename?: 'Payload';
-  customers?: Maybe<Array<Maybe<Scalars['String']['output']>>>;
-  id?: Maybe<Scalars['ID']['output']>;
-  manufacturer?: Maybe<Scalars['String']['output']>;
-  nationality?: Maybe<Scalars['String']['output']>;
-  norad_id?: Maybe<Array<Maybe<Scalars['Int']['output']>>>;
-  orbit?: Maybe<Scalars['String']['output']>;
-  orbit_params?: Maybe<PayloadOrbitParams>;
-  payload_mass_kg?: Maybe<Scalars['Float']['output']>;
-  payload_mass_lbs?: Maybe<Scalars['Float']['output']>;
-  payload_type?: Maybe<Scalars['String']['output']>;
-  reused?: Maybe<Scalars['Boolean']['output']>;
+
+export type MutationCreateEducationArgs = {
+  name: Scalars['NonEmptyString']['input'];
 };
 
-export type PayloadOrbitParams = {
-  __typename?: 'PayloadOrbitParams';
-  apoapsis_km?: Maybe<Scalars['Float']['output']>;
-  arg_of_pericenter?: Maybe<Scalars['Float']['output']>;
-  eccentricity?: Maybe<Scalars['Float']['output']>;
-  epoch?: Maybe<Scalars['Date']['output']>;
-  inclination_deg?: Maybe<Scalars['Float']['output']>;
-  lifespan_years?: Maybe<Scalars['Float']['output']>;
-  longitude?: Maybe<Scalars['Float']['output']>;
-  mean_anomaly?: Maybe<Scalars['Float']['output']>;
-  mean_motion?: Maybe<Scalars['Float']['output']>;
-  periapsis_km?: Maybe<Scalars['Float']['output']>;
-  period_min?: Maybe<Scalars['Float']['output']>;
-  raan?: Maybe<Scalars['Float']['output']>;
-  reference_system?: Maybe<Scalars['String']['output']>;
-  regime?: Maybe<Scalars['String']['output']>;
-  semi_major_axis_km?: Maybe<Scalars['Float']['output']>;
+
+export type MutationCreateProductArgs = {
+  input: CreateProductMutationInput;
 };
 
-export type PayloadsFind = {
-  apoapsis_km?: InputMaybe<Scalars['Float']['input']>;
-  customer?: InputMaybe<Scalars['String']['input']>;
-  eccentricity?: InputMaybe<Scalars['Float']['input']>;
-  epoch?: InputMaybe<Scalars['Date']['input']>;
-  inclination_deg?: InputMaybe<Scalars['Float']['input']>;
-  lifespan_years?: InputMaybe<Scalars['Float']['input']>;
-  longitude?: InputMaybe<Scalars['Float']['input']>;
-  manufacturer?: InputMaybe<Scalars['String']['input']>;
-  mean_motion?: InputMaybe<Scalars['Float']['input']>;
-  nationality?: InputMaybe<Scalars['String']['input']>;
-  norad_id?: InputMaybe<Scalars['Int']['input']>;
-  orbit?: InputMaybe<Scalars['String']['input']>;
-  payload_id?: InputMaybe<Scalars['ID']['input']>;
-  payload_type?: InputMaybe<Scalars['String']['input']>;
-  periapsis_km?: InputMaybe<Scalars['Float']['input']>;
-  period_min?: InputMaybe<Scalars['Float']['input']>;
-  raan?: InputMaybe<Scalars['Float']['input']>;
-  reference_system?: InputMaybe<Scalars['String']['input']>;
-  regime?: InputMaybe<Scalars['String']['input']>;
-  reused?: InputMaybe<Scalars['Boolean']['input']>;
-  semi_major_axis_km?: InputMaybe<Scalars['Float']['input']>;
+
+export type MutationCreateSchoolArgs = {
+  input: CreateSchoolInput;
+};
+
+
+export type MutationCreateUploadFilesArgs = {
+  input: CreateUploadFilesMutationInput;
+};
+
+
+export type MutationDeleteCompanyArgs = {
+  id: Scalars['ID']['input'];
+};
+
+
+export type MutationDeleteEducationArgs = {
+  id: Scalars['ID']['input'];
+};
+
+
+export type MutationDeleteProductArgs = {
+  input: DeleteProductMutationInput;
+};
+
+
+export type MutationDeleteSchoolArgs = {
+  input: DeleteSchoolInput;
+};
+
+
+export type MutationDeleteUploadFilesArgs = {
+  input: DeleteUploadFilesMutationInput;
+};
+
+
+export type MutationUpdateCompanyArgs = {
+  input: UpdateCompanyMutationInput;
+};
+
+
+export type MutationUpdateEducationArgs = {
+  input: UpdateEducationMutationInput;
+};
+
+
+export type MutationUpdateLessonPlanArgs = {
+  input: UpdateLessonPlanMutationInput;
+};
+
+
+export type MutationUpdateLessonPlanStatusArgs = {
+  id: Scalars['ID']['input'];
+};
+
+
+export type MutationUpdatePasswordArgs = {
+  input: UpdatePasswordMutationInput;
+};
+
+
+export type MutationUpdateProductArgs = {
+  input: UpdateProductMutationInput;
+};
+
+
+export type MutationUpdateSchoolArgs = {
+  input: UpdateSchoolInput;
+};
+
+export enum Prefecture {
+  Aichi = 'AICHI',
+  Akita = 'AKITA',
+  Aomori = 'AOMORI',
+  Chiba = 'CHIBA',
+  Ehime = 'EHIME',
+  Fukui = 'FUKUI',
+  Fukuoka = 'FUKUOKA',
+  Fukushima = 'FUKUSHIMA',
+  Gifu = 'GIFU',
+  Gunma = 'GUNMA',
+  Hiroshima = 'HIROSHIMA',
+  Hokkaido = 'HOKKAIDO',
+  Hyogo = 'HYOGO',
+  Ibaraki = 'IBARAKI',
+  Ishikawa = 'ISHIKAWA',
+  Iwate = 'IWATE',
+  Kagawa = 'KAGAWA',
+  Kagoshima = 'KAGOSHIMA',
+  Kanagawa = 'KANAGAWA',
+  Kochi = 'KOCHI',
+  Kumamoto = 'KUMAMOTO',
+  Kyoto = 'KYOTO',
+  Mie = 'MIE',
+  Miyagi = 'MIYAGI',
+  Miyazaki = 'MIYAZAKI',
+  Nagano = 'NAGANO',
+  Nagasaki = 'NAGASAKI',
+  Nara = 'NARA',
+  Niigata = 'NIIGATA',
+  Oita = 'OITA',
+  Okayama = 'OKAYAMA',
+  Okinawa = 'OKINAWA',
+  Osaka = 'OSAKA',
+  Saga = 'SAGA',
+  Saitama = 'SAITAMA',
+  Shiga = 'SHIGA',
+  Shimane = 'SHIMANE',
+  Tochigi = 'TOCHIGI',
+  Tokushima = 'TOKUSHIMA',
+  Tokyo = 'TOKYO',
+  Tottori = 'TOTTORI',
+  Toyama = 'TOYAMA',
+  Wakayama = 'WAKAYAMA',
+  Yamagata = 'YAMAGATA',
+  Yamanashi = 'YAMANASHI'
+}
+
+export type Product = {
+  __typename?: 'Product';
+  description?: Maybe<Scalars['String']['output']>;
+  id: Scalars['ID']['output'];
+  name: Scalars['String']['output'];
+  price: Scalars['Int']['output'];
+};
+
+export type ProductError = {
+  __typename?: 'ProductError';
+  code: ProductErrorCode;
+  message: Scalars['String']['output'];
+};
+
+export enum ProductErrorCode {
+  ProductNotFound = 'PRODUCT_NOT_FOUND'
+}
+
+export type PublishedLessonPlan = LessonPlan & {
+  __typename?: 'PublishedLessonPlan';
+  annualMaxExecutions: Scalars['Int']['output'];
+  createdAt: Scalars['LocalDateTime']['output'];
+  description: Scalars['String']['output'];
+  id: Scalars['ID']['output'];
+  lessonPlanDates: Array<LessonPlanDate>;
+  lessonType: LessonType;
+  location: Scalars['String']['output'];
+  title: Scalars['String']['output'];
 };
 
 export type Query = {
   __typename?: 'Query';
-  _service: _Service;
-  capsule?: Maybe<Capsule>;
-  capsules?: Maybe<Array<Maybe<Capsule>>>;
-  capsulesPast?: Maybe<Array<Maybe<Capsule>>>;
-  capsulesUpcoming?: Maybe<Array<Maybe<Capsule>>>;
-  company?: Maybe<Info>;
-  core?: Maybe<Core>;
-  cores?: Maybe<Array<Maybe<Core>>>;
-  coresPast?: Maybe<Array<Maybe<Core>>>;
-  coresUpcoming?: Maybe<Array<Maybe<Core>>>;
-  dragon?: Maybe<Dragon>;
-  dragons?: Maybe<Array<Maybe<Dragon>>>;
-  histories?: Maybe<Array<Maybe<History>>>;
-  historiesResult?: Maybe<HistoriesResult>;
-  history?: Maybe<History>;
-  landpad?: Maybe<Landpad>;
-  landpads?: Maybe<Array<Maybe<Landpad>>>;
-  launch?: Maybe<Launch>;
-  launchLatest?: Maybe<Launch>;
-  launchNext?: Maybe<Launch>;
-  launches?: Maybe<Array<Maybe<Launch>>>;
-  launchesPast?: Maybe<Array<Maybe<Launch>>>;
-  launchesPastResult?: Maybe<LaunchesPastResult>;
-  launchesUpcoming?: Maybe<Array<Maybe<Launch>>>;
-  launchpad?: Maybe<Launchpad>;
-  launchpads?: Maybe<Array<Maybe<Launchpad>>>;
-  /** @deprecated Mission is not available on REST API after MongoDB deprecation */
-  mission?: Maybe<Mission>;
-  /** @deprecated Mission is not available on REST API after MongoDB deprecation */
-  missions?: Maybe<Array<Maybe<Mission>>>;
-  /** @deprecated Mission is not available on REST API after MongoDB deprecation */
-  missionsResult?: Maybe<MissionResult>;
-  payload?: Maybe<Payload>;
-  payloads?: Maybe<Array<Maybe<Payload>>>;
-  roadster?: Maybe<Roadster>;
-  rocket?: Maybe<Rocket>;
-  rockets?: Maybe<Array<Maybe<Rocket>>>;
-  rocketsResult?: Maybe<RocketsResult>;
-  ship?: Maybe<Ship>;
-  ships?: Maybe<Array<Maybe<Ship>>>;
-  shipsResult?: Maybe<ShipsResult>;
-  /** fetch data from the table: "users" */
-  users: Array<Users>;
-  /** fetch aggregated fields from the table: "users" */
-  users_aggregate: Users_Aggregate;
-  /** fetch data from the table: "users" using primary key columns */
-  users_by_pk?: Maybe<Users>;
+  adminUsers: Array<AdminUser>;
+  companies: Array<Company>;
+  company: CompanyQueryOutput;
+  educationFindByName?: Maybe<EducationType>;
+  educationGetAll: Array<EducationType>;
+  hello: Scalars['String']['output'];
+  lessonPlan: LessonPlanQueryOutput;
+  ping: Scalars['String']['output'];
+  product: FindProductQueryOutput;
+  products: FindProductsQueryOutput;
+  school?: Maybe<School>;
+  schools: Array<School>;
 };
 
 
-export type QueryCapsuleArgs = {
+export type QueryCompanyArgs = {
   id: Scalars['ID']['input'];
 };
 
 
-export type QueryCapsulesArgs = {
-  find?: InputMaybe<CapsulesFind>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  order?: InputMaybe<Scalars['String']['input']>;
-  sort?: InputMaybe<Scalars['String']['input']>;
+export type QueryEducationFindByNameArgs = {
+  name: Scalars['NonEmptyString']['input'];
 };
 
 
-export type QueryCapsulesPastArgs = {
-  find?: InputMaybe<CapsulesFind>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  order?: InputMaybe<Scalars['String']['input']>;
-  sort?: InputMaybe<Scalars['String']['input']>;
+export type QueryHelloArgs = {
+  name?: InputMaybe<Scalars['String']['input']>;
 };
 
 
-export type QueryCapsulesUpcomingArgs = {
-  find?: InputMaybe<CapsulesFind>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  order?: InputMaybe<Scalars['String']['input']>;
-  sort?: InputMaybe<Scalars['String']['input']>;
-};
-
-
-export type QueryCoreArgs = {
+export type QueryLessonPlanArgs = {
   id: Scalars['ID']['input'];
 };
 
 
-export type QueryCoresArgs = {
-  find?: InputMaybe<CoresFind>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  order?: InputMaybe<Scalars['String']['input']>;
-  sort?: InputMaybe<Scalars['String']['input']>;
+export type QueryProductArgs = {
+  productId: Scalars['ID']['input'];
 };
 
 
-export type QueryCoresPastArgs = {
-  find?: InputMaybe<CoresFind>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  order?: InputMaybe<Scalars['String']['input']>;
-  sort?: InputMaybe<Scalars['String']['input']>;
+export type QueryProductsArgs = {
+  lastId?: InputMaybe<Scalars['String']['input']>;
+  limit: Scalars['Int']['input'];
+  sortOrder: Scalars['String']['input'];
 };
 
 
-export type QueryCoresUpcomingArgs = {
-  find?: InputMaybe<CoresFind>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  order?: InputMaybe<Scalars['String']['input']>;
-  sort?: InputMaybe<Scalars['String']['input']>;
+export type QuerySchoolArgs = {
+  id: Scalars['String']['input'];
 };
 
-
-export type QueryDragonArgs = {
-  id: Scalars['ID']['input'];
-};
-
-
-export type QueryDragonsArgs = {
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-};
-
-
-export type QueryHistoriesArgs = {
-  find?: InputMaybe<HistoryFind>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  order?: InputMaybe<Scalars['String']['input']>;
-  sort?: InputMaybe<Scalars['String']['input']>;
-};
-
-
-export type QueryHistoriesResultArgs = {
-  find?: InputMaybe<HistoryFind>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  order?: InputMaybe<Scalars['String']['input']>;
-  sort?: InputMaybe<Scalars['String']['input']>;
-};
-
-
-export type QueryHistoryArgs = {
-  id: Scalars['ID']['input'];
-};
-
-
-export type QueryLandpadArgs = {
-  id: Scalars['ID']['input'];
-};
-
-
-export type QueryLandpadsArgs = {
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-};
-
-
-export type QueryLaunchArgs = {
-  id: Scalars['ID']['input'];
-};
-
-
-export type QueryLaunchLatestArgs = {
-  offset?: InputMaybe<Scalars['Int']['input']>;
-};
-
-
-export type QueryLaunchNextArgs = {
-  offset?: InputMaybe<Scalars['Int']['input']>;
-};
-
-
-export type QueryLaunchesArgs = {
-  find?: InputMaybe<LaunchFind>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  order?: InputMaybe<Scalars['String']['input']>;
-  sort?: InputMaybe<Scalars['String']['input']>;
-};
-
-
-export type QueryLaunchesPastArgs = {
-  find?: InputMaybe<LaunchFind>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  order?: InputMaybe<Scalars['String']['input']>;
-  sort?: InputMaybe<Scalars['String']['input']>;
-};
-
-
-export type QueryLaunchesPastResultArgs = {
-  find?: InputMaybe<LaunchFind>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  order?: InputMaybe<Scalars['String']['input']>;
-  sort?: InputMaybe<Scalars['String']['input']>;
-};
-
-
-export type QueryLaunchesUpcomingArgs = {
-  find?: InputMaybe<LaunchFind>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  order?: InputMaybe<Scalars['String']['input']>;
-  sort?: InputMaybe<Scalars['String']['input']>;
-};
-
-
-export type QueryLaunchpadArgs = {
-  id: Scalars['ID']['input'];
-};
-
-
-export type QueryLaunchpadsArgs = {
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-};
-
-
-export type QueryMissionArgs = {
-  id: Scalars['ID']['input'];
-};
-
-
-export type QueryMissionsArgs = {
-  find?: InputMaybe<MissionsFind>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-};
-
-
-export type QueryMissionsResultArgs = {
-  find?: InputMaybe<MissionsFind>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-};
-
-
-export type QueryPayloadArgs = {
-  id: Scalars['ID']['input'];
-};
-
-
-export type QueryPayloadsArgs = {
-  find?: InputMaybe<PayloadsFind>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  order?: InputMaybe<Scalars['String']['input']>;
-  sort?: InputMaybe<Scalars['String']['input']>;
-};
-
-
-export type QueryRocketArgs = {
-  id: Scalars['ID']['input'];
-};
-
-
-export type QueryRocketsArgs = {
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-};
-
-
-export type QueryRocketsResultArgs = {
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-};
-
-
-export type QueryShipArgs = {
-  id: Scalars['ID']['input'];
-};
-
-
-export type QueryShipsArgs = {
-  find?: InputMaybe<ShipsFind>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  order?: InputMaybe<Scalars['String']['input']>;
-  sort?: InputMaybe<Scalars['String']['input']>;
-};
-
-
-export type QueryShipsResultArgs = {
-  find?: InputMaybe<ShipsFind>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  order?: InputMaybe<Scalars['String']['input']>;
-  sort?: InputMaybe<Scalars['String']['input']>;
-};
-
-
-export type QueryUsersArgs = {
-  distinct_on?: InputMaybe<Array<Users_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  order_by?: InputMaybe<Array<Users_Order_By>>;
-  where?: InputMaybe<Users_Bool_Exp>;
-};
-
-
-export type QueryUsers_AggregateArgs = {
-  distinct_on?: InputMaybe<Array<Users_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  order_by?: InputMaybe<Array<Users_Order_By>>;
-  where?: InputMaybe<Users_Bool_Exp>;
-};
-
-
-export type QueryUsers_By_PkArgs = {
-  id: Scalars['uuid']['input'];
-};
-
-export type Result = {
-  __typename?: 'Result';
-  totalCount?: Maybe<Scalars['Int']['output']>;
-};
-
-export type Roadster = {
-  __typename?: 'Roadster';
-  apoapsis_au?: Maybe<Scalars['Float']['output']>;
-  details?: Maybe<Scalars['String']['output']>;
-  earth_distance_km?: Maybe<Scalars['Float']['output']>;
-  earth_distance_mi?: Maybe<Scalars['Float']['output']>;
-  eccentricity?: Maybe<Scalars['Float']['output']>;
-  epoch_jd?: Maybe<Scalars['Float']['output']>;
-  inclination?: Maybe<Scalars['Float']['output']>;
-  launch_date_unix?: Maybe<Scalars['Date']['output']>;
-  launch_date_utc?: Maybe<Scalars['Date']['output']>;
-  launch_mass_kg?: Maybe<Scalars['Int']['output']>;
-  launch_mass_lbs?: Maybe<Scalars['Int']['output']>;
-  longitude?: Maybe<Scalars['Float']['output']>;
-  mars_distance_km?: Maybe<Scalars['Float']['output']>;
-  mars_distance_mi?: Maybe<Scalars['Float']['output']>;
-  name?: Maybe<Scalars['String']['output']>;
-  norad_id?: Maybe<Scalars['Int']['output']>;
-  orbit_type?: Maybe<Scalars['Float']['output']>;
-  periapsis_arg?: Maybe<Scalars['Float']['output']>;
-  periapsis_au?: Maybe<Scalars['Float']['output']>;
-  period_days?: Maybe<Scalars['Float']['output']>;
-  semi_major_axis_au?: Maybe<Scalars['Float']['output']>;
-  speed_kph?: Maybe<Scalars['Float']['output']>;
-  speed_mph?: Maybe<Scalars['Float']['output']>;
-  wikipedia?: Maybe<Scalars['String']['output']>;
-};
-
-export type Rocket = {
-  __typename?: 'Rocket';
-  active?: Maybe<Scalars['Boolean']['output']>;
-  boosters?: Maybe<Scalars['Int']['output']>;
-  company?: Maybe<Scalars['String']['output']>;
-  cost_per_launch?: Maybe<Scalars['Int']['output']>;
-  country?: Maybe<Scalars['String']['output']>;
-  description?: Maybe<Scalars['String']['output']>;
-  diameter?: Maybe<Distance>;
-  engines?: Maybe<RocketEngines>;
-  first_flight?: Maybe<Scalars['Date']['output']>;
-  first_stage?: Maybe<RocketFirstStage>;
-  height?: Maybe<Distance>;
-  id?: Maybe<Scalars['ID']['output']>;
-  landing_legs?: Maybe<RocketLandingLegs>;
-  mass?: Maybe<Mass>;
-  name?: Maybe<Scalars['String']['output']>;
-  payload_weights?: Maybe<Array<Maybe<RocketPayloadWeight>>>;
-  second_stage?: Maybe<RocketSecondStage>;
-  stages?: Maybe<Scalars['Int']['output']>;
-  success_rate_pct?: Maybe<Scalars['Int']['output']>;
-  type?: Maybe<Scalars['String']['output']>;
-  wikipedia?: Maybe<Scalars['String']['output']>;
-};
-
-export type RocketEngines = {
-  __typename?: 'RocketEngines';
-  engine_loss_max?: Maybe<Scalars['String']['output']>;
-  layout?: Maybe<Scalars['String']['output']>;
-  number?: Maybe<Scalars['Int']['output']>;
-  propellant_1?: Maybe<Scalars['String']['output']>;
-  propellant_2?: Maybe<Scalars['String']['output']>;
-  thrust_sea_level?: Maybe<Force>;
-  thrust_to_weight?: Maybe<Scalars['Float']['output']>;
-  thrust_vacuum?: Maybe<Force>;
-  type?: Maybe<Scalars['String']['output']>;
-  version?: Maybe<Scalars['String']['output']>;
-};
-
-export type RocketFirstStage = {
-  __typename?: 'RocketFirstStage';
-  burn_time_sec?: Maybe<Scalars['Int']['output']>;
-  engines?: Maybe<Scalars['Int']['output']>;
-  fuel_amount_tons?: Maybe<Scalars['Float']['output']>;
-  reusable?: Maybe<Scalars['Boolean']['output']>;
-  thrust_sea_level?: Maybe<Force>;
-  thrust_vacuum?: Maybe<Force>;
-};
-
-export type RocketLandingLegs = {
-  __typename?: 'RocketLandingLegs';
-  material?: Maybe<Scalars['String']['output']>;
-  number?: Maybe<Scalars['Int']['output']>;
-};
-
-export type RocketPayloadWeight = {
-  __typename?: 'RocketPayloadWeight';
-  id?: Maybe<Scalars['String']['output']>;
-  kg?: Maybe<Scalars['Int']['output']>;
-  lb?: Maybe<Scalars['Int']['output']>;
-  name?: Maybe<Scalars['String']['output']>;
-};
-
-export type RocketSecondStage = {
-  __typename?: 'RocketSecondStage';
-  burn_time_sec?: Maybe<Scalars['Int']['output']>;
-  engines?: Maybe<Scalars['Int']['output']>;
-  fuel_amount_tons?: Maybe<Scalars['Float']['output']>;
-  payloads?: Maybe<RocketSecondStagePayloads>;
-  thrust?: Maybe<Force>;
-};
-
-export type RocketSecondStagePayloadCompositeFairing = {
-  __typename?: 'RocketSecondStagePayloadCompositeFairing';
-  diameter?: Maybe<Distance>;
-  height?: Maybe<Distance>;
-};
-
-export type RocketSecondStagePayloads = {
-  __typename?: 'RocketSecondStagePayloads';
-  composite_fairing?: Maybe<RocketSecondStagePayloadCompositeFairing>;
-  option_1?: Maybe<Scalars['String']['output']>;
-};
-
-export type RocketsResult = {
-  __typename?: 'RocketsResult';
-  data?: Maybe<Array<Maybe<Rocket>>>;
-  result?: Maybe<Result>;
-};
-
-export type Ship = {
-  __typename?: 'Ship';
-  abs?: Maybe<Scalars['Int']['output']>;
-  active?: Maybe<Scalars['Boolean']['output']>;
-  attempted_landings?: Maybe<Scalars['Int']['output']>;
-  class?: Maybe<Scalars['Int']['output']>;
-  course_deg?: Maybe<Scalars['Int']['output']>;
-  home_port?: Maybe<Scalars['String']['output']>;
-  id?: Maybe<Scalars['ID']['output']>;
-  image?: Maybe<Scalars['String']['output']>;
-  imo?: Maybe<Scalars['Int']['output']>;
-  missions?: Maybe<Array<Maybe<ShipMission>>>;
-  mmsi?: Maybe<Scalars['Int']['output']>;
-  model?: Maybe<Scalars['String']['output']>;
-  name?: Maybe<Scalars['String']['output']>;
-  position?: Maybe<ShipLocation>;
-  roles?: Maybe<Array<Maybe<Scalars['String']['output']>>>;
-  speed_kn?: Maybe<Scalars['Float']['output']>;
-  status?: Maybe<Scalars['String']['output']>;
-  successful_landings?: Maybe<Scalars['Int']['output']>;
-  type?: Maybe<Scalars['String']['output']>;
+export type School = {
+  __typename?: 'School';
+  buildingName?: Maybe<Scalars['String']['output']>;
+  city: Scalars['String']['output'];
+  id: Scalars['String']['output'];
+  name: Scalars['String']['output'];
+  phoneNumber?: Maybe<Scalars['String']['output']>;
+  postalCode: Scalars['String']['output'];
+  prefecture: Scalars['String']['output'];
+  schoolCategory: SchoolCategory;
+  streetAddress: Scalars['String']['output'];
   url?: Maybe<Scalars['String']['output']>;
-  weight_kg?: Maybe<Scalars['Int']['output']>;
-  weight_lbs?: Maybe<Scalars['Int']['output']>;
-  year_built?: Maybe<Scalars['Int']['output']>;
 };
 
-export type ShipLocation = {
-  __typename?: 'ShipLocation';
-  latitude?: Maybe<Scalars['Float']['output']>;
-  longitude?: Maybe<Scalars['Float']['output']>;
+export enum SchoolCategory {
+  Elementary = 'ELEMENTARY',
+  High = 'HIGH',
+  JuniorHigh = 'JUNIOR_HIGH'
+}
+
+export enum Subject {
+  Arithmetic = 'ARITHMETIC',
+  Art = 'ART',
+  ElementaryArtAndCrafts = 'ELEMENTARY_ART_AND_CRAFTS',
+  English = 'ENGLISH',
+  ForeignLanguage = 'FOREIGN_LANGUAGE',
+  ForeignLanguageActivities = 'FOREIGN_LANGUAGE_ACTIVITIES',
+  Homemaking = 'HOMEMAKING',
+  IntegratedStudies = 'INTEGRATED_STUDIES',
+  Japanese = 'JAPANESE',
+  LifeSkills = 'LIFE_SKILLS',
+  Math = 'MATH',
+  MoralEducation = 'MORAL_EDUCATION',
+  Music = 'MUSIC',
+  PhysicalEducation = 'PHYSICAL_EDUCATION',
+  Science = 'SCIENCE',
+  SocialStudies = 'SOCIAL_STUDIES'
+}
+
+export type UpdateCompanyMutationError = {
+  __typename?: 'UpdateCompanyMutationError';
+  code: CompanyErrorCode;
+  message: Scalars['String']['output'];
 };
 
-export type ShipMission = {
-  __typename?: 'ShipMission';
-  flight?: Maybe<Scalars['String']['output']>;
-  name?: Maybe<Scalars['String']['output']>;
+export type UpdateCompanyMutationInput = {
+  buildingName?: InputMaybe<Scalars['NonEmptyString']['input']>;
+  city?: InputMaybe<Scalars['NonEmptyString']['input']>;
+  id: Scalars['ID']['input'];
+  name?: InputMaybe<Scalars['NonEmptyString']['input']>;
+  phoneNumber: Scalars['NonEmptyString']['input'];
+  postalCode?: InputMaybe<Scalars['NonEmptyString']['input']>;
+  prefecture?: InputMaybe<Scalars['NonEmptyString']['input']>;
+  streetAddress?: InputMaybe<Scalars['NonEmptyString']['input']>;
+  url?: InputMaybe<Scalars['NonEmptyString']['input']>;
 };
 
-export type ShipsFind = {
-  abs?: InputMaybe<Scalars['Int']['input']>;
-  active?: InputMaybe<Scalars['Boolean']['input']>;
-  attempted_landings?: InputMaybe<Scalars['Int']['input']>;
-  class?: InputMaybe<Scalars['Int']['input']>;
-  course_deg?: InputMaybe<Scalars['Int']['input']>;
-  home_port?: InputMaybe<Scalars['String']['input']>;
-  id?: InputMaybe<Scalars['ID']['input']>;
-  imo?: InputMaybe<Scalars['Int']['input']>;
-  latitude?: InputMaybe<Scalars['Float']['input']>;
-  longitude?: InputMaybe<Scalars['Float']['input']>;
-  mission?: InputMaybe<Scalars['String']['input']>;
-  mmsi?: InputMaybe<Scalars['Int']['input']>;
-  model?: InputMaybe<Scalars['String']['input']>;
+export type UpdateCompanyMutationOutput = UpdateCompanyMutationError | UpdateCompanyMutationSuccess;
+
+export type UpdateCompanyMutationSuccess = {
+  __typename?: 'UpdateCompanyMutationSuccess';
+  result: Scalars['Unit']['output'];
+};
+
+export type UpdateEducationMutationError = {
+  __typename?: 'UpdateEducationMutationError';
+  code: EducationErrorCode;
+  message: Scalars['String']['output'];
+};
+
+export type UpdateEducationMutationInput = {
+  displayOrder?: InputMaybe<Scalars['Int']['input']>;
+  id: Scalars['ID']['input'];
+  isActive?: InputMaybe<Scalars['Boolean']['input']>;
+  name?: InputMaybe<Scalars['NonEmptyString']['input']>;
+};
+
+export type UpdateEducationMutationOutput = UpdateEducationMutationError | UpdateEducationMutationSuccess;
+
+export type UpdateEducationMutationSuccess = {
+  __typename?: 'UpdateEducationMutationSuccess';
+  result: Scalars['Unit']['output'];
+};
+
+export type UpdateLessonPlanMutationError = {
+  __typename?: 'UpdateLessonPlanMutationError';
+  code: LessonPlanErrorCode;
+  message: Scalars['String']['output'];
+};
+
+export type UpdateLessonPlanMutationInput = {
+  annualMaxExecutions?: InputMaybe<Scalars['Int']['input']>;
+  description?: InputMaybe<Scalars['NonEmptyString']['input']>;
+  educations: Array<Scalars['ID']['input']>;
+  grades: Array<Grade>;
+  id: Scalars['ID']['input'];
+  images: Array<Scalars['ID']['input']>;
+  lessonPlanDates?: InputMaybe<Array<LessonPlanDateInput>>;
+  location?: InputMaybe<Scalars['NonEmptyString']['input']>;
+  subjects: Array<Subject>;
+  title?: InputMaybe<Scalars['NonEmptyString']['input']>;
+  type?: InputMaybe<LessonType>;
+};
+
+export type UpdateLessonPlanMutationOutput = UpdateLessonPlanMutationError | UpdateLessonPlanMutationSuccess;
+
+export type UpdateLessonPlanMutationSuccess = {
+  __typename?: 'UpdateLessonPlanMutationSuccess';
+  result: Scalars['Unit']['output'];
+};
+
+export type UpdateLessonPlanStatusMutationError = {
+  __typename?: 'UpdateLessonPlanStatusMutationError';
+  code: LessonPlanErrorCode;
+  message: Scalars['String']['output'];
+};
+
+export type UpdateLessonPlanStatusMutationOutput = UpdateLessonPlanStatusMutationError | UpdateLessonPlanStatusMutationSuccess;
+
+export type UpdateLessonPlanStatusMutationSuccess = {
+  __typename?: 'UpdateLessonPlanStatusMutationSuccess';
+  result: Scalars['Unit']['output'];
+};
+
+export type UpdatePassWordMutationError = {
+  __typename?: 'UpdatePassWordMutationError';
+  code: AdminUserErrorCode;
+  message: Scalars['String']['output'];
+};
+
+export type UpdatePassWordMutationOutput = UpdatePassWordMutationError | UpdatePassWordMutationSuccess;
+
+export type UpdatePassWordMutationSuccess = {
+  __typename?: 'UpdatePassWordMutationSuccess';
+  result: Scalars['Unit']['output'];
+};
+
+export type UpdatePasswordMutationInput = {
+  adminUserId: Scalars['ID']['input'];
+  confirmPassword: Scalars['String']['input'];
+  password: Scalars['String']['input'];
+};
+
+export type UpdateProductMutationError = {
+  __typename?: 'UpdateProductMutationError';
+  error: ProductError;
+};
+
+export type UpdateProductMutationInput = {
+  description?: InputMaybe<Scalars['String']['input']>;
+  id: Scalars['ID']['input'];
   name?: InputMaybe<Scalars['String']['input']>;
-  role?: InputMaybe<Scalars['String']['input']>;
-  speed_kn?: InputMaybe<Scalars['Int']['input']>;
-  status?: InputMaybe<Scalars['String']['input']>;
-  successful_landings?: InputMaybe<Scalars['Int']['input']>;
-  type?: InputMaybe<Scalars['String']['input']>;
-  weight_kg?: InputMaybe<Scalars['Int']['input']>;
-  weight_lbs?: InputMaybe<Scalars['Int']['input']>;
-  year_built?: InputMaybe<Scalars['Int']['input']>;
+  price?: InputMaybe<Scalars['Int']['input']>;
 };
 
-export type ShipsResult = {
-  __typename?: 'ShipsResult';
-  data?: Maybe<Array<Maybe<Ship>>>;
-  result?: Maybe<Result>;
+export type UpdateProductMutationOutput = UpdateProductMutationError | UpdateProductMutationSuccess;
+
+export type UpdateProductMutationSuccess = {
+  __typename?: 'UpdateProductMutationSuccess';
+  product: Product;
 };
 
-/** expression to compare columns of type String. All fields are combined with logical 'AND'. */
-export type String_Comparison_Exp = {
-  _eq?: InputMaybe<Scalars['String']['input']>;
-  _gt?: InputMaybe<Scalars['String']['input']>;
-  _gte?: InputMaybe<Scalars['String']['input']>;
-  _ilike?: InputMaybe<Scalars['String']['input']>;
-  _in?: InputMaybe<Array<Scalars['String']['input']>>;
-  _is_null?: InputMaybe<Scalars['Boolean']['input']>;
-  _like?: InputMaybe<Scalars['String']['input']>;
-  _lt?: InputMaybe<Scalars['String']['input']>;
-  _lte?: InputMaybe<Scalars['String']['input']>;
-  _neq?: InputMaybe<Scalars['String']['input']>;
-  _nilike?: InputMaybe<Scalars['String']['input']>;
-  _nin?: InputMaybe<Array<Scalars['String']['input']>>;
-  _nlike?: InputMaybe<Scalars['String']['input']>;
-  _nsimilar?: InputMaybe<Scalars['String']['input']>;
-  _similar?: InputMaybe<Scalars['String']['input']>;
-};
-
-export type Subscription = {
-  __typename?: 'Subscription';
-  /** fetch data from the table: "users" */
-  users: Array<Users>;
-  /** fetch aggregated fields from the table: "users" */
-  users_aggregate: Users_Aggregate;
-  /** fetch data from the table: "users" using primary key columns */
-  users_by_pk?: Maybe<Users>;
-};
-
-
-export type SubscriptionUsersArgs = {
-  distinct_on?: InputMaybe<Array<Users_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  order_by?: InputMaybe<Array<Users_Order_By>>;
-  where?: InputMaybe<Users_Bool_Exp>;
-};
-
-
-export type SubscriptionUsers_AggregateArgs = {
-  distinct_on?: InputMaybe<Array<Users_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  order_by?: InputMaybe<Array<Users_Order_By>>;
-  where?: InputMaybe<Users_Bool_Exp>;
-};
-
-
-export type SubscriptionUsers_By_PkArgs = {
-  id: Scalars['uuid']['input'];
-};
-
-export type Volume = {
-  __typename?: 'Volume';
-  cubic_feet?: Maybe<Scalars['Int']['output']>;
-  cubic_meters?: Maybe<Scalars['Int']['output']>;
-};
-
-export type _Service = {
-  __typename?: '_Service';
-  sdl?: Maybe<Scalars['String']['output']>;
-};
-
-/** conflict action */
-export enum Conflict_Action {
-  /** ignore the insert on this row */
-  Ignore = 'ignore',
-  /** update the row with the given values */
-  Update = 'update'
-}
-
-export enum Link__Purpose {
-  /** `EXECUTION` features provide metadata necessary for operation execution. */
-  Execution = 'EXECUTION',
-  /** `SECURITY` features provide metadata necessary to securely resolve fields. */
-  Security = 'SECURITY'
-}
-
-/** column ordering options */
-export enum Order_By {
-  /** in the ascending order, nulls last */
-  Asc = 'asc',
-  /** in the ascending order, nulls first */
-  AscNullsFirst = 'asc_nulls_first',
-  /** in the ascending order, nulls last */
-  AscNullsLast = 'asc_nulls_last',
-  /** in the descending order, nulls first */
-  Desc = 'desc',
-  /** in the descending order, nulls first */
-  DescNullsFirst = 'desc_nulls_first',
-  /** in the descending order, nulls last */
-  DescNullsLast = 'desc_nulls_last'
-}
-
-/** expression to compare columns of type timestamptz. All fields are combined with logical 'AND'. */
-export type Timestamptz_Comparison_Exp = {
-  _eq?: InputMaybe<Scalars['timestamptz']['input']>;
-  _gt?: InputMaybe<Scalars['timestamptz']['input']>;
-  _gte?: InputMaybe<Scalars['timestamptz']['input']>;
-  _in?: InputMaybe<Array<Scalars['timestamptz']['input']>>;
-  _is_null?: InputMaybe<Scalars['Boolean']['input']>;
-  _lt?: InputMaybe<Scalars['timestamptz']['input']>;
-  _lte?: InputMaybe<Scalars['timestamptz']['input']>;
-  _neq?: InputMaybe<Scalars['timestamptz']['input']>;
-  _nin?: InputMaybe<Array<Scalars['timestamptz']['input']>>;
-};
-
-/** columns and relationships of "users" */
-export type Users = {
-  __typename?: 'users';
-  id: Scalars['uuid']['output'];
-  name?: Maybe<Scalars['String']['output']>;
-  rocket?: Maybe<Scalars['String']['output']>;
-  timestamp: Scalars['timestamptz']['output'];
-  twitter?: Maybe<Scalars['String']['output']>;
-};
-
-/** aggregated selection of "users" */
-export type Users_Aggregate = {
-  __typename?: 'users_aggregate';
-  aggregate?: Maybe<Users_Aggregate_Fields>;
-  nodes: Array<Users>;
-};
-
-/** aggregate fields of "users" */
-export type Users_Aggregate_Fields = {
-  __typename?: 'users_aggregate_fields';
-  count?: Maybe<Scalars['Int']['output']>;
-  max?: Maybe<Users_Max_Fields>;
-  min?: Maybe<Users_Min_Fields>;
-};
-
-
-/** aggregate fields of "users" */
-export type Users_Aggregate_FieldsCountArgs = {
-  columns?: InputMaybe<Array<Users_Select_Column>>;
-  distinct?: InputMaybe<Scalars['Boolean']['input']>;
-};
-
-/** order by aggregate values of table "users" */
-export type Users_Aggregate_Order_By = {
-  count?: InputMaybe<Order_By>;
-  max?: InputMaybe<Users_Max_Order_By>;
-  min?: InputMaybe<Users_Min_Order_By>;
-};
-
-/** input type for inserting array relation for remote table "users" */
-export type Users_Arr_Rel_Insert_Input = {
-  data: Array<Users_Insert_Input>;
-  on_conflict?: InputMaybe<Users_On_Conflict>;
-};
-
-/** Boolean expression to filter rows from the table "users". All fields are combined with a logical 'AND'. */
-export type Users_Bool_Exp = {
-  _and?: InputMaybe<Array<InputMaybe<Users_Bool_Exp>>>;
-  _not?: InputMaybe<Users_Bool_Exp>;
-  _or?: InputMaybe<Array<InputMaybe<Users_Bool_Exp>>>;
-  id?: InputMaybe<Uuid_Comparison_Exp>;
-  name?: InputMaybe<String_Comparison_Exp>;
-  rocket?: InputMaybe<String_Comparison_Exp>;
-  timestamp?: InputMaybe<Timestamptz_Comparison_Exp>;
-  twitter?: InputMaybe<String_Comparison_Exp>;
-};
-
-/** unique or primary key constraints on table "users" */
-export enum Users_Constraint {
-  Constraint = 'constraint',
-  Key = 'key',
-  Or = 'or',
-  Primary = 'primary',
-  Unique = 'unique',
-  UsersPkey = 'users_pkey'
-}
-
-/** input type for inserting data into table "users" */
-export type Users_Insert_Input = {
-  id?: InputMaybe<Scalars['uuid']['input']>;
+export type UpdateSchoolInput = {
+  buildingName?: InputMaybe<Scalars['String']['input']>;
+  city?: InputMaybe<Scalars['String']['input']>;
+  id: Scalars['String']['input'];
   name?: InputMaybe<Scalars['String']['input']>;
-  rocket?: InputMaybe<Scalars['String']['input']>;
-  timestamp?: InputMaybe<Scalars['timestamptz']['input']>;
-  twitter?: InputMaybe<Scalars['String']['input']>;
+  phoneNumber?: InputMaybe<Scalars['String']['input']>;
+  postalCode?: InputMaybe<Scalars['String']['input']>;
+  prefecture?: InputMaybe<Prefecture>;
+  schoolCategory?: InputMaybe<SchoolCategory>;
+  streetAddress?: InputMaybe<Scalars['String']['input']>;
+  url?: InputMaybe<Scalars['String']['input']>;
 };
 
-/** aggregate max on columns */
-export type Users_Max_Fields = {
-  __typename?: 'users_max_fields';
-  name?: Maybe<Scalars['String']['output']>;
-  rocket?: Maybe<Scalars['String']['output']>;
-  timestamp?: Maybe<Scalars['timestamptz']['output']>;
-  twitter?: Maybe<Scalars['String']['output']>;
+export type UpdateSchoolPayload = {
+  __typename?: 'UpdateSchoolPayload';
+  errors: Array<Scalars['String']['output']>;
+  school?: Maybe<School>;
 };
 
-/** order by max() on columns of table "users" */
-export type Users_Max_Order_By = {
-  name?: InputMaybe<Order_By>;
-  rocket?: InputMaybe<Order_By>;
-  timestamp?: InputMaybe<Order_By>;
-  twitter?: InputMaybe<Order_By>;
-};
-
-/** aggregate min on columns */
-export type Users_Min_Fields = {
-  __typename?: 'users_min_fields';
-  name?: Maybe<Scalars['String']['output']>;
-  rocket?: Maybe<Scalars['String']['output']>;
-  timestamp?: Maybe<Scalars['timestamptz']['output']>;
-  twitter?: Maybe<Scalars['String']['output']>;
-};
-
-/** order by min() on columns of table "users" */
-export type Users_Min_Order_By = {
-  name?: InputMaybe<Order_By>;
-  rocket?: InputMaybe<Order_By>;
-  timestamp?: InputMaybe<Order_By>;
-  twitter?: InputMaybe<Order_By>;
-};
-
-/** response of any mutation on the table "users" */
-export type Users_Mutation_Response = {
-  __typename?: 'users_mutation_response';
-  /** number of affected rows by the mutation */
-  affected_rows: Scalars['Int']['output'];
-  /** data of the affected rows by the mutation */
-  returning: Array<Users>;
-};
-
-/** input type for inserting object relation for remote table "users" */
-export type Users_Obj_Rel_Insert_Input = {
-  data: Users_Insert_Input;
-  on_conflict?: InputMaybe<Users_On_Conflict>;
-};
-
-/** on conflict condition type for table "users" */
-export type Users_On_Conflict = {
-  constraint: Users_Constraint;
-  update_columns: Array<Users_Update_Column>;
-};
-
-/** ordering options when selecting data from "users" */
-export type Users_Order_By = {
-  id?: InputMaybe<Order_By>;
-  name?: InputMaybe<Order_By>;
-  rocket?: InputMaybe<Order_By>;
-  timestamp?: InputMaybe<Order_By>;
-  twitter?: InputMaybe<Order_By>;
-};
-
-/** select columns of table "users" */
-export enum Users_Select_Column {
-  Column = 'column',
-  Id = 'id',
-  Name = 'name',
-  Rocket = 'rocket',
-  Timestamp = 'timestamp',
-  Twitter = 'twitter'
+export enum UploadFileDirectoryFeatureName {
+  RealEstate = 'REAL_ESTATE',
+  Report = 'REPORT',
+  WorkPlan = 'WORK_PLAN',
+  WorkTemplate = 'WORK_TEMPLATE',
+  WorkTicket = 'WORK_TICKET'
 }
 
-/** input type for updating data in table "users" */
-export type Users_Set_Input = {
-  id?: InputMaybe<Scalars['uuid']['input']>;
-  name?: InputMaybe<Scalars['String']['input']>;
-  rocket?: InputMaybe<Scalars['String']['input']>;
-  timestamp?: InputMaybe<Scalars['timestamptz']['input']>;
-  twitter?: InputMaybe<Scalars['String']['input']>;
-};
-
-/** update columns of table "users" */
-export enum Users_Update_Column {
-  Column = 'column',
-  Id = 'id',
-  Name = 'name',
-  Rocket = 'rocket',
-  Timestamp = 'timestamp',
-  Twitter = 'twitter'
+export enum UploadStatus {
+  Pending = 'PENDING',
+  Uploaded = 'UPLOADED'
 }
 
-/** expression to compare columns of type uuid. All fields are combined with logical 'AND'. */
-export type Uuid_Comparison_Exp = {
-  _eq?: InputMaybe<Scalars['uuid']['input']>;
-  _gt?: InputMaybe<Scalars['uuid']['input']>;
-  _gte?: InputMaybe<Scalars['uuid']['input']>;
-  _in?: InputMaybe<Array<Scalars['uuid']['input']>>;
-  _is_null?: InputMaybe<Scalars['Boolean']['input']>;
-  _lt?: InputMaybe<Scalars['uuid']['input']>;
-  _lte?: InputMaybe<Scalars['uuid']['input']>;
-  _neq?: InputMaybe<Scalars['uuid']['input']>;
-  _nin?: InputMaybe<Array<Scalars['uuid']['input']>>;
+export type UploadFile = {
+  __typename?: 'uploadFile';
+  generateDownloadFileUrl: Scalars['String']['output'];
+  generateUploadFileUrl: Scalars['String']['output'];
+  id: Scalars['ID']['output'];
+  uploadStatus: UploadStatus;
 };
+
+export type CreateSchoolMutationVariables = Exact<{
+  input: CreateSchoolInput;
+}>;
+
+
+export type CreateSchoolMutation = { __typename?: 'Mutation', createSchool: { __typename?: 'CreateSchoolPayload', errors: Array<string>, school?: { __typename?: 'School', id: string, name: string, schoolCategory: SchoolCategory, city: string, streetAddress: string, prefecture: string, postalCode: string, phoneNumber?: string | null, url?: string | null, buildingName?: string | null } | null } };
+
+export type DeleteSchoolMutationVariables = Exact<{
+  input: DeleteSchoolInput;
+}>;
+
+
+export type DeleteSchoolMutation = { __typename?: 'Mutation', deleteSchool: { __typename?: 'DeleteSchoolPayload', errors: Array<string>, success: boolean } };
+
+export type GetCompaniesQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetCompaniesQuery = { __typename?: 'Query', companies: Array<{ __typename?: 'Company', id: string, name: string, buildingName?: string | null, city: string, createdAt: any, phoneNumber?: string | null, postalCode: string, prefecture: string, streetAddress: string, url?: string | null }> };
+
+export type GetSchoolQueryVariables = Exact<{
+  id: Scalars['String']['input'];
+}>;
+
+
+export type GetSchoolQuery = { __typename?: 'Query', school?: { __typename?: 'School', id: string, name: string, schoolCategory: SchoolCategory, city: string, streetAddress: string, prefecture: string, postalCode: string, phoneNumber?: string | null, url?: string | null, buildingName?: string | null } | null };
+
+export type GetSchoolsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetSchoolsQuery = { __typename?: 'Query', schools: Array<{ __typename?: 'School', id: string, name: string, schoolCategory: SchoolCategory, city: string, streetAddress: string, prefecture: string, postalCode: string, phoneNumber?: string | null, url?: string | null, buildingName?: string | null }> };
+
+export type UpdateSchoolMutationVariables = Exact<{
+  input: UpdateSchoolInput;
+}>;
+
+
+export type UpdateSchoolMutation = { __typename?: 'Mutation', updateSchool: { __typename?: 'UpdateSchoolPayload', errors: Array<string>, school?: { __typename?: 'School', id: string, name: string, schoolCategory: SchoolCategory, city: string, streetAddress: string, prefecture: string, postalCode: string, phoneNumber?: string | null, url?: string | null, buildingName?: string | null } | null } };
+
+
+export const CreateSchoolDocument = gql`
+    mutation createSchool($input: CreateSchoolInput!) {
+  createSchool(input: $input) {
+    errors
+    school {
+      id
+      name
+      schoolCategory
+      city
+      streetAddress
+      prefecture
+      postalCode
+      phoneNumber
+      url
+      buildingName
+    }
+  }
+}
+    `;
+export type CreateSchoolMutationFn = Apollo.MutationFunction<CreateSchoolMutation, CreateSchoolMutationVariables>;
+
+/**
+ * __useCreateSchoolMutation__
+ *
+ * To run a mutation, you first call `useCreateSchoolMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateSchoolMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createSchoolMutation, { data, loading, error }] = useCreateSchoolMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useCreateSchoolMutation(baseOptions?: Apollo.MutationHookOptions<CreateSchoolMutation, CreateSchoolMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateSchoolMutation, CreateSchoolMutationVariables>(CreateSchoolDocument, options);
+      }
+export type CreateSchoolMutationHookResult = ReturnType<typeof useCreateSchoolMutation>;
+export type CreateSchoolMutationResult = Apollo.MutationResult<CreateSchoolMutation>;
+export type CreateSchoolMutationOptions = Apollo.BaseMutationOptions<CreateSchoolMutation, CreateSchoolMutationVariables>;
+export const DeleteSchoolDocument = gql`
+    mutation deleteSchool($input: DeleteSchoolInput!) {
+  deleteSchool(input: $input) {
+    errors
+    success
+  }
+}
+    `;
+export type DeleteSchoolMutationFn = Apollo.MutationFunction<DeleteSchoolMutation, DeleteSchoolMutationVariables>;
+
+/**
+ * __useDeleteSchoolMutation__
+ *
+ * To run a mutation, you first call `useDeleteSchoolMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteSchoolMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteSchoolMutation, { data, loading, error }] = useDeleteSchoolMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useDeleteSchoolMutation(baseOptions?: Apollo.MutationHookOptions<DeleteSchoolMutation, DeleteSchoolMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<DeleteSchoolMutation, DeleteSchoolMutationVariables>(DeleteSchoolDocument, options);
+      }
+export type DeleteSchoolMutationHookResult = ReturnType<typeof useDeleteSchoolMutation>;
+export type DeleteSchoolMutationResult = Apollo.MutationResult<DeleteSchoolMutation>;
+export type DeleteSchoolMutationOptions = Apollo.BaseMutationOptions<DeleteSchoolMutation, DeleteSchoolMutationVariables>;
+export const GetCompaniesDocument = gql`
+    query getCompanies {
+  companies {
+    id
+    name
+    buildingName
+    city
+    createdAt
+    phoneNumber
+    postalCode
+    prefecture
+    streetAddress
+    url
+  }
+}
+    `;
+
+/**
+ * __useGetCompaniesQuery__
+ *
+ * To run a query within a React component, call `useGetCompaniesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetCompaniesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetCompaniesQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetCompaniesQuery(baseOptions?: Apollo.QueryHookOptions<GetCompaniesQuery, GetCompaniesQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetCompaniesQuery, GetCompaniesQueryVariables>(GetCompaniesDocument, options);
+      }
+export function useGetCompaniesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetCompaniesQuery, GetCompaniesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetCompaniesQuery, GetCompaniesQueryVariables>(GetCompaniesDocument, options);
+        }
+export function useGetCompaniesSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<GetCompaniesQuery, GetCompaniesQueryVariables>) {
+          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetCompaniesQuery, GetCompaniesQueryVariables>(GetCompaniesDocument, options);
+        }
+export type GetCompaniesQueryHookResult = ReturnType<typeof useGetCompaniesQuery>;
+export type GetCompaniesLazyQueryHookResult = ReturnType<typeof useGetCompaniesLazyQuery>;
+export type GetCompaniesSuspenseQueryHookResult = ReturnType<typeof useGetCompaniesSuspenseQuery>;
+export type GetCompaniesQueryResult = Apollo.QueryResult<GetCompaniesQuery, GetCompaniesQueryVariables>;
+export const GetSchoolDocument = gql`
+    query getSchool($id: String!) {
+  school(id: $id) {
+    id
+    name
+    schoolCategory
+    city
+    streetAddress
+    prefecture
+    postalCode
+    phoneNumber
+    url
+    buildingName
+  }
+}
+    `;
+
+/**
+ * __useGetSchoolQuery__
+ *
+ * To run a query within a React component, call `useGetSchoolQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetSchoolQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetSchoolQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useGetSchoolQuery(baseOptions: Apollo.QueryHookOptions<GetSchoolQuery, GetSchoolQueryVariables> & ({ variables: GetSchoolQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetSchoolQuery, GetSchoolQueryVariables>(GetSchoolDocument, options);
+      }
+export function useGetSchoolLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetSchoolQuery, GetSchoolQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetSchoolQuery, GetSchoolQueryVariables>(GetSchoolDocument, options);
+        }
+export function useGetSchoolSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<GetSchoolQuery, GetSchoolQueryVariables>) {
+          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetSchoolQuery, GetSchoolQueryVariables>(GetSchoolDocument, options);
+        }
+export type GetSchoolQueryHookResult = ReturnType<typeof useGetSchoolQuery>;
+export type GetSchoolLazyQueryHookResult = ReturnType<typeof useGetSchoolLazyQuery>;
+export type GetSchoolSuspenseQueryHookResult = ReturnType<typeof useGetSchoolSuspenseQuery>;
+export type GetSchoolQueryResult = Apollo.QueryResult<GetSchoolQuery, GetSchoolQueryVariables>;
+export const GetSchoolsDocument = gql`
+    query getSchools {
+  schools {
+    id
+    name
+    schoolCategory
+    city
+    streetAddress
+    prefecture
+    postalCode
+    phoneNumber
+    url
+    buildingName
+  }
+}
+    `;
+
+/**
+ * __useGetSchoolsQuery__
+ *
+ * To run a query within a React component, call `useGetSchoolsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetSchoolsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetSchoolsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetSchoolsQuery(baseOptions?: Apollo.QueryHookOptions<GetSchoolsQuery, GetSchoolsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetSchoolsQuery, GetSchoolsQueryVariables>(GetSchoolsDocument, options);
+      }
+export function useGetSchoolsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetSchoolsQuery, GetSchoolsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetSchoolsQuery, GetSchoolsQueryVariables>(GetSchoolsDocument, options);
+        }
+export function useGetSchoolsSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<GetSchoolsQuery, GetSchoolsQueryVariables>) {
+          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetSchoolsQuery, GetSchoolsQueryVariables>(GetSchoolsDocument, options);
+        }
+export type GetSchoolsQueryHookResult = ReturnType<typeof useGetSchoolsQuery>;
+export type GetSchoolsLazyQueryHookResult = ReturnType<typeof useGetSchoolsLazyQuery>;
+export type GetSchoolsSuspenseQueryHookResult = ReturnType<typeof useGetSchoolsSuspenseQuery>;
+export type GetSchoolsQueryResult = Apollo.QueryResult<GetSchoolsQuery, GetSchoolsQueryVariables>;
+export const UpdateSchoolDocument = gql`
+    mutation updateSchool($input: UpdateSchoolInput!) {
+  updateSchool(input: $input) {
+    errors
+    school {
+      id
+      name
+      schoolCategory
+      city
+      streetAddress
+      prefecture
+      postalCode
+      phoneNumber
+      url
+      buildingName
+    }
+  }
+}
+    `;
+export type UpdateSchoolMutationFn = Apollo.MutationFunction<UpdateSchoolMutation, UpdateSchoolMutationVariables>;
+
+/**
+ * __useUpdateSchoolMutation__
+ *
+ * To run a mutation, you first call `useUpdateSchoolMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateSchoolMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateSchoolMutation, { data, loading, error }] = useUpdateSchoolMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useUpdateSchoolMutation(baseOptions?: Apollo.MutationHookOptions<UpdateSchoolMutation, UpdateSchoolMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdateSchoolMutation, UpdateSchoolMutationVariables>(UpdateSchoolDocument, options);
+      }
+export type UpdateSchoolMutationHookResult = ReturnType<typeof useUpdateSchoolMutation>;
+export type UpdateSchoolMutationResult = Apollo.MutationResult<UpdateSchoolMutation>;
+export type UpdateSchoolMutationOptions = Apollo.BaseMutationOptions<UpdateSchoolMutation, UpdateSchoolMutationVariables>;

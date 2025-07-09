@@ -1,11 +1,11 @@
 import type { CodegenConfig } from '@graphql-codegen/cli';
 
-const SCHEMA_URL = "https://spacex-production.up.railway.app/"
+const SCHEMA_URL = "../backend/admin/graphql/schema.graphql"
 
 const config: CodegenConfig = {
   overwrite: true,
   schema: SCHEMA_URL,
-  documents: "src/**/*.tsx",
+  documents: ["src/**/*.tsx", "src/**/*.graphql"],
   generates: {
     "src/gql/graphql.ts": {
       plugins: [

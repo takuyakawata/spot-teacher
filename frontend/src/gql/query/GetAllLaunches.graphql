@@ -1,8 +1,1 @@
-query AllLaunches {
-  launches {
-    mission_name
-    rocket {
-      rocket_name
-    }
-  }
-}
+

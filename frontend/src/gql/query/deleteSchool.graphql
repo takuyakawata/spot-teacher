@@ -1,0 +1,6 @@
+mutation deleteSchool($input: DeleteSchoolInput!) {
+  deleteSchool(input: $input) {
+    errors
+    success
+  }
+}

@@ -23,8 +23,11 @@
       "@/*": ["./*"],
       "@/components/shadcn/ui/*": ["src/components/shadcn/ui/*"],
       "@/lib/*": ["src/lib/*"],
+      "@/gql/graphql/*": ["src/gql/graphql/*"],
       "@/gql": ["src/gql/index.ts"],
-      "@/components/*": ["src/components/*"]
+      "@/components/*": ["src/components/*"],
+      "@/gql/*": ["src/gql/*"],
+      "@/provider/*": ["src/provider/*"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
