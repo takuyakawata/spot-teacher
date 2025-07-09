@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(cd /Users/kawatatakuya/app/spot-teacher/backend)",
+      "Bash(./gradlew teacher:test)",
+      "Bash(mkdir -p /Users/kawatatakuya/app/spot-teacher/backend/teacher/graphql)"
+    ],
+    "deny": []
+  }
+}
