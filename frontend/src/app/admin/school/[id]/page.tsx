@@ -2,7 +2,7 @@
 import React from "react";
 import { Card, CardHeader, CardTitle, CardContent, CardDescription, CardFooter } from "@/components/shadcn/ui/card";
 import { Button } from "@/components/shadcn/ui/button";
-import { useGetSchoolQuery, useUpdateSchoolMutation, useDeleteSchoolMutation } from "@/gql/graphql";
+import { useGetSchoolQuery, useUpdateSchoolMutation, useDeleteSchoolMutation, Prefecture, SchoolCategory } from "@/gql/graphql";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
@@ -76,6 +76,8 @@ export default function Page({ params }: { params: { id: string } }) {
         input: {
           id: params.id,
           ...form,
+          prefecture: form.prefecture as Prefecture, // enumにキャスト
+          schoolCategory: form.schoolCategory as SchoolCategory, // enumにキャスト
         },
       },
     });
