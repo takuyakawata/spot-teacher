@@ -1,10 +1,11 @@
 package com.spotteacher.teacher.shared.auth.usecase
 
-import com.spotteacher.admin.shared.auth.domain.Authenticator
-import com.spotteacher.admin.shared.auth.domain.TokenIssuer
-import com.spotteacher.admin.shared.auth.domain.TokenPair
-import com.spotteacher.admin.shared.domain.Password
+
 import com.spotteacher.domain.EmailAddress
+import com.spotteacher.teacher.shared.auth.domain.Authenticator
+import com.spotteacher.teacher.shared.auth.domain.TokenIssuer
+import com.spotteacher.teacher.shared.auth.domain.TokenPair
+import com.spotteacher.teacher.shared.domain.Password
 import com.spotteacher.usecase.UseCase
 
 data class LoginUseCaseInput(

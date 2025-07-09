@@ -1,11 +1,12 @@
 package com.spotteacher.teacher.shared.auth.handler
 
-import com.spotteacher.admin.shared.auth.usecase.LoginUseCase
-import com.spotteacher.admin.shared.auth.usecase.LoginUseCaseInput
-import com.spotteacher.admin.shared.domain.Password
+
 import com.spotteacher.domain.EmailAddress
 import com.spotteacher.exception.AuthenticationFailedException
 import com.spotteacher.exception.ResourceNotFoundException
+import com.spotteacher.teacher.shared.auth.usecase.LoginUseCase
+import com.spotteacher.teacher.shared.auth.usecase.LoginUseCaseInput
+import com.spotteacher.teacher.shared.domain.Password
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.PostMapping
