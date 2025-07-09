@@ -1,7 +1,7 @@
 package com.spotteacher.teacher.shared.auth.domain
 
-import com.spotteacher.admin.shared.domain.Password
 import com.spotteacher.domain.EmailAddress
+import com.spotteacher.teacher.shared.domain.Password
 
 data class AuthUser(
     val email: EmailAddress,

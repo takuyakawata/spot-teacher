@@ -50,14 +50,14 @@ annotation class TransactionCoroutine
 @Aspect
 @Component
 class TransactionCoroutineAspect(private val transactionCoroutineOperator: TransactionCoroutineOperator) {
-    @Around("@annotation(com.spotteacher.admin.shared.infra.TransactionCoroutine) && args(.., kotlin.coroutines.Continuation)")
+    @Around("@annotation(com.spotteacher.teacher.shared.infra.TransactionCoroutine) && args(.., kotlin.coroutines.Continuation)")
     fun executeAnnotatedMethodInTransaction(joinPoint: ProceedingJoinPoint): Mono<*> = mono {
         transactionCoroutineOperator.execute {
             (joinPoint.proceed() as Mono<*>).awaitSingleOrNull()
         }
     }
 
-    @Around("@within(com.spotteacher.admin.shared.infra.TransactionCoroutine) && args(.., kotlin.coroutines.Continuation)")
+    @Around("@within(com.spotteacher.teacher.shared.infra.TransactionCoroutine) && args(.., kotlin.coroutines.Continuation)")
     fun executeMethodWithinAnnotatedClassInTransaction(joinPoint: ProceedingJoinPoint): Mono<*> = mono {
         transactionCoroutineOperator.execute {
             (joinPoint.proceed() as Mono<*>).awaitSingleOrNull()

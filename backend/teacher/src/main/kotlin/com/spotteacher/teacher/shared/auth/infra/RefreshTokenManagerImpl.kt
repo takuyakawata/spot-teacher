@@ -1,10 +1,5 @@
 package com.spotteacher.teacher.shared.auth.infra
 
-import com.spotteacher.admin.feature.adminUser.domain.AdminUser
-import com.spotteacher.admin.feature.adminUser.domain.AdminUserRepository
-import com.spotteacher.admin.shared.auth.domain.RefreshToken
-import com.spotteacher.admin.shared.auth.domain.RefreshTokenManager
-import com.spotteacher.admin.shared.auth.domain.RefreshTokenRepository
 import com.spotteacher.domain.EmailAddress
 import com.spotteacher.exception.ResourceNotFoundException
 import org.springframework.beans.factory.annotation.Value
