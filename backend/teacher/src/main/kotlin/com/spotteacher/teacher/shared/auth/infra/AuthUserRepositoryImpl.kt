@@ -27,7 +27,6 @@ class AuthUserRepositoryImpl(
         ) ?: return null
 
         return AuthUser(
-            id = AuthUserId(user.id!!),
             email = EmailAddress(user.email),
             password = Password(credentials.passwordHash),
         )

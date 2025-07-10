@@ -1,7 +1,7 @@
 package com.spotteacher.teacher.shared.auth.infra
 
-import com.spotteacher.admin.shared.auth.domain.AuthUserRepository
 import com.spotteacher.domain.EmailAddress
+import com.spotteacher.teacher.shared.auth.domain.AuthUserRepository
 import kotlinx.coroutines.reactor.mono
 import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.userdetails.ReactiveUserDetailsService

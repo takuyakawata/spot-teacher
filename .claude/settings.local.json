@@ -3,7 +3,9 @@
     "allow": [
       "Bash(cd /Users/kawatatakuya/app/spot-teacher/backend)",
       "Bash(./gradlew teacher:test)",
-      "Bash(mkdir -p /Users/kawatatakuya/app/spot-teacher/backend/teacher/graphql)"
+      "Bash(mkdir -p /Users/kawatatakuya/app/spot-teacher/backend/teacher/graphql)",
+      "Bash(./gradlew :backend:teacher:test --tests \"*CompanyRepositoryImplTest*\" --tests \"*FindCompanyUseCaseTest*\")",
+      "Bash(backend/gradlew -p backend :teacher:test --tests \"*CompanyRepositoryImplTest*\" --tests \"*FindCompanyUseCaseTest*\")"
     ],
     "deny": []
   }

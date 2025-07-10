@@ -5,7 +5,6 @@ import com.spotteacher.teacher.shared.domain.Password
 import com.spotteacher.util.Identity
 
 data class AuthUser(
-    val id: AuthUserId,
     val email: EmailAddress,
     val password: Password
 )

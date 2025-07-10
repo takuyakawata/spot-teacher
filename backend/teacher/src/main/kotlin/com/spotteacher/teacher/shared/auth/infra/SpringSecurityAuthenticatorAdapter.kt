@@ -1,15 +1,17 @@
 package com.spotteacher.teacher.shared.auth.infra
 
-import com.spotteacher.admin.shared.auth.domain.AuthUser
-import com.spotteacher.admin.shared.auth.domain.Authenticator
-import com.spotteacher.admin.shared.domain.Password
+
 import com.spotteacher.domain.EmailAddress
 import com.spotteacher.exception.AuthenticationFailedException
+import com.spotteacher.teacher.shared.auth.domain.AuthUser
+import com.spotteacher.teacher.shared.auth.domain.Authenticator
+import com.spotteacher.teacher.shared.domain.Password
 import kotlinx.coroutines.reactor.awaitSingle
 import org.springframework.security.authentication.BadCredentialsException
 import org.springframework.security.authentication.ReactiveAuthenticationManager
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.AuthenticationException
+import org.springframework.security.core.userdetails.User
 import org.springframework.stereotype.Component
 
 @Component
@@ -20,11 +22,11 @@ class SpringSecurityAuthenticatorAdapter(
         try {
             val authenticationToken = UsernamePasswordAuthenticationToken(email.value, password)
             val authenticated = authenticationManager.authenticate(authenticationToken).awaitSingle()
-            val userDetails = authenticated.principal as org.springframework.security.core.userdetails.User
+            val userDetails = authenticated.principal as User
 
             return AuthUser(
                 email = EmailAddress(userDetails.username),
-                password = Password(password)
+                password = Password(password),
             )
         } catch (e: BadCredentialsException) {
             throw AuthenticationFailedException("Invalid credentials")
