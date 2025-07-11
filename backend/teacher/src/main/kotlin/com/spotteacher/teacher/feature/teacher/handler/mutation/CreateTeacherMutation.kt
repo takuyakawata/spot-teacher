@@ -8,8 +8,10 @@ import com.spotteacher.teacher.feature.teacher.usecase.CreateTeacherUseCaseInput
 import org.springframework.stereotype.Component
 
 data class CreateTeacherMutationInput(
-    val userId: Long,
-    val schoolId: Long
+    val schoolId: ID,
+    val firstName: String,
+    val lastName: String,
+
 )
 
 @Component

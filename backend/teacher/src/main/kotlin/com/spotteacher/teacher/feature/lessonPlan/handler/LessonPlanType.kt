@@ -39,7 +39,7 @@ data class LessonPlanType(
     val lessonPlanEducations: List<EducationId>,
     val lessonPlanSubjects: List<Subject>,
     val lessonPlanGrades: List<Grade>
-) : LessonPlanType {
+) {
     // todo add date loader
     // educations
     // uploadFile
