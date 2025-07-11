@@ -1,0 +1,17 @@
+mutation createSchool($input: CreateSchoolInput!) {
+  createSchool(input: $input) {
+    errors
+    school {
+      id
+      name
+      schoolCategory
+      city
+      streetAddress
+      prefecture
+      postalCode
+      phoneNumber
+      url
+      buildingName
+    }
+  }
+}

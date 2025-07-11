@@ -1,0 +1,14 @@
+query getCompanies {
+  companies {
+    id
+    name
+    buildingName
+    city
+    createdAt
+    phoneNumber
+    postalCode
+    prefecture
+    streetAddress
+    url
+  }
+}

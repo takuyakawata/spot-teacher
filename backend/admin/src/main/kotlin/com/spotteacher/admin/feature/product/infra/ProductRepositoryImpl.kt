@@ -1,5 +1,6 @@
 package com.spotteacher.admin.feature.product.infra
 
+import arrow.core.Nel
 import com.spotteacher.admin.feature.product.domain.Product
 import com.spotteacher.admin.feature.product.domain.ProductDescription
 import com.spotteacher.admin.feature.product.domain.ProductId
@@ -20,6 +21,7 @@ import kotlinx.coroutines.reactive.awaitFirstOrNull
 import kotlinx.coroutines.reactive.awaitLast
 import org.jooq.types.UInteger
 import org.springframework.stereotype.Repository
+import kotlin.text.get
 
 @Repository
 class ProductRepositoryImpl(private val dslContext: TransactionAwareDSLContext) : ProductRepository {
@@ -77,6 +79,13 @@ class ProductRepositoryImpl(private val dslContext: TransactionAwareDSLContext) 
 
     override suspend fun delete(productId: ProductId) {
         dslContext.get().deleteFrom(PRODUCTS).where(PRODUCTS.ID.eq(productId.value)).awaitLast()
+    }
+
+    override suspend fun filterByIds(ids: Nel<ProductId>): List<Product> {
+        return dslContext.get().nonBlockingFetch(
+            PRODUCTS,
+            PRODUCTS.ID.`in`(ids.map { it.value })
+        ).map { it.toEntity() }
     }
 
     private fun ProductsRecord.toEntity(): Product {

@@ -1,0 +1,14 @@
+query getSchool($id: String!) {
+  school(id: $id) {
+    id
+    name
+    schoolCategory
+    city
+    streetAddress
+    prefecture
+    postalCode
+    phoneNumber
+    url
+    buildingName
+  }
+}

@@ -167,6 +167,8 @@ type DraftLessonPlan implements LessonPlan {
   description: String
   id: ID!
   lessonPlanDates: [LessonPlanDate!]
+  lessonPlanGrades: [Grade!]!
+  lessonPlanSubjects: [Subject!]!
   lessonType: LessonType
   location: String
   title: String
@@ -255,6 +257,8 @@ type PublishedLessonPlan implements LessonPlan {
   description: String!
   id: ID!
   lessonPlanDates: [LessonPlanDate!]!
+  lessonPlanGrades: [Grade!]!
+  lessonPlanSubjects: [Subject!]!
   lessonType: LessonType!
   location: String!
   title: String!

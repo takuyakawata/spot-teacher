@@ -35,8 +35,8 @@ class ProductFixture {
         name: String = "test product",
         price: Int = 1000,
         description: String? = "test description"
-    ) {
-        productRepository.create(
+    ): Product {
+        return productRepository.create(
             buildProduct(
                 name = name,
                 price = price,

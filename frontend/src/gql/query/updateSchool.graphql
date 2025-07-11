@@ -1,0 +1,17 @@
+mutation updateSchool($input: UpdateSchoolInput!) {
+  updateSchool(input: $input) {
+    errors
+    school {
+      id
+      name
+      schoolCategory
+      city
+      streetAddress
+      prefecture
+      postalCode
+      phoneNumber
+      url
+      buildingName
+    }
+  }
+}

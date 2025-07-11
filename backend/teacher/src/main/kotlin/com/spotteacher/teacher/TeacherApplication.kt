@@ -1,4 +1,4 @@
-package com.spotteacher
+package com.spotteacher.teacher
 
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication

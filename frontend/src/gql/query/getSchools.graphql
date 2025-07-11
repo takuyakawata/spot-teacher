@@ -1,0 +1,14 @@
+query getSchools {
+  schools {
+    id
+    name
+    schoolCategory
+    city
+    streetAddress
+    prefecture
+    postalCode
+    phoneNumber
+    url
+    buildingName
+  }
+}
