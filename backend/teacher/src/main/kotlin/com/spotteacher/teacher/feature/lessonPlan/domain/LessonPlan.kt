@@ -10,159 +10,49 @@ import com.spotteacher.util.Identity
 import java.time.LocalDateTime
 import java.time.LocalTime
 
-sealed interface LessonPlan {
-    val id: LessonPlanId
-    val companyId: CompanyId
-    val images: List<UploadFileId>
-    val createdAt: LocalDateTime
-    val educations: LessonPlanEducations
-    val subjects: LessonPlanSubjects
-    val grades: LessonPlanGrades
-}
-
-data class PublishedLessonPlan(
-    override val id: LessonPlanId,
-    override val companyId: CompanyId,
-    override val images: List<UploadFileId>,
-    override val createdAt: LocalDateTime,
-    override val educations: LessonPlanEducations,
-    override val subjects: LessonPlanSubjects,
-    override val grades: LessonPlanGrades,
+data class LessonPlan (
+    val id: LessonPlanId,
+    val companyId: CompanyId,
+    val images: List<UploadFileId>,
+    val createdAt: LocalDateTime,
+    val educations: LessonPlanEducations,
+    val subjects: LessonPlanSubjects,
+    val grades: LessonPlanGrades,
     val title: LessonPlanTitle,
     val description: LessonPlanDescription,
     val lessonType: LessonType,
     val location: LessonLocation,
     val annualMaxExecutions: Int,
     val lessonPlanDates: Nel<LessonPlanDate>
-) : LessonPlan
-
-fun PublishedLessonPlan.update(
-    title: LessonPlanTitle?,
-    description: LessonPlanDescription?,
-    lessonType: LessonType?,
-    location: LessonLocation?,
-    annualMaxExecutions: Int?,
-    images: List<UploadFileId>?,
-    educations: LessonPlanEducations?,
-    subjects: LessonPlanSubjects?,
-    grades: LessonPlanGrades?
-) = PublishedLessonPlan(
-    id = this.id,
-    companyId = this.companyId,
-    images = images ?: this.images,
-    createdAt = this.createdAt,
-    educations = educations ?: this.educations,
-    subjects = subjects ?: this.subjects,
-    grades = grades ?: this.grades,
-    title = title ?: this.title,
-    description = description ?: this.description,
-    lessonType = lessonType ?: this.lessonType,
-    location = location ?: this.location,
-    annualMaxExecutions = annualMaxExecutions ?: this.annualMaxExecutions,
-    lessonPlanDates = this.lessonPlanDates
-)
-
-fun PublishedLessonPlan.toDraftLessonPlan() = DraftLessonPlan(
-    id = id,
-    companyId = companyId,
-    images = images,
-    createdAt = createdAt,
-    title = title,
-    description = description,
-    lessonType = lessonType,
-    location = location,
-    annualMaxExecutions = annualMaxExecutions,
-    lessonPlanDates = lessonPlanDates,
-    educations = educations,
-    subjects = subjects,
-    grades = grades,
-)
-
-data class DraftLessonPlan(
-    override val id: LessonPlanId,
-    override val companyId: CompanyId,
-    override val images: List<UploadFileId>,
-    override val createdAt: LocalDateTime,
-    override val educations: LessonPlanEducations,
-    override val subjects: LessonPlanSubjects,
-    override val grades: LessonPlanGrades,
-    val title: LessonPlanTitle?,
-    val description: LessonPlanDescription?,
-    val lessonType: LessonType?,
-    val location: LessonLocation?,
-    val annualMaxExecutions: Int?,
-    val lessonPlanDates: Nel<LessonPlanDate>?
-) : LessonPlan {
+){
     companion object {
         fun create(
             companyId: CompanyId,
+            title: LessonPlanTitle,
+            description: LessonPlanDescription,
+            lessonType: LessonType,
+            location: LessonLocation,
+            annualMaxExecutions: Int,
+            images: List<UploadFileId>,
             educations: LessonPlanEducations,
             subjects: LessonPlanSubjects,
-            grades: LessonPlanGrades,
-            title: LessonPlanTitle?,
-            description: LessonPlanDescription?,
-            lessonType: LessonType?,
-            location: LessonLocation?,
-            annualMaxExecutions: Int?,
-            lessonPlanDates: Nel<LessonPlanDate>?
-        ) = DraftLessonPlan(
+            grades: LessonPlanGrades
+        ) = LessonPlan(
             id = LessonPlanId(0),
             companyId = companyId,
             images = emptyList(),
             createdAt = LocalDateTime.now(),
+            educations = LessonPlanEducations(emptySet()),
+            subjects = LessonPlanSubjects(emptySet()),
+            grades = LessonPlanGrades(emptySet()),
             title = title,
-            location = location,
             description = description,
             lessonType = lessonType,
+            location = location,
             annualMaxExecutions = annualMaxExecutions,
-            lessonPlanDates = lessonPlanDates,
-            educations = educations,
-            subjects = subjects,
-            grades = grades
+            lessonPlanDates = Nel.fromListUnsafe(emptyList())
         )
     }
-
-    fun update(
-        title: LessonPlanTitle?,
-        description: LessonPlanDescription?,
-        lessonType: LessonType?,
-        location: LessonLocation?,
-        annualMaxExecutions: Int?,
-        images: List<UploadFileId>?,
-        educations: LessonPlanEducations?,
-        subjects: LessonPlanSubjects?,
-        grades: LessonPlanGrades?
-    ) = DraftLessonPlan(
-        id = this.id,
-        companyId = this.companyId,
-        images = images ?: this.images,
-        createdAt = this.createdAt,
-        title = title ?: this.title,
-        description = description ?: this.description,
-        lessonType = lessonType ?: this.lessonType,
-        location = location ?: this.location,
-        annualMaxExecutions = annualMaxExecutions ?: this.annualMaxExecutions,
-        lessonPlanDates = this.lessonPlanDates,
-        educations = educations ?: this.educations,
-        subjects = subjects ?: this.subjects,
-        grades = grades ?: this.grades,
-    )
-
-    fun toPublishedLessonPlan() = PublishedLessonPlan(
-        id = id,
-        companyId = companyId,
-        images = images,
-        createdAt = createdAt,
-        title = title!!,
-        description = description!!,
-        lessonType = lessonType!!,
-        location = location!!,
-        annualMaxExecutions = annualMaxExecutions!!,
-        lessonPlanDates = lessonPlanDates!!,
-        educations = educations!!,
-        subjects = subjects!!,
-        grades = grades!!,
-    )
 }
 
 class LessonPlanId(override val value: Long) : Identity<Long>(value)

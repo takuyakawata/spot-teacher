@@ -1,5 +1,6 @@
 package com.spotteacher.admin.feature.product.domain
 
+import arrow.core.Nel
 import com.spotteacher.domain.Pagination
 
 interface ProductRepository {
@@ -9,4 +10,5 @@ interface ProductRepository {
     suspend fun create(product: Product): Product
     suspend fun update(product: Product)
     suspend fun delete(productId: ProductId)
+    suspend fun filterByIds(productIds: Nel<ProductId>): List<Product>
 }

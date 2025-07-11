@@ -1,0 +1,46 @@
+server:
+  port: 8081
+
+jwt:
+  # 環境変数 JWT_SECRET から値を取得。なければ開発用のデフォルト値を使用。
+  secret: ${JWT_SECRET:YS12ZXJ5LXNlY3VyZS1kZXYtc2VjcmV0LWtleS0zMi1ieXRlcw==}
+  # アクセストークンの有効期限 (ミリ秒単位。この例では1時間)
+  access-token-expiration-ms: 3600000
+  refresh-token-expiration-ms: 2592000000
+
+
+spring:
+  r2dbc:
+    url: "r2dbc:pool:mysql://localhost:3306/spot_teacher?autoReconnect=true&useSSL=false&allowPublicKeyRetrieval=true"
+    username: "user"
+    password: "password"
+
+  # securityセクションは、今回の設計では特に記述は不要です。(cognitoで必要）
+  # security:
+  #   oauth2:
+  #     resourceserver:
+  #       jwt:
+  #         # この部分はCognitoなどを使う場合に必要。今回は削除します。
+  #         # jwk-set-uri: ...
+  #         # issuer-uri: ...
+aws:
+  cloudfront:
+    distribution-domain: test
+    key-pair-id: test
+    private-key: test
+  s3:
+    bucket: test
+
+logging:
+  level:
+    com.backend: DEBUG # ローカルでは詳細なログ
+
+aurora:
+  writer:
+    url: "r2dbc:pool:mysql://localhost:3306/spot_teacher?autoReconnect=true&useSSL=false&allowPublicKeyRetrieval=true" # ここをspot_teacherに修正
+    username: "user"
+    password: "password"
+  reader:
+    url: "r2dbc:pool:mysql://localhost:3306/spot_teacher?autoReconnect=true&useSSL=false&allowPublicKeyRetrieval=true" # ここをspot_teacherに修正
+    username: "root" # または user
+    password: "root" # または password
