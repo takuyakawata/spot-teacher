@@ -4,6 +4,7 @@ import com.spotteacher.domain.EmailAddress
 import com.spotteacher.teacher.shared.infra.TransactionAwareDSLContext
 import com.spotteacher.extension.nonBlockingFetch
 import com.spotteacher.extension.nonBlockingFetchOne
+import com.spotteacher.infra.db.enums.UsersRole
 import com.spotteacher.infra.db.tables.Teachers.Companion.TEACHERS
 import com.spotteacher.infra.db.tables.records.TeachersRecord
 import com.spotteacher.infra.db.tables.references.USERS
@@ -19,7 +20,6 @@ import org.springframework.stereotype.Repository
 class TeacherRepositoryImpl(
     private val dslContext: TransactionAwareDSLContext
 ) : TeacherRepository {
-
     override suspend fun getAll(): List<Teacher> {
         val teachers = dslContext.get().nonBlockingFetch(TEACHERS)
         return teachers.map { toEntity(it) }
@@ -43,25 +43,30 @@ class TeacherRepositoryImpl(
         return toEntity(teacher)
     }
 
-    override suspend fun create(teacher: ActiveTeacher): ActiveTeacher {
+    override suspend fun create(teacher: Teacher): Teacher {
+        val userId = dslContext.get().insertInto(
+            USERS,
+            USERS.FIRST_NAME,
+            USERS.LAST_NAME,
+            USERS.EMAIL,
+            USERS.ROLE,
+        ).values(
+            teacher.firstName.value,
+            teacher.lastName.value,
+            teacher.email.value,
+            UsersRole.TEACHER.name,
+        ).returning(USERS.ID).awaitFirstOrNull()?.id!!
+
         val teacherId = dslContext.get().insertInto(
             TEACHERS,
             TEACHERS.USER_ID,
             TEACHERS.SCHOOL_ID
         ).values(
-            teacher.userId,
+            userId,
             teacher.schoolId
-        ).returning(TEACHERS.ID).awaitFirstOrNull()?.id!!
+        )
 
         return teacher.copy(id = TeacherId(teacherId))
-    }
-
-    override suspend fun update(teacher: ActiveTeacher) {
-        dslContext.get().update(TEACHERS)
-            .set(TEACHERS.USER_ID, teacher.userId)
-            .set(TEACHERS.SCHOOL_ID, teacher.schoolId)
-            .where(TEACHERS.ID.eq(teacher.id.value))
-            .awaitLast()
     }
 
     override suspend fun delete(id: TeacherId) {
@@ -92,11 +97,11 @@ class TeacherRepositoryImpl(
         return teacherRecord?.let { toEntity(it) }
     }
 
-    private fun toEntity(teacher: TeachersRecord): ActiveTeacher {
-        return ActiveTeacher(
+    private fun toEntity(teacher: TeachersRecord): Teacher {
+        return Teacher(
             id = TeacherId(teacher.id!!),
-            userId = teacher.userId,
-            schoolId = teacher.schoolId
+            schoolId = teacher.schoolId,
+
         )
     }
 }

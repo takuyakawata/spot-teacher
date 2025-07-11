@@ -19,7 +19,6 @@ class TeacherQuery(
         return teachers.map { teacher ->
             TeacherType(
                 id = ID(teacher.id.value.toString()),
-                userId = teacher.userId,
                 schoolId = teacher.schoolId
             )
         }
@@ -31,7 +30,6 @@ class TeacherQuery(
         return teacher?.let {
             TeacherType(
                 id = ID(it.id.value.toString()),
-                userId = it.userId,
                 schoolId = it.schoolId
             )
         }
@@ -43,7 +41,6 @@ class TeacherQuery(
         return teacher?.let {
             TeacherType(
                 id = ID(it.id.value.toString()),
-                userId = it.userId,
                 schoolId = it.schoolId
             )
         }
@@ -55,7 +52,6 @@ class TeacherQuery(
         return teachers.map { teacher ->
             TeacherType(
                 id = ID(teacher.id.value.toString()),
-                userId = teacher.userId,
                 schoolId = teacher.schoolId
             )
         }

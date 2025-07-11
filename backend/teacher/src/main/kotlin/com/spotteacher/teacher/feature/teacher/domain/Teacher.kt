@@ -1,68 +1,44 @@
 package com.spotteacher.teacher.feature.teacher.domain
 
+import com.spotteacher.domain.EmailAddress
+import com.spotteacher.teacher.feature.school.domain.SchoolId
 import com.spotteacher.util.Identity
 
-sealed interface Teacher {
-    val id: TeacherId
-    val userId: Long
-    val schoolId: Long
-}
-
-data class ActiveTeacher(
-    override val id: TeacherId,
-    override val userId: Long,
-    override val schoolId: Long
-) : Teacher {
+// todo 削除の動線を考えるとき、定義の仕方を変更する
+data class Teacher(
+    val id: TeacherId,
+    val schoolId: SchoolId,
+    val firstName: TeacherName,
+    val lastName: TeacherName,
+    val email: EmailAddress,
+) {
     companion object {
         fun create(
-            userId: Long,
-            schoolId: Long
-        ) = ActiveTeacher(
+            schoolId: SchoolId,
+            firstName: TeacherName,
+            lastName: TeacherName,
+            email: EmailAddress,
+        ) = Teacher(
             id = TeacherId(0),
-            userId = userId,
-            schoolId = schoolId
+            schoolId = schoolId,
+            firstName = firstName,
+            lastName = lastName,
+            email = email,
         )
     }
 }
 
-fun ActiveTeacher.toInActiveTeacher() = InActiveTeacher(
-    id = this.id,
-    userId = this.userId,
-    schoolId = this.schoolId
-)
-
-/**
- * Represents an inactive teacher (使用停止中の先生).
- *
- * @property id The unique identifier for the teacher.
- * @property userId The user ID reference.
- * @property schoolId The school ID reference.
- */
-data class InActiveTeacher(
-    override val id: TeacherId,
-    override val userId: Long,
-    override val schoolId: Long
-) : Teacher {
-    companion object {
-        fun create(
-            userId: Long,
-            schoolId: Long
-        ) = InActiveTeacher(
-            id = TeacherId(0),
-            userId = userId,
-            schoolId = schoolId
-        )
-    }
-}
-
-fun InActiveTeacher.toActiveTeacher() = ActiveTeacher(
-    id = this.id,
-    userId = this.userId,
-    schoolId = this.schoolId
-)
-
-// Entity のIDは
 class TeacherId(override val value: Long) : Identity<Long>(value)
+
+@JvmInline
+value class TeacherName(val value: String) {
+    companion object {
+        const val MAX_LENGTH = 200
+    }
+    init {
+       require(value.length <= MAX_LENGTH) { "Name must be less than $MAX_LENGTH characters" }
+    }
+}
 
 data class TeacherError(
     val code: TeacherErrorCode,
