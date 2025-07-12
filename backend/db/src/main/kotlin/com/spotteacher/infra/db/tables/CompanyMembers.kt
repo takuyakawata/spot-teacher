@@ -3,7 +3,14 @@
  */
 package com.spotteacher.infra.db.tables
 
+
 import com.spotteacher.infra.db.tables.records.CompanyMembersRecord
+
+import java.time.LocalDateTime
+
+import kotlin.collections.Collection
+import kotlin.collections.List
+
 import org.jooq.Condition
 import org.jooq.Field
 import org.jooq.ForeignKey
@@ -24,9 +31,7 @@ import org.jooq.impl.DSL
 import org.jooq.impl.Internal
 import org.jooq.impl.SQLDataType
 import org.jooq.impl.TableImpl
-import java.time.LocalDateTime
-import kotlin.collections.Collection
-import kotlin.collections.List
+
 
 /**
  * CompanyMemberロールを持つユーザーの追加情報
@@ -40,7 +45,7 @@ open class CompanyMembers(
     aliased: Table<CompanyMembersRecord>?,
     parameters: Array<Field<*>?>?,
     where: Condition?
-) : TableImpl<CompanyMembersRecord>(
+): TableImpl<CompanyMembersRecord>(
     alias,
     null,
     path,
@@ -83,47 +88,35 @@ open class CompanyMembers(
     /**
      * The column <code>company_members.created_at</code>.
      */
-    val CREATED_AT: TableField<CompanyMembersRecord, LocalDateTime?> =
-        createField(DSL.name("created_at"), SQLDataType.LOCALDATETIME(0).nullable(false).defaultValue(DSL.field(DSL.raw("CURRENT_TIMESTAMP"), SQLDataType.LOCALDATETIME)), this, "")
+    val CREATED_AT: TableField<CompanyMembersRecord, LocalDateTime?> = createField(DSL.name("created_at"), SQLDataType.LOCALDATETIME(0).nullable(false).defaultValue(DSL.field(DSL.raw("CURRENT_TIMESTAMP"), SQLDataType.LOCALDATETIME)), this, "")
 
     /**
      * The column <code>company_members.updated_at</code>.
      */
-    val UPDATED_AT: TableField<CompanyMembersRecord, LocalDateTime?> =
-        createField(DSL.name("updated_at"), SQLDataType.LOCALDATETIME(0).nullable(false).defaultValue(DSL.field(DSL.raw("CURRENT_TIMESTAMP"), SQLDataType.LOCALDATETIME)), this, "")
+    val UPDATED_AT: TableField<CompanyMembersRecord, LocalDateTime?> = createField(DSL.name("updated_at"), SQLDataType.LOCALDATETIME(0).nullable(false).defaultValue(DSL.field(DSL.raw("CURRENT_TIMESTAMP"), SQLDataType.LOCALDATETIME)), this, "")
 
-    private constructor(alias: Name, aliased: Table<CompanyMembersRecord>?) : this(alias, null, null, null, aliased, null, null)
-    private constructor(alias: Name, aliased: Table<CompanyMembersRecord>?, parameters: Array<Field<*>?>?) : this(alias, null, null, null, aliased, parameters, null)
-    private constructor(alias: Name, aliased: Table<CompanyMembersRecord>?, where: Condition?) : this(alias, null, null, null, aliased, null, where)
-
-    /**
-     * Create an aliased <code>company_members</code> table reference
-     */
-    constructor(alias: String) : this(DSL.name(alias))
+    private constructor(alias: Name, aliased: Table<CompanyMembersRecord>?): this(alias, null, null, null, aliased, null, null)
+    private constructor(alias: Name, aliased: Table<CompanyMembersRecord>?, parameters: Array<Field<*>?>?): this(alias, null, null, null, aliased, parameters, null)
+    private constructor(alias: Name, aliased: Table<CompanyMembersRecord>?, where: Condition?): this(alias, null, null, null, aliased, null, where)
 
     /**
      * Create an aliased <code>company_members</code> table reference
      */
-    constructor(alias: Name) : this(alias, null)
+    constructor(alias: String): this(DSL.name(alias))
+
+    /**
+     * Create an aliased <code>company_members</code> table reference
+     */
+    constructor(alias: Name): this(alias, null)
 
     /**
      * Create a <code>company_members</code> table reference
      */
-    constructor() : this(DSL.name("company_members"), null)
+    constructor(): this(DSL.name("company_members"), null)
     override fun getIdentity(): Identity<CompanyMembersRecord, Long?> = super.getIdentity() as Identity<CompanyMembersRecord, Long?>
-    override fun getPrimaryKey(): UniqueKey<CompanyMembersRecord> = Internal.createUniqueKey(
-        CompanyMembers.COMPANY_MEMBERS,
-        DSL.name("KEY_company_members_PRIMARY"),
-        arrayOf(CompanyMembers.COMPANY_MEMBERS.ID),
-        true
-    )
+    override fun getPrimaryKey(): UniqueKey<CompanyMembersRecord> = Internal.createUniqueKey(CompanyMembers.COMPANY_MEMBERS, DSL.name("KEY_company_members_PRIMARY"), arrayOf(CompanyMembers.COMPANY_MEMBERS.ID), true)
     override fun getUniqueKeys(): List<UniqueKey<CompanyMembersRecord>> = listOf(
-        Internal.createUniqueKey(
-            CompanyMembers.COMPANY_MEMBERS,
-            DSL.name("KEY_company_members_uk_user_company"),
-            arrayOf(CompanyMembers.COMPANY_MEMBERS.USER_ID, CompanyMembers.COMPANY_MEMBERS.COMPANY_ID),
-            true
-        )
+        Internal.createUniqueKey(CompanyMembers.COMPANY_MEMBERS, DSL.name("KEY_company_members_uk_user_company"), arrayOf(CompanyMembers.COMPANY_MEMBERS.USER_ID, CompanyMembers.COMPANY_MEMBERS.COMPANY_ID), true)
     )
     override fun `as`(alias: String): CompanyMembers = CompanyMembers(DSL.name(alias), this)
     override fun `as`(alias: Name): CompanyMembers = CompanyMembers(alias, this)
