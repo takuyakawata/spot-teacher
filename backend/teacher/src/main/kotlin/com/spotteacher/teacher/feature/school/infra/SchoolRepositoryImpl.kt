@@ -40,6 +40,34 @@ class SchoolRepositoryImpl(
         )?.toSchoolEntity()
     }
 
+    @org.jetbrains.annotations.TestOnly
+    override suspend fun create(school: School): School {
+        val id = dslContext.get().insertInto(
+            SCHOOLS,
+            SCHOOLS.NAME,
+            SCHOOLS.SCHOOL_CATEGORY,
+            SCHOOLS.POST_CODE,
+            SCHOOLS.PREFECTURE,
+            SCHOOLS.CITY,
+            SCHOOLS.STREET_ADDRESS,
+            SCHOOLS.BUILDING_NAME,
+            SCHOOLS.PHONE_NUMBER,
+            SCHOOLS.URL
+        ).values(
+            school.name.value,
+            SchoolsSchoolCategory.valueOf(school.schoolCategory.name),
+            school.address.postCode.value,
+            school.address.prefecture.name,
+            school.address.city.value,
+            school.address.streetAddress.value,
+            school.address.buildingName?.value,
+            school.phoneNumber.value,
+            school.url
+        ).returning(SCHOOLS.ID).awaitFirstOrNull()?.id!!
+
+        return school.copy(id = SchoolId(id))
+    }
+
     private fun SchoolsRecord.toSchoolEntity(): School {
         return School(
             id = SchoolId(id!!),

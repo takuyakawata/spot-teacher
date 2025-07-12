@@ -9,11 +9,15 @@ import com.spotteacher.domain.PhoneNumber
 import com.spotteacher.domain.PostCode
 import com.spotteacher.domain.Prefecture
 import com.spotteacher.domain.StreetAddress
+import com.spotteacher.teacher.feature.company.domain.CompanyRepository
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 import java.net.URI
 
 @Component
 class CompanyFixture {
+    @Autowired
+    private lateinit var companyRepository: CompanyRepository
 
     private var companyIdCount = 1L
 
@@ -33,6 +37,23 @@ class CompanyFixture {
             url = url,
             createdAt = createdAt,
         )
+    }
+
+    suspend fun createCompany(
+        name: CompanyName = CompanyName("test company"),
+        address: Address = defaultAddress(),
+        phoneNumber: PhoneNumber = PhoneNumber("12345678"),
+        url: URI = URI("https://example.com"),
+        createdAt: java.time.LocalDateTime = java.time.LocalDateTime.now()
+    ): Company {
+        val company = buildCompany(
+            name = name,
+            address = address,
+            phoneNumber = phoneNumber,
+            url = url,
+            createdAt = createdAt,
+        )
+        return companyRepository.create(company)
     }
 }
 

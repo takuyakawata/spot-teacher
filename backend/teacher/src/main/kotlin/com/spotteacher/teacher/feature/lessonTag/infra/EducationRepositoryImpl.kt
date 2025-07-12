@@ -10,6 +10,8 @@ import com.spotteacher.teacher.feature.lessonTag.domain.EducationId
 import com.spotteacher.teacher.feature.lessonTag.domain.EducationName
 import com.spotteacher.teacher.feature.lessonTag.domain.EducationRepository
 import com.spotteacher.teacher.shared.infra.TransactionAwareDSLContext
+import kotlinx.coroutines.reactive.awaitFirstOrNull
+import org.jetbrains.annotations.TestOnly
 import org.springframework.stereotype.Repository
 
 @Repository
@@ -34,6 +36,22 @@ class EducationRepositoryImpl(private val dslContext: TransactionAwareDSLContext
         ) ?: return null
 
         return record.toEntity()
+    }
+
+    @TestOnly
+    override suspend fun create(education: Education): Education {
+        val id = dslContext.get().insertInto(
+            EDUCATIONS,
+            EDUCATIONS.NAME,
+            EDUCATIONS.IS_ACTIVE,
+            EDUCATIONS.DISPLAY_ORDER
+        ).values(
+            education.name.value,
+            education.isActive,
+            education.displayOrder
+        ).returning(EDUCATIONS.ID).awaitFirstOrNull()?.id!!
+
+        return education.copy(id = EducationId(id))
     }
 
     private fun EducationsRecord.toEntity(): Education {

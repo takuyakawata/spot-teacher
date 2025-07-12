@@ -2,12 +2,16 @@ package com.spotteacher.teacher.feature.lessonReservation.infra
 
 import arrow.core.Nel
 import arrow.core.nonEmptyListOf
+import com.spotteacher.domain.Pagination
+import com.spotteacher.domain.SortOrder
+import com.spotteacher.extension.nonBlockingFetch
 import com.spotteacher.infra.db.enums.LessonReservationsLessonType
 import com.spotteacher.infra.db.tables.LessonReservationDates.Companion.LESSON_RESERVATION_DATES
 import com.spotteacher.infra.db.tables.LessonReservationEducations.Companion.LESSON_RESERVATION_EDUCATIONS
 import com.spotteacher.infra.db.tables.LessonReservationGrades.Companion.LESSON_RESERVATION_GRADES
 import com.spotteacher.infra.db.tables.LessonReservationSubjects.Companion.LESSON_RESERVATION_SUBJECTS
 import com.spotteacher.infra.db.tables.LessonReservations.Companion.LESSON_RESERVATIONS
+import com.spotteacher.infra.db.tables.records.LessonReservationsRecord
 import com.spotteacher.teacher.feature.lessonPlan.domain.LessonPlanId
 import com.spotteacher.teacher.feature.lessonPlan.domain.LessonType
 import com.spotteacher.teacher.feature.lessonReservation.domain.LessonReservation
@@ -22,16 +26,25 @@ import com.spotteacher.teacher.feature.lessonReservation.domain.LessonReservatio
 import com.spotteacher.teacher.feature.lessonReservation.domain.LessonReservationTitle
 import com.spotteacher.teacher.feature.lessonReservation.domain.ReservationLessonLocation
 import com.spotteacher.teacher.feature.lessonReservation.domain.TeacherId
+import com.spotteacher.teacher.feature.lessonTag.domain.EducationId
+import com.spotteacher.teacher.feature.lessonTag.domain.Grade
+import com.spotteacher.teacher.feature.lessonTag.domain.Subject
 import com.spotteacher.teacher.feature.school.domain.SchoolId
 import com.spotteacher.teacher.shared.infra.TransactionAwareDSLContext
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.toList
+import kotlinx.coroutines.reactive.asFlow
 import kotlinx.coroutines.reactive.awaitFirstOrNull
 import kotlinx.coroutines.reactive.awaitLast
 import org.springframework.stereotype.Repository
+import java.time.LocalDate
 import java.time.LocalDateTime
+import java.time.LocalTime
 
 @Repository
 class LessonReservationRepositoryImpl(private val dslContext: TransactionAwareDSLContext) : LessonReservationRepository {
 
+    // create
     override suspend fun create(lessonReservation: LessonReservation): LessonReservation {
         // Create a LessonReservation with the provided values
         val now = LocalDateTime.now()
@@ -142,5 +155,120 @@ class LessonReservationRepositoryImpl(private val dslContext: TransactionAwareDS
 
         // Return the created LessonReservation with the generated ID
         return lessonReservation.copy(id = LessonReservationId(lessonReservationId))
+    }
+
+    // filterByTeacherAndSchoolId
+    override suspend fun filterByTeacherAndSchoolId(teacherId: TeacherId, schoolId: SchoolId, pagination: Pagination<LessonReservation>): List<LessonReservation> {
+        val paginationFields = pagination.cursorColumns.mapNotNull { column ->
+            LESSON_RESERVATIONS.field(column.getDbColumnName())?.let { field ->
+                when (column.order) {
+                    SortOrder.ASC -> field.asc()
+                    SortOrder.DESC -> field.desc()
+                } to column.getPrimitiveValue()
+            }
+        }
+
+        val query = dslContext.get().selectFrom(LESSON_RESERVATIONS)
+            .where(
+                LESSON_RESERVATIONS.TEACHER_ID.eq(teacherId.value)
+                    .and(LESSON_RESERVATIONS.SCHOOL_ID.eq(schoolId.value))
+            )
+
+        // Apply pagination if there are cursor columns
+        val paginatedQuery = if (paginationFields.isNotEmpty()) {
+            query.orderBy(*paginationFields.map { it.first }.toTypedArray())
+                .seek(*paginationFields.map { it.second }.toTypedArray())
+                .limit(pagination.limit)
+        } else {
+            query.limit(pagination.limit)
+        }
+
+        // Use reactive flow to handle suspension functions properly
+        val lessonReservationFlow = paginatedQuery.asFlow()
+            .map { record -> 
+                val recordId = record.id ?: throw IllegalStateException("Lesson reservation ID cannot be null")
+                val dates = getLessonReservationDates(recordId)
+                val educations = getLessonReservationEducations(recordId)
+                val subjects = getLessonReservationSubjects(recordId)
+                val grades = getLessonReservationGrades(recordId)
+                record.into(LessonReservationsRecord::class.java).toEntity(dates, educations, subjects, grades)
+            }
+
+        return lessonReservationFlow.toList()
+    }
+
+    private suspend fun getLessonReservationDates(lessonReservationId: Long): Nel<LessonReservationDate> {
+        val dates = dslContext.get().nonBlockingFetch(
+            LESSON_RESERVATION_DATES,
+            LESSON_RESERVATION_DATES.LESSON_RESERVATION_ID.eq(lessonReservationId)
+        ).map { record ->
+            LessonReservationDate(
+                date = record.startDate ?: LocalDate.now(),
+                startTime = record.startTime?.toLocalTime() ?: LocalTime.of(9, 0),
+                endTime = record.endTime?.toLocalTime() ?: LocalTime.of(17, 0)
+            )
+        }
+
+        return if (dates.isNotEmpty()) {
+            nonEmptyListOf(dates.first(), *dates.drop(1).toTypedArray())
+        } else {
+            // Return a default date if no dates are found
+            nonEmptyListOf(LessonReservationDate(
+                date = LocalDate.now(),
+                startTime = LocalTime.of(9, 0),
+                endTime = LocalTime.of(17, 0)
+            ))
+        }
+    }
+
+    private suspend fun getLessonReservationEducations(lessonReservationId: Long): Set<EducationId> {
+        return dslContext.get().nonBlockingFetch(
+            LESSON_RESERVATION_EDUCATIONS,
+            LESSON_RESERVATION_EDUCATIONS.LESSON_RESERVATION_ID.eq(lessonReservationId)
+        ).map { EducationId(it.educationId) }.toSet()
+    }
+
+    private suspend fun getLessonReservationSubjects(lessonReservationId: Long): Set<Subject> {
+        return dslContext.get().nonBlockingFetch(
+            LESSON_RESERVATION_SUBJECTS,
+            LESSON_RESERVATION_SUBJECTS.LESSON_RESERVATION_ID.eq(lessonReservationId)
+        ).map { Subject.valueOf(it.subjectCode) }.toSet()
+    }
+
+    private suspend fun getLessonReservationGrades(lessonReservationId: Long): Set<Grade> {
+        return dslContext.get().nonBlockingFetch(
+            LESSON_RESERVATION_GRADES,
+            LESSON_RESERVATION_GRADES.LESSON_RESERVATION_ID.eq(lessonReservationId)
+        ).map { Grade.valueOf(it.gradeCode) }.toSet()
+    }
+
+    private fun mapEnumToLessonType(lessonType: LessonReservationsLessonType): LessonType {
+        return when (lessonType) {
+            LessonReservationsLessonType.ONLINE -> LessonType.ONLINE
+            LessonReservationsLessonType.OFFLINE -> LessonType.OFFLINE
+            LessonReservationsLessonType.ONLINE_AND_OFFLINE -> LessonType.ONLINE_AND_OFFLINE
+        }
+    }
+
+    private fun LessonReservationsRecord.toEntity(
+        dates: Nel<LessonReservationDate>,
+        educations: Set<EducationId>,
+        subjects: Set<Subject>,
+        grades: Set<Grade>
+    ): LessonReservation {
+        return LessonReservation(
+            id = LessonReservationId(id!!),
+            lessonPlanId = LessonPlanId(lessonPlanId),
+            reservedSchoolId = SchoolId(schoolId),
+            reservedTeacherId = TeacherId(teacherId),
+            educations = LessonReservationEducations(educations),
+            subjects = LessonReservationSubjects(subjects),
+            grades = LessonReservationGrades(grades),
+            title = LessonReservationTitle(title ?: ""),
+            description = LessonReservationDescription(description ?: ""),
+            lessonType = lessonType?.let { mapEnumToLessonType(it) } ?: LessonType.OFFLINE,
+            location = ReservationLessonLocation(location ?: ""),
+            reservationDates = LessonReservationDates(dates)
+        )
     }
 }
