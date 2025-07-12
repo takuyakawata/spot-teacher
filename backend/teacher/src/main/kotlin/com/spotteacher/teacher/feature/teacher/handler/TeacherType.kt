@@ -12,7 +12,10 @@ private const val TEACHER_TYPE = "Teacher"
 data class TeacherType(
     val id: ID,
     @GraphQLIgnore
-    val schoolId: SchoolId
+    val schoolId: SchoolId,
+    val firstName: String,
+    val lastName: String,
+    val email: String,
 ){
     fun school(): SchoolType? = null
 }

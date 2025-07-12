@@ -19,7 +19,10 @@ class TeacherQuery(
         return teachers.map { teacher ->
             TeacherType(
                 id = ID(teacher.id.value.toString()),
-                schoolId = teacher.schoolId
+                schoolId = teacher.schoolId,
+                firstName = teacher.firstName.value,
+                lastName = teacher.lastName.value,
+                email = teacher.email.value,
             )
         }
     }
@@ -30,7 +33,10 @@ class TeacherQuery(
         return teacher?.let {
             TeacherType(
                 id = ID(it.id.value.toString()),
-                schoolId = it.schoolId
+                schoolId = it.schoolId,
+                firstName = it.firstName.value,
+                lastName = it.lastName.value,
+                email = it.email.value,
             )
         }
     }
@@ -41,7 +47,10 @@ class TeacherQuery(
         return teacher?.let {
             TeacherType(
                 id = ID(it.id.value.toString()),
-                schoolId = it.schoolId
+                schoolId = it.schoolId,
+                firstName = it.firstName.value,
+                lastName = it.lastName.value,
+                email = it.email.value,
             )
         }
     }
@@ -52,7 +61,10 @@ class TeacherQuery(
         return teachers.map { teacher ->
             TeacherType(
                 id = ID(teacher.id.value.toString()),
-                schoolId = teacher.schoolId
+                schoolId = teacher.schoolId,
+                firstName = teacher.firstName.value,
+                lastName = teacher.lastName.value,
+                email = teacher.email.value,
             )
         }
     }
