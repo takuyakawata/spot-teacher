@@ -1,0 +1,195 @@
+schema {
+  query: Query
+  mutation: Mutation
+}
+
+"Marks the field, argument, input field or enum value as deprecated"
+directive @deprecated(
+    "The reason for the deprecation"
+    reason: String = "No longer supported"
+  ) on FIELD_DEFINITION | ARGUMENT_DEFINITION | ENUM_VALUE | INPUT_FIELD_DEFINITION
+
+"Directs the executor to include this field or fragment only when the `if` argument is true"
+directive @include(
+    "Included when true."
+    if: Boolean!
+  ) on FIELD | FRAGMENT_SPREAD | INLINE_FRAGMENT
+
+"Indicates an Input Object is a OneOf Input Object."
+directive @oneOf on INPUT_OBJECT
+
+"Directs the executor to skip this field or fragment when the `if` argument is true."
+directive @skip(
+    "Skipped when true."
+    if: Boolean!
+  ) on FIELD | FRAGMENT_SPREAD | INLINE_FRAGMENT
+
+"Exposes a URL that specifies the behaviour of this scalar."
+directive @specifiedBy(
+    "The URL that specifies the behaviour of this scalar."
+    url: String!
+  ) on SCALAR
+
+type LessonPlanDate {
+  endDay: Int!
+  endMonth: Int!
+  endTime: Time!
+  startDay: Int!
+  startMonth: Int!
+  startTime: Time!
+}
+
+type LessonScheduleType {
+  id: String!
+}
+
+type Mutation {
+  cancelLessonSchedule: Unit!
+  createLessonReservation(input: CreateLessonReservationMutationInput!): Unit!
+  createLessonSchedule: Unit!
+  createTeacher(input: CreateTeacherMutationInput!): Teacher!
+}
+
+type PublishedLessonPlan {
+  annualMaxExecutions: Int!
+  createdAt: LocalDateTime!
+  description: String!
+  id: ID!
+  lessonPlanDates: [LessonPlanDate!]!
+  lessonPlanGrades: [Grade!]!
+  lessonPlanSubjects: [Subject!]!
+  lessonType: LessonType!
+  location: String!
+  title: String!
+}
+
+type Query {
+  lessonPlanById: PublishedLessonPlan!
+  lessonPlans: [PublishedLessonPlan!]!
+  lessonSchedule: [LessonScheduleType!]!
+  teacher(id: ID!): Teacher
+}
+
+type School {
+  buildingName: String
+  city: String!
+  id: String!
+  name: String!
+  phoneNumber: String
+  postalCode: String!
+  prefecture: String!
+  schoolCategory: SchoolCategory!
+  streetAddress: String!
+  url: String
+}
+
+type Teacher {
+  email: String!
+  firstName: String!
+  id: ID!
+  lastName: String!
+  school: School
+}
+
+enum Grade {
+  ELEMENTARY_1
+  ELEMENTARY_2
+  ELEMENTARY_3
+  ELEMENTARY_4
+  ELEMENTARY_5
+  ELEMENTARY_6
+  JUNIOR_HIGH_1
+  JUNIOR_HIGH_2
+  JUNIOR_HIGH_3
+}
+
+enum LessonType {
+  OFFLINE
+  ONLINE
+  ONLINE_AND_OFFLINE
+}
+
+enum SchoolCategory {
+  ELEMENTARY
+  HIGH
+  JUNIOR_HIGH
+}
+
+enum Subject {
+  ARITHMETIC
+  ART
+  ELEMENTARY_ART_AND_CRAFTS
+  ENGLISH
+  FOREIGN_LANGUAGE
+  FOREIGN_LANGUAGE_ACTIVITIES
+  HOMEMAKING
+  INTEGRATED_STUDIES
+  JAPANESE
+  LIFE_SKILLS
+  MATH
+  MORAL_EDUCATION
+  MUSIC
+  PHYSICAL_EDUCATION
+  SCIENCE
+  SOCIAL_STUDIES
+}
+
+"An RFC-3339 compliant Full Date Scalar"
+scalar Date
+
+"LocalDateTime"
+scalar LocalDateTime
+
+"String that is not empty"
+scalar NonEmptyString
+
+"An RFC-3339 compliant Full Time Scalar"
+scalar Time
+
+"meaningless value. Necessary just for graphql limitation. Only used for output."
+scalar Unit
+
+input CreateLessonReservationMutationInput {
+  companyId: ID!
+  description: NonEmptyString!
+  educations: [ID!]!
+  endTime: NonEmptyString!
+  grades: [Grade!]!
+  lessonPlanId: ID!
+  lessonType: LessonReservationInput!
+  location: NonEmptyString!
+  schoolId: ID!
+  startTime: NonEmptyString!
+  subjects: [Subject!]!
+  teacherId: ID!
+  title: NonEmptyString!
+}
+
+input CreateTeacherMutationInput {
+  email: NonEmptyString!
+  firstName: NonEmptyString!
+  lastName: NonEmptyString!
+  schoolId: ID!
+}
+
+input LessonReservationDateInput {
+  date: Date!
+  endTime: Time!
+  startTime: Time!
+}
+
+input LessonReservationInput {
+  companyId: ID!
+  description: String!
+  educations: [ID!]!
+  grades: [ID!]!
+  id: ID!
+  lessonId: ID!
+  lessonType: LessonType!
+  location: String!
+  reservationDates: [LessonReservationDateInput!]!
+  reservedSchoolId: ID!
+  subjects: [ID!]!
+  title: String!
+  userId: ID!
+}

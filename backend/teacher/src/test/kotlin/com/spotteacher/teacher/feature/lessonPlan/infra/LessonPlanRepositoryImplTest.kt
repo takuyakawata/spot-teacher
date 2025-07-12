@@ -11,6 +11,7 @@ import com.spotteacher.teacher.feature.lessonPlan.domain.LessonType
 import com.spotteacher.teacher.feature.lessonTag.domain.EducationId
 import com.spotteacher.teacher.feature.lessonTag.domain.Grade
 import com.spotteacher.teacher.feature.lessonTag.domain.Subject
+import com.spotteacher.teacher.fixture.CompanyFixture
 import com.spotteacher.teacher.fixture.LessonPlanFixture
 import io.kotest.matchers.collections.shouldContainExactly
 import io.kotest.matchers.shouldBe
@@ -21,21 +22,23 @@ import org.springframework.boot.test.context.SpringBootTest.WebEnvironment.NONE
 
 @SpringBootTest(webEnvironment = NONE)
 class LessonPlanRepositoryImplTest(
-    @Autowired private val lessonPlanRepository: LessonPlanRepository,
-    @Autowired private val lessonPlanFixture: LessonPlanFixture
+    private val lessonPlanRepository: LessonPlanRepository,
+    private val lessonPlanFixture: LessonPlanFixture,
+    private val companyFixture: CompanyFixture,
 ) : DatabaseDescribeSpec({
-
     describe("LessonPlanRepository") {
         describe("findById") {
             context("when lesson plan exists") {
                 it("should return the lesson plan") {
+                    val company = companyFixture.createCompany()
                     // Arrange - Create test data
                     val lessonPlan = lessonPlanFixture.buildLessonPlan(
                         title = "Test Lesson Plan",
                         description = "Test Description",
                         lessonType = LessonType.ONLINE,
                         location = "Test Location",
-                        annualMaxExecutions = 10
+                        annualMaxExecutions = 10,
+                        companyId = company.id,
                     )
 
                     // Note: In a real test, we would insert the lesson plan into the database

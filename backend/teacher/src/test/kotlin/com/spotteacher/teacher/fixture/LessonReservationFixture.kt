@@ -10,30 +10,33 @@ import com.spotteacher.teacher.feature.lessonReservation.domain.LessonReservatio
 import com.spotteacher.teacher.feature.lessonReservation.domain.LessonReservationEducations
 import com.spotteacher.teacher.feature.lessonReservation.domain.LessonReservationGrades
 import com.spotteacher.teacher.feature.lessonReservation.domain.LessonReservationId
+import com.spotteacher.teacher.feature.lessonReservation.domain.LessonReservationRepository
 import com.spotteacher.teacher.feature.lessonReservation.domain.LessonReservationSubjects
 import com.spotteacher.teacher.feature.lessonReservation.domain.LessonReservationTitle
 import com.spotteacher.teacher.feature.lessonReservation.domain.ReservationLessonLocation
-import com.spotteacher.teacher.feature.lessonReservation.domain.TeacherId
 import com.spotteacher.teacher.feature.lessonTag.domain.EducationId
 import com.spotteacher.teacher.feature.lessonTag.domain.Grade
 import com.spotteacher.teacher.feature.lessonTag.domain.Subject
 import com.spotteacher.teacher.feature.school.domain.SchoolId
+import com.spotteacher.teacher.feature.teacher.domain.TeacherId
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 import java.time.LocalDate
 import java.time.LocalTime
 
 @Component
-class LessonReservationFixture(
-    private val lessonPlanFixture: LessonPlanFixture
-) {
+class LessonReservationFixture{
+
+    @Autowired
+    private lateinit var repository: LessonReservationRepository
 
     private var lessonReservationIdCount = 1L
 
     fun buildLessonReservation(
         id: LessonReservationId = LessonReservationId(lessonReservationIdCount++),
-        lessonPlanId: LessonPlanId = lessonPlanFixture.buildLessonPlan().id,
-        reservedSchoolId: SchoolId = SchoolId(1),
-        reservedTeacherId: TeacherId = TeacherId(1),
+        lessonPlanId: LessonPlanId,
+        reservedSchoolId: SchoolId,
+        reservedTeacherId: TeacherId,
         educations: Set<EducationId> = emptySet(),
         subjects: Set<Subject> = emptySet(),
         grades: Set<Grade> = emptySet(),
@@ -65,5 +68,19 @@ class LessonReservationFixture(
                 )
             ))
         )
+    }
+
+    suspend fun create(
+        lessonPlanId: LessonPlanId,
+        reservedSchoolId: SchoolId,
+        reservedTeacherId: TeacherId
+    ): LessonReservation {
+        val lessonReservation = buildLessonReservation(
+            id = LessonReservationId(0),
+            lessonPlanId = lessonPlanId,
+            reservedSchoolId = reservedSchoolId,
+            reservedTeacherId = reservedTeacherId
+        )
+        return repository.create(lessonReservation)
     }
 }

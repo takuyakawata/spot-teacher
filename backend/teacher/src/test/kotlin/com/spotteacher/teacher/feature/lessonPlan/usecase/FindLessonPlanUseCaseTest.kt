@@ -1,9 +1,8 @@
 package com.spotteacher.teacher.feature.lessonPlan.usecase
 
-import com.spotteacher.teacher.feature.lessonPlan.domain.LessonPlan
 import com.spotteacher.teacher.feature.lessonPlan.domain.LessonPlanErrorCode
-import com.spotteacher.teacher.feature.lessonPlan.domain.LessonPlanId
 import com.spotteacher.teacher.feature.lessonPlan.domain.LessonPlanRepository
+import com.spotteacher.teacher.fixture.CompanyFixture
 import com.spotteacher.teacher.fixture.LessonPlanFixture
 import io.kotest.core.spec.style.DescribeSpec
 import io.kotest.matchers.shouldBe
@@ -20,8 +19,9 @@ class FindLessonPlanUseCaseTest : DescribeSpec({
         val useCase = FindLessonPlanUseCase(lessonPlanRepository)
 
         // Test data
-        val lessonPlanId = LessonPlanId(1)
-        val lessonPlan = lessonPlanFixture.buildLessonPlan(id = lessonPlanId)
+        val company = CompanyFixture().buildCompany()
+        val lessonPlan = lessonPlanFixture.buildLessonPlan(companyId = company.id)
+        val lessonPlanId = lessonPlan.id
 
         describe("call") {
             it("should return success Result with LessonPlan when found") {

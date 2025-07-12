@@ -9,12 +9,14 @@ import com.spotteacher.teacher.feature.lessonPlan.domain.LessonPlanDescription
 import com.spotteacher.teacher.feature.lessonPlan.domain.LessonPlanEducations
 import com.spotteacher.teacher.feature.lessonPlan.domain.LessonPlanGrades
 import com.spotteacher.teacher.feature.lessonPlan.domain.LessonPlanId
+import com.spotteacher.teacher.feature.lessonPlan.domain.LessonPlanRepository
 import com.spotteacher.teacher.feature.lessonPlan.domain.LessonPlanSubjects
 import com.spotteacher.teacher.feature.lessonPlan.domain.LessonPlanTitle
 import com.spotteacher.teacher.feature.lessonPlan.domain.LessonType
 import com.spotteacher.teacher.feature.lessonTag.domain.EducationId
 import com.spotteacher.teacher.feature.lessonTag.domain.Grade
 import com.spotteacher.teacher.feature.lessonTag.domain.Subject
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 import java.time.LocalDateTime
 import java.time.LocalTime
@@ -22,11 +24,14 @@ import java.time.LocalTime
 @Component
 class LessonPlanFixture {
 
+    @Autowired
+    private lateinit var repository: LessonPlanRepository
+
     private var lessonPlanIdCount = 1L
 
     fun buildLessonPlan(
         id: LessonPlanId = LessonPlanId(lessonPlanIdCount++),
-        companyId: CompanyId = CompanyId(1L),
+        companyId: CompanyId,
         title: String = "Test Lesson Plan",
         description: String = "Test Description",
         lessonType: LessonType = LessonType.ONLINE,
@@ -61,5 +66,14 @@ class LessonPlanFixture {
             annualMaxExecutions = annualMaxExecutions,
             lessonPlanDates = nonEmptyListOf(lessonPlanDate)
         )
+    }
+
+    suspend fun create(
+        companyId: CompanyId
+    ): LessonPlan {
+        val lessonPlan = buildLessonPlan(
+            companyId = companyId
+        )
+        return repository.create(lessonPlan)
     }
 }

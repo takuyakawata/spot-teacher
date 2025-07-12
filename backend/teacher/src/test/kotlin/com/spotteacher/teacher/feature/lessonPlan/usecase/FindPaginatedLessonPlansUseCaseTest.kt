@@ -4,6 +4,7 @@ import com.spotteacher.domain.Pagination
 import com.spotteacher.teacher.feature.lessonPlan.domain.LessonPlan
 import com.spotteacher.teacher.feature.lessonPlan.domain.LessonPlanId
 import com.spotteacher.teacher.feature.lessonPlan.domain.LessonPlanRepository
+import com.spotteacher.teacher.fixture.CompanyFixture
 import com.spotteacher.teacher.fixture.LessonPlanFixture
 import io.kotest.core.spec.style.DescribeSpec
 import io.kotest.matchers.shouldBe
@@ -17,21 +18,23 @@ class FindPaginatedLessonPlansUseCaseTest : DescribeSpec({
     describe("FindPaginatedLessonPlansUseCase") {
         // Arrange
         val lessonPlanRepository = mockk<LessonPlanRepository>()
+        val companyFixture = CompanyFixture()
         val lessonPlanFixture = LessonPlanFixture()
         val useCase = FindPaginatedLessonPlansUseCase(lessonPlanRepository)
 
         // Test data
         val now = LocalDateTime.now()
+        val company = companyFixture.buildCompany()
         val lessonPlan1 = lessonPlanFixture.buildLessonPlan(
-            id = LessonPlanId(1),
+            companyId = company.id,
             createdAt = now.minusDays(2)
         )
         val lessonPlan2 = lessonPlanFixture.buildLessonPlan(
-            id = LessonPlanId(2),
+            companyId = company.id,
             createdAt = now.minusDays(1)
         )
         val lessonPlan3 = lessonPlanFixture.buildLessonPlan(
-            id = LessonPlanId(3),
+            companyId = company.id,
             createdAt = now
         )
         val lessonPlans = listOf(lessonPlan1, lessonPlan2, lessonPlan3)

@@ -3,6 +3,7 @@ package com.spotteacher.admin.feature.lessonPlan.usecase
 import com.spotteacher.admin.feature.lessonPlan.domain.LessonPlan
 import com.spotteacher.admin.feature.lessonPlan.domain.LessonPlanId
 import com.spotteacher.admin.feature.lessonPlan.domain.LessonPlanRepository
+import com.spotteacher.admin.fixture.CompanyFixture
 import com.spotteacher.admin.fixture.LessonPlanFixture
 import com.spotteacher.domain.Pagination
 import com.spotteacher.domain.SortOrder
@@ -18,12 +19,14 @@ class FindPaginatedLessonPlansUseCaseTest : DescribeSpec({
         val lessonPlanRepository = mockk<LessonPlanRepository>()
         val useCase = FindPaginatedLessonPlansUseCase(lessonPlanRepository)
         val fixture = LessonPlanFixture()
+        val companyFixture = CompanyFixture()
 
         // Create test data
+        val company = companyFixture.buildCompany()
         val lessonPlans = listOf(
-            fixture.buildPublishedLessonPlan(id = LessonPlanId(1)),
-            fixture.buildDraftLessonPlan(id = LessonPlanId(2)),
-            fixture.buildPublishedLessonPlan(id = LessonPlanId(3))
+            fixture.buildPublishedLessonPlan(companyId = company.id),
+            fixture.buildDraftLessonPlan(companyId = company.id),
+            fixture.buildPublishedLessonPlan(companyId = company.id)
         )
 
         describe("call") {

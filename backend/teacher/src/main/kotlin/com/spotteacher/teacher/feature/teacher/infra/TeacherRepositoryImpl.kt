@@ -16,6 +16,7 @@ import com.spotteacher.teacher.feature.teacher.domain.TeacherName
 import com.spotteacher.teacher.feature.teacher.domain.TeacherRepository
 import kotlinx.coroutines.reactive.awaitFirstOrNull
 import kotlinx.coroutines.reactive.awaitLast
+import org.jetbrains.annotations.TestOnly
 import org.springframework.stereotype.Repository
 import java.util.UUID.randomUUID
 
@@ -38,6 +39,7 @@ class TeacherRepositoryImpl(
         return toEntity(user,teacher)
     }
 
+    @TestOnly
     override suspend fun create(teacher: Teacher): Teacher {
         val userId = dslContext.get().insertInto(
             USERS,

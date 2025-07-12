@@ -10,9 +10,9 @@ import com.spotteacher.teacher.feature.lessonReservation.domain.LessonReservatio
 import com.spotteacher.teacher.feature.lessonReservation.domain.LessonReservationSubjects
 import com.spotteacher.teacher.feature.lessonReservation.domain.LessonReservationTitle
 import com.spotteacher.teacher.feature.lessonReservation.domain.ReservationLessonLocation as LessonReservationLocation
-import com.spotteacher.teacher.feature.lessonReservation.domain.TeacherId
 import com.spotteacher.teacher.feature.school.domain.SchoolId as School
 import com.spotteacher.teacher.feature.lessonReservation.handler.LessonReservationType
+import com.spotteacher.teacher.feature.teacher.domain.TeacherId
 import com.spotteacher.teacher.shared.infra.TransactionCoroutine
 import com.spotteacher.usecase.UseCase
 

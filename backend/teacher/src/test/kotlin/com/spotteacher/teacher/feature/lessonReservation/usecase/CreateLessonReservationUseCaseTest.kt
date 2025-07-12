@@ -14,12 +14,12 @@ import com.spotteacher.teacher.feature.lessonReservation.domain.LessonReservatio
 import com.spotteacher.teacher.feature.lessonReservation.domain.LessonReservationSubjects
 import com.spotteacher.teacher.feature.lessonReservation.domain.LessonReservationTitle
 import com.spotteacher.teacher.feature.lessonReservation.domain.ReservationLessonLocation
-import com.spotteacher.teacher.feature.lessonReservation.domain.TeacherId
 import com.spotteacher.teacher.feature.lessonReservation.handler.LessonReservationType
 import com.spotteacher.teacher.feature.lessonTag.domain.EducationId
 import com.spotteacher.teacher.feature.lessonTag.domain.Grade
 import com.spotteacher.teacher.feature.lessonTag.domain.Subject
 import com.spotteacher.teacher.feature.school.domain.SchoolId
+import com.spotteacher.teacher.feature.teacher.domain.TeacherId
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.shouldBe
 import io.mockk.coEvery

@@ -25,11 +25,11 @@ import com.spotteacher.teacher.feature.lessonReservation.domain.LessonReservatio
 import com.spotteacher.teacher.feature.lessonReservation.domain.LessonReservationSubjects
 import com.spotteacher.teacher.feature.lessonReservation.domain.LessonReservationTitle
 import com.spotteacher.teacher.feature.lessonReservation.domain.ReservationLessonLocation
-import com.spotteacher.teacher.feature.lessonReservation.domain.TeacherId
 import com.spotteacher.teacher.feature.lessonTag.domain.EducationId
 import com.spotteacher.teacher.feature.lessonTag.domain.Grade
 import com.spotteacher.teacher.feature.lessonTag.domain.Subject
 import com.spotteacher.teacher.feature.school.domain.SchoolId
+import com.spotteacher.teacher.feature.teacher.domain.TeacherId
 import com.spotteacher.teacher.shared.infra.TransactionAwareDSLContext
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.toList

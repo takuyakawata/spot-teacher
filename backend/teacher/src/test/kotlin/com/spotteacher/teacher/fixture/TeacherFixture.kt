@@ -19,7 +19,7 @@ class TeacherFixture {
 
     fun build(
         id: TeacherId = TeacherId(teacherIdCount++),
-        schoolId: SchoolId = SchoolId(1),
+        schoolId: SchoolId,
         firstName: String = "Test",
         lastName: String = "Teacher",
         email: String = "test.teacher${teacherIdCount}@example.com"
@@ -33,8 +33,10 @@ class TeacherFixture {
         )
     }
 
-    suspend fun create(): Teacher {
-        val teacher = build(id = TeacherId(0))
+    suspend fun create(
+        schoolId: SchoolId
+    ): Teacher {
+        val teacher = build(id = TeacherId(0),schoolId = schoolId)
         return repository.create(teacher)
     }
 }

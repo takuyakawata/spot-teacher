@@ -33,7 +33,10 @@ import com.spotteacher.teacher.shared.infra.TransactionAwareDSLContext
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.reactive.asFlow
+import kotlinx.coroutines.reactive.awaitFirstOrNull
+import kotlinx.coroutines.reactive.awaitLast
 import org.springframework.stereotype.Repository
+import java.time.LocalDateTime
 
 @Repository
 class LessonPlanRepositoryImpl(private val dslContext: TransactionAwareDSLContext): LessonPlanRepository {
@@ -76,6 +79,38 @@ class LessonPlanRepositoryImpl(private val dslContext: TransactionAwareDSLContex
         val subjects = getLessonPlanSubjects(recordId)
         val grades = getLessonPlanGrades(recordId)
         return record.toEntity(datesList, educations, subjects, grades)
+    }
+
+    override suspend fun create(lessonPlan: LessonPlan): LessonPlan {
+        // Create a LessonPlan with the provided values
+        val now = LocalDateTime.now()
+        val lessonPlanId = dslContext.get().insertInto(
+            LESSON_PLANS,
+            LESSON_PLANS.COMPANY_ID,
+            LESSON_PLANS.TITLE,
+            LESSON_PLANS.DESCRIPTION,
+            LESSON_PLANS.LOCATION,
+            LESSON_PLANS.LESSON_TYPE,
+            LESSON_PLANS.ANNUAL_MAX_EXECUTIONS,
+            LESSON_PLANS.CREATED_AT,
+            LESSON_PLANS.UPDATED_AT
+        ).values(
+            lessonPlan.companyId.value,
+            lessonPlan.title.value,
+            lessonPlan.description.value,
+            lessonPlan.location.value,
+            when (lessonPlan.lessonType) {
+                LessonType.ONLINE -> LessonPlansLessonType.ONLINE
+                LessonType.OFFLINE -> LessonPlansLessonType.OFFLINE
+                LessonType.ONLINE_AND_OFFLINE -> LessonPlansLessonType.ONLINE_AND_OFFLINE
+            },
+            lessonPlan.annualMaxExecutions.toLong(),
+            now,
+            now
+        ).returning(LESSON_PLANS.ID).awaitFirstOrNull()?.id!!
+
+        // Return the created LessonPlan with the generated ID
+        return lessonPlan.copy(id = LessonPlanId(lessonPlanId))
     }
 
     private suspend fun getLessonPlanDates(lessonPlanId: Long): Nel<LessonPlanDate> {

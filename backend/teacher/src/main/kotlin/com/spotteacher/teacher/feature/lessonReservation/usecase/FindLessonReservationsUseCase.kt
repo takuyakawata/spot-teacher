@@ -6,8 +6,8 @@ import com.spotteacher.domain.SortOrder
 import com.spotteacher.teacher.feature.lessonReservation.domain.LessonReservation
 import com.spotteacher.teacher.feature.lessonReservation.domain.LessonReservationId
 import com.spotteacher.teacher.feature.lessonReservation.domain.LessonReservationRepository
-import com.spotteacher.teacher.feature.lessonReservation.domain.TeacherId
 import com.spotteacher.teacher.feature.school.domain.SchoolId
+import com.spotteacher.teacher.feature.teacher.domain.TeacherId
 import com.spotteacher.usecase.UseCase
 
 data class FindLessonReservationsUseCaseInput(

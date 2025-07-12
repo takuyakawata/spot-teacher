@@ -19,6 +19,7 @@ import com.spotteacher.admin.feature.lessonTag.domain.EducationId
 import com.spotteacher.admin.feature.lessonTag.domain.Grade
 import com.spotteacher.admin.feature.lessonTag.domain.Subject
 import com.spotteacher.admin.feature.uploadFile.domain.UploadFileId
+import com.spotteacher.admin.fixture.CompanyFixture
 import com.spotteacher.admin.fixture.LessonPlanFixture
 import io.kotest.core.spec.style.DescribeSpec
 import io.kotest.matchers.shouldBe
@@ -33,13 +34,14 @@ class UpdateLessonPlanUseCaseTest : DescribeSpec({
         val lessonPlanRepository = mockk<LessonPlanRepository>()
         val fixture = LessonPlanFixture()
         val useCase = UpdateLessonPlanUseCase(lessonPlanRepository)
+        val companyFixture = CompanyFixture()
 
         // Test data
-        val lessonPlanId = LessonPlanId(1)
+        val company = companyFixture.buildCompany()
 
         // Create lesson plans using fixture
         val originalPublishedLessonPlan = fixture.buildPublishedLessonPlan(
-            id = lessonPlanId,
+            companyId = company.id,
             title = LessonPlanTitle("Original Published Lesson Plan"),
             description = LessonPlanDescription("This is the original published lesson plan description"),
             lessonType = LessonType.ONLINE,
@@ -48,7 +50,7 @@ class UpdateLessonPlanUseCaseTest : DescribeSpec({
         )
 
         val originalDraftLessonPlan = fixture.buildDraftLessonPlan(
-            id = lessonPlanId,
+            companyId = company.id,
             title = LessonPlanTitle("Original Draft Lesson Plan"),
             description = LessonPlanDescription("This is the original draft lesson plan description"),
             lessonType = LessonType.OFFLINE,
@@ -87,7 +89,7 @@ class UpdateLessonPlanUseCaseTest : DescribeSpec({
                 context("when all specified fields") {
                     it("should update all specified fields and return success") {
                         // Arrange
-                        coEvery { lessonPlanRepository.findById(lessonPlanId) } returns originalPublishedLessonPlan
+                        coEvery { lessonPlanRepository.findById(originalPublishedLessonPlan.id) } returns originalPublishedLessonPlan
 
                         val updatedOriginalPublishedLessonPlan = originalPublishedLessonPlan.update(
                             title = updatedTitle,
@@ -106,7 +108,7 @@ class UpdateLessonPlanUseCaseTest : DescribeSpec({
                         // Act
                         val result = useCase.call(
                             UpdateLessonPlanUseCaseInput(
-                                id = lessonPlanId,
+                                id = originalDraftLessonPlan.id,
                                 title = updatedTitle,
                                 description = updatedDescription,
                                 lessonType = updatedLessonType,
@@ -127,7 +129,7 @@ class UpdateLessonPlanUseCaseTest : DescribeSpec({
                 context("when only specified fields") {
                     it("should update keep others unchanged") {
                         // Arrange
-                        coEvery { lessonPlanRepository.findById(lessonPlanId) } returns originalPublishedLessonPlan
+                        coEvery { lessonPlanRepository.findById(originalPublishedLessonPlan.id) } returns originalPublishedLessonPlan
 
                         val updatedOriginalPublishedLessonPlan = originalPublishedLessonPlan.update(
                             title = updatedTitle,
@@ -148,7 +150,7 @@ class UpdateLessonPlanUseCaseTest : DescribeSpec({
                         // Act - only update title and description
                         val result = useCase.call(
                             UpdateLessonPlanUseCaseInput(
-                                id = lessonPlanId,
+                                id = originalDraftLessonPlan.id,
                                 title = updatedTitle,
                                 description = updatedDescription,
                                 lessonType = null,
@@ -171,7 +173,7 @@ class UpdateLessonPlanUseCaseTest : DescribeSpec({
                 context("when all specified fields") {
                     it("should update all specified fields and return success") {
                         // Arrange
-                        coEvery { lessonPlanRepository.findById(lessonPlanId) } returns originalDraftLessonPlan
+                        coEvery { lessonPlanRepository.findById(originalDraftLessonPlan.id) } returns originalDraftLessonPlan
 
                         val updatedOriginalDraftLessonPlan = originalDraftLessonPlan.update(
                             title = updatedTitle,
@@ -192,7 +194,7 @@ class UpdateLessonPlanUseCaseTest : DescribeSpec({
                         // Act
                         val result = useCase.call(
                             UpdateLessonPlanUseCaseInput(
-                                id = lessonPlanId,
+                                id = originalDraftLessonPlan.id,
                                 title = updatedTitle,
                                 description = updatedDescription,
                                 lessonType = updatedLessonType,
@@ -213,7 +215,7 @@ class UpdateLessonPlanUseCaseTest : DescribeSpec({
                 context("when only specified fields") {
                     it("should update only specified fields and keep others unchanged") {
                         // Arrange
-                        coEvery { lessonPlanRepository.findById(lessonPlanId) } returns originalDraftLessonPlan
+                        coEvery { lessonPlanRepository.findById(originalDraftLessonPlan.id) } returns originalDraftLessonPlan
 
                         val updatedOriginalDraftLessonPlan = originalDraftLessonPlan.update(
                             title = null,
@@ -233,7 +235,7 @@ class UpdateLessonPlanUseCaseTest : DescribeSpec({
                         // Act - only update location and annualMaxExecutions
                         val result = useCase.call(
                             UpdateLessonPlanUseCaseInput(
-                                id = lessonPlanId,
+                                id = originalDraftLessonPlan.id,
                                 title = null,
                                 description = null,
                                 lessonType = null,
@@ -254,12 +256,12 @@ class UpdateLessonPlanUseCaseTest : DescribeSpec({
                 context("when lesson plan does not exist") {
                     it("should return LESSON_PLAN_NOT_FOUND error") {
                         // Arrange
-                        coEvery { lessonPlanRepository.findById(lessonPlanId) } returns null
+                        coEvery { lessonPlanRepository.findById(originalPublishedLessonPlan.id) } returns null
 
                         // Act
                         val result = useCase.call(
                             UpdateLessonPlanUseCaseInput(
-                                id = lessonPlanId,
+                                id = originalPublishedLessonPlan.id,
                                 title = updatedTitle,
                                 description = updatedDescription,
                                 lessonType = updatedLessonType,
@@ -276,7 +278,7 @@ class UpdateLessonPlanUseCaseTest : DescribeSpec({
                         result.shouldBeTypeOf<Either.Left<LessonPlanError>>()
                         val error = (result as Either.Left<LessonPlanError>).value
                         error.code shouldBe LessonPlanErrorCode.LESSON_PLAN_NOT_FOUND
-                        error.message shouldBe "Lesson plan with ID ${lessonPlanId.value} not found"
+                        error.message shouldBe "Lesson plan with ID ${originalPublishedLessonPlan.id.value} not found"
                     }
                 }
             }
