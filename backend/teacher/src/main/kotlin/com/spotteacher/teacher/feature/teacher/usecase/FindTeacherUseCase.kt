@@ -12,16 +12,4 @@ class FindTeacherUseCase(
     suspend fun findById(id: TeacherId): Teacher? {
         return teacherRepository.findById(id)
     }
-
-    suspend fun findByUserId(userId: Long): Teacher? {
-        return teacherRepository.findByUserId(userId)
-    }
-
-    suspend fun findBySchoolId(schoolId: Long): List<Teacher> {
-        return teacherRepository.findBySchoolId(schoolId)
-    }
-
-    suspend fun getAll(): List<Teacher> {
-        return teacherRepository.getAll()
-    }
 }

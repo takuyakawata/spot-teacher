@@ -1,6 +1,7 @@
 package com.spotteacher.admin.feature.uploadFile.handler
 
 import com.spotteacher.admin.feature.uploadFile.domain.FileKey
+import com.spotteacher.admin.feature.uploadFile.domain.UploadFileId
 import com.spotteacher.admin.feature.uploadFile.domain.UploadFileRepository
 import com.spotteacher.admin.fixture.UploadFileFixture
 import com.spotteacher.backend.DatabaseDescribeSpec

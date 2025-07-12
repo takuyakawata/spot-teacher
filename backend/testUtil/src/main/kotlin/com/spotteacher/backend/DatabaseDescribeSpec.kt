@@ -15,7 +15,7 @@ open class DatabaseDescribeSpec(
 
 //    private lateinit var internalJdbcTemplate: JdbcTemplate
     @Autowired
-    protected lateinit var databaseClient: DatabaseClient
+    protected open lateinit var databaseClient: DatabaseClient
 
     @Value("\${aurora.writer.url}")
     private lateinit var r2dbcUrl: String
