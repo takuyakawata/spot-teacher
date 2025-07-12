@@ -51,7 +51,7 @@ class LessonPlanFixture {
     // Build a DraftLessonPlan with default values
     fun buildDraftLessonPlan(
         id: LessonPlanId = LessonPlanId(lessonPlanIdCount++),
-        companyId: CompanyId = CompanyId(1),
+        companyId: CompanyId,
         images: List<UploadFileId> = emptyList(),
         createdAt: LocalDateTime = LocalDateTime.now(),
         title: LessonPlanTitle? = LessonPlanTitle("Draft Lesson Plan"),
@@ -84,7 +84,7 @@ class LessonPlanFixture {
     // Build a PublishedLessonPlan with default values
     fun buildPublishedLessonPlan(
         id: LessonPlanId = LessonPlanId(lessonPlanIdCount++),
-        companyId: CompanyId = CompanyId(1),
+        companyId: CompanyId,
         images: List<UploadFileId> = emptyList(),
         createdAt: LocalDateTime = LocalDateTime.now(),
         title: LessonPlanTitle = LessonPlanTitle("Published Lesson Plan"),
@@ -116,7 +116,7 @@ class LessonPlanFixture {
 
     // Create and persist a DraftLessonPlan
     suspend fun createDraftLessonPlan(
-        companyId: CompanyId = CompanyId(1),
+        companyId: CompanyId,
         images: List<UploadFileId> = emptyList(),
         title: LessonPlanTitle? = LessonPlanTitle("Draft Lesson Plan"),
         description: LessonPlanDescription? = LessonPlanDescription("This is a draft lesson plan description"),

@@ -1,6 +1,5 @@
 package com.spotteacher.admin.feature.lessonPlan.infra
 
-import com.spotteacher.admin.feature.company.domain.CompanyId
 import com.spotteacher.admin.feature.lessonPlan.domain.DraftLessonPlan
 import com.spotteacher.admin.feature.lessonPlan.domain.LessonLocation
 import com.spotteacher.admin.feature.lessonPlan.domain.LessonPlanDescription
@@ -8,6 +7,7 @@ import com.spotteacher.admin.feature.lessonPlan.domain.LessonPlanRepository
 import com.spotteacher.admin.feature.lessonPlan.domain.LessonPlanTitle
 import com.spotteacher.admin.feature.lessonPlan.domain.LessonType
 import com.spotteacher.admin.feature.lessonPlan.domain.PublishedLessonPlan
+import com.spotteacher.admin.fixture.CompanyFixture
 import com.spotteacher.admin.fixture.LessonPlanFixture
 import com.spotteacher.backend.DatabaseDescribeSpec
 import io.kotest.matchers.collections.shouldNotBeEmpty
@@ -19,7 +19,8 @@ import org.springframework.boot.test.context.SpringBootTest.WebEnvironment.NONE
 @SpringBootTest(webEnvironment = NONE)
 class LessonPlanRepositoryImplTest(
     private val lessonPlanRepository: LessonPlanRepository,
-    private val lessonPlanFixture: LessonPlanFixture
+    private val lessonPlanFixture: LessonPlanFixture,
+    private val companyFixture: CompanyFixture
 ) : DatabaseDescribeSpec({
 
     describe("LessonPlanRepository") {
@@ -27,8 +28,9 @@ class LessonPlanRepositoryImplTest(
         describe("createDraft and findById") {
             it("should create a DraftLessonPlan and find it by ID") {
                 // Create a new DraftLessonPlan
+                val company = companyFixture.createCompany()
                 val draftLessonPlan = lessonPlanFixture.buildDraftLessonPlan(
-                    companyId = CompanyId(1),
+                    companyId = company.id,
                     title = LessonPlanTitle("Test Draft Lesson Plan"),
                     description = LessonPlanDescription("Test Description"),
                     lessonType = LessonType.ONLINE,
@@ -56,7 +58,9 @@ class LessonPlanRepositoryImplTest(
         describe("update") {
             it("should update a DraftLessonPlan") {
                 // Create a new DraftLessonPlan
+                val company = companyFixture.createCompany()
                 val draftLessonPlan = lessonPlanFixture.createDraftLessonPlan(
+                    companyId = company.id,
                     title = LessonPlanTitle("Original Title"),
                     description = LessonPlanDescription("Original Description"),
                     lessonType = LessonType.ONLINE,
@@ -89,7 +93,9 @@ class LessonPlanRepositoryImplTest(
 
             it("should update a PublishedLessonPlan") {
                 // Create a new DraftLessonPlan and publish it
+                val company = companyFixture.createCompany()
                 val draftLessonPlan = lessonPlanFixture.createDraftLessonPlan(
+                    companyId = company.id,
                     title = LessonPlanTitle("Draft to Publish"),
                     description = LessonPlanDescription("Original Description"),
                     lessonType = LessonType.ONLINE,
@@ -144,7 +150,9 @@ class LessonPlanRepositoryImplTest(
         describe("updateStatus") {
             it("should update a DraftLessonPlan to PublishedLessonPlan") {
                 // Create a new DraftLessonPlan
+                val company = companyFixture.createCompany()
                 val draftLessonPlan = lessonPlanFixture.createDraftLessonPlan(
+                    companyId = company.id,
                     title = LessonPlanTitle("Draft to be Published"),
                     description = LessonPlanDescription("Draft Description"),
                     lessonType = LessonType.ONLINE,
@@ -187,7 +195,9 @@ class LessonPlanRepositoryImplTest(
 
             it("should update a PublishedLessonPlan to DraftLessonPlan") {
                 // Create a new DraftLessonPlan and publish it
+                val company = companyFixture.createCompany()
                 val draftLessonPlan = lessonPlanFixture.createDraftLessonPlan(
+                    companyId = company.id,
                     title = LessonPlanTitle("Published to be Draft"),
                     description = LessonPlanDescription("Published Description"),
                     lessonType = LessonType.ONLINE,
@@ -252,7 +262,9 @@ class LessonPlanRepositoryImplTest(
         describe("delete") {
             it("should delete a lesson plan") {
                 // Create a new DraftLessonPlan
+                val company = companyFixture.createCompany()
                 val draftLessonPlan = lessonPlanFixture.createDraftLessonPlan(
+                    companyId = company.id,
                     title = LessonPlanTitle("Lesson Plan to Delete"),
                     description = LessonPlanDescription("Delete Description"),
                     lessonType = LessonType.ONLINE,
@@ -276,7 +288,9 @@ class LessonPlanRepositoryImplTest(
         describe("getAll") {
             it("should return all lesson plans") {
                 // Create multiple lesson plans
+                val company = companyFixture.createCompany()
                 val lessonPlan1 = lessonPlanFixture.createDraftLessonPlan(
+                    companyId = company.id,
                     title = LessonPlanTitle("Lesson Plan 1"),
                     description = LessonPlanDescription("Description 1"),
                     lessonType = LessonType.ONLINE,
@@ -284,6 +298,7 @@ class LessonPlanRepositoryImplTest(
                     annualMaxExecutions = 10
                 )
                 val lessonPlan2 = lessonPlanFixture.createDraftLessonPlan(
+                    companyId = company.id,
                     title = LessonPlanTitle("Lesson Plan 2"),
                     description = LessonPlanDescription("Description 2"),
                     lessonType = LessonType.OFFLINE,

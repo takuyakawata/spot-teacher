@@ -22,7 +22,7 @@ import org.springframework.test.context.TestPropertySource
 @TestPropertySource(properties = ["aws.s3.bucket=test-bucket"])
 class UploadFileRepositoryImplTest(
     private val repository: UploadFileRepository,
-    private val databaseClient: DatabaseClient,
+    override var databaseClient: DatabaseClient,
     private val uploadFileFixture: UploadFileFixture,
 ) : DatabaseDescribeSpec({
     describe("UploadFileRepositoryImpl") {

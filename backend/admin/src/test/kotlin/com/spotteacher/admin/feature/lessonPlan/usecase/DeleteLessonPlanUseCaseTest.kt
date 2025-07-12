@@ -5,6 +5,7 @@ import com.spotteacher.admin.feature.lessonPlan.domain.LessonPlanError
 import com.spotteacher.admin.feature.lessonPlan.domain.LessonPlanErrorCode
 import com.spotteacher.admin.feature.lessonPlan.domain.LessonPlanId
 import com.spotteacher.admin.feature.lessonPlan.domain.LessonPlanRepository
+import com.spotteacher.admin.fixture.CompanyFixture
 import com.spotteacher.admin.fixture.LessonPlanFixture
 import io.kotest.core.spec.style.DescribeSpec
 import io.kotest.matchers.shouldBe
@@ -17,14 +18,16 @@ class DeleteLessonPlanUseCaseTest : DescribeSpec({
         // Arrange
         val lessonPlanRepository = mockk<LessonPlanRepository>()
         val fixture = LessonPlanFixture()
+        val companyFixture = CompanyFixture()
         val useCase = DeleteLessonPlanUseCase(lessonPlanRepository)
 
         // Test data
         val lessonPlanId = LessonPlanId(1)
 
         // Create a lesson plan using fixture
+        val company = companyFixture.buildCompany()
         val publishedLessonPlan = fixture.buildPublishedLessonPlan(
-            id = lessonPlanId
+            companyId = company.id,
         )
 
         describe("call") {

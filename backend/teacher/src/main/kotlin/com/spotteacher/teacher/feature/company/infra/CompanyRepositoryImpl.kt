@@ -14,6 +14,7 @@ import com.spotteacher.domain.StreetAddress
 import com.spotteacher.extension.nonBlockingFetchOne
 import com.spotteacher.infra.db.tables.Companies.Companion.COMPANIES
 import com.spotteacher.infra.db.tables.records.CompaniesRecord
+import kotlinx.coroutines.reactive.awaitFirstOrNull
 import org.springframework.stereotype.Repository
 import java.net.URI
 
@@ -26,6 +27,29 @@ class CompanyRepositoryImpl(
             COMPANIES,
             COMPANIES.ID.eq(companyId.value)
         )?.toCompanyEntity()
+    }
+
+    override suspend fun create(company: Company):Company {
+        val id = dslContext.get().insertInto(
+            COMPANIES,
+            COMPANIES.NAME,
+            COMPANIES.POST_CODE,
+            COMPANIES.PREFECTURE,
+            COMPANIES.CITY,
+            COMPANIES.STREET,
+            COMPANIES.URL,
+            COMPANIES.PHONE_NUMBER,
+        ).values(
+            company.name.value,
+            company.address.postCode.value,
+            company.address.prefecture.name,
+            company.address.city.value,
+            company.address.streetAddress.value,
+            company.url?.toString(),
+            company.phoneNumber?.value,
+        ).returning(COMPANIES.ID).awaitFirstOrNull()?.id!!
+
+        return company.copy(id = CompanyId(id))
     }
 
     private fun CompaniesRecord.toCompanyEntity(): Company {

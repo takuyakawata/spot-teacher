@@ -3,7 +3,14 @@
  */
 package com.spotteacher.infra.db.tables
 
+
 import com.spotteacher.infra.db.tables.records.TeachersRecord
+
+import java.time.LocalDateTime
+
+import kotlin.collections.Collection
+import kotlin.collections.List
+
 import org.jooq.Condition
 import org.jooq.Field
 import org.jooq.ForeignKey
@@ -24,9 +31,7 @@ import org.jooq.impl.DSL
 import org.jooq.impl.Internal
 import org.jooq.impl.SQLDataType
 import org.jooq.impl.TableImpl
-import java.time.LocalDateTime
-import kotlin.collections.Collection
-import kotlin.collections.List
+
 
 /**
  * Teacherロールを持つユーザーの情報
@@ -40,7 +45,7 @@ open class Teachers(
     aliased: Table<TeachersRecord>?,
     parameters: Array<Field<*>?>?,
     where: Condition?
-) : TableImpl<TeachersRecord>(
+): TableImpl<TeachersRecord>(
     alias,
     null,
     path,
@@ -83,41 +88,31 @@ open class Teachers(
     /**
      * The column <code>teachers.created_at</code>.
      */
-    val CREATED_AT: TableField<TeachersRecord, LocalDateTime?> = createField(
-        DSL.name("created_at"),
-        SQLDataType.LOCALDATETIME(0).nullable(false).defaultValue(DSL.field(DSL.raw("CURRENT_TIMESTAMP"), SQLDataType.LOCALDATETIME)),
-        this,
-        ""
-    )
+    val CREATED_AT: TableField<TeachersRecord, LocalDateTime?> = createField(DSL.name("created_at"), SQLDataType.LOCALDATETIME(0).nullable(false).defaultValue(DSL.field(DSL.raw("CURRENT_TIMESTAMP"), SQLDataType.LOCALDATETIME)), this, "")
 
     /**
      * The column <code>teachers.updated_at</code>.
      */
-    val UPDATED_AT: TableField<TeachersRecord, LocalDateTime?> = createField(
-        DSL.name("updated_at"),
-        SQLDataType.LOCALDATETIME(0).nullable(false).defaultValue(DSL.field(DSL.raw("CURRENT_TIMESTAMP"), SQLDataType.LOCALDATETIME)),
-        this,
-        ""
-    )
+    val UPDATED_AT: TableField<TeachersRecord, LocalDateTime?> = createField(DSL.name("updated_at"), SQLDataType.LOCALDATETIME(0).nullable(false).defaultValue(DSL.field(DSL.raw("CURRENT_TIMESTAMP"), SQLDataType.LOCALDATETIME)), this, "")
 
-    private constructor(alias: Name, aliased: Table<TeachersRecord>?) : this(alias, null, null, null, aliased, null, null)
-    private constructor(alias: Name, aliased: Table<TeachersRecord>?, parameters: Array<Field<*>?>?) : this(alias, null, null, null, aliased, parameters, null)
-    private constructor(alias: Name, aliased: Table<TeachersRecord>?, where: Condition?) : this(alias, null, null, null, aliased, null, where)
+    private constructor(alias: Name, aliased: Table<TeachersRecord>?): this(alias, null, null, null, aliased, null, null)
+    private constructor(alias: Name, aliased: Table<TeachersRecord>?, parameters: Array<Field<*>?>?): this(alias, null, null, null, aliased, parameters, null)
+    private constructor(alias: Name, aliased: Table<TeachersRecord>?, where: Condition?): this(alias, null, null, null, aliased, null, where)
 
     /**
      * Create an aliased <code>teachers</code> table reference
      */
-    constructor(alias: String) : this(DSL.name(alias))
+    constructor(alias: String): this(DSL.name(alias))
 
     /**
      * Create an aliased <code>teachers</code> table reference
      */
-    constructor(alias: Name) : this(alias, null)
+    constructor(alias: Name): this(alias, null)
 
     /**
      * Create a <code>teachers</code> table reference
      */
-    constructor() : this(DSL.name("teachers"), null)
+    constructor(): this(DSL.name("teachers"), null)
     override fun getIdentity(): Identity<TeachersRecord, Long?> = super.getIdentity() as Identity<TeachersRecord, Long?>
     override fun getPrimaryKey(): UniqueKey<TeachersRecord> = Internal.createUniqueKey(Teachers.TEACHERS, DSL.name("KEY_teachers_PRIMARY"), arrayOf(Teachers.TEACHERS.ID), true)
     override fun getUniqueKeys(): List<UniqueKey<TeachersRecord>> = listOf(
