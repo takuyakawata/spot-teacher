@@ -24,36 +24,7 @@ data class LessonPlan (
     val location: LessonLocation,
     val annualMaxExecutions: Int,
     val lessonPlanDates: Nel<LessonPlanDate>
-){
-    companion object {
-        fun create(
-            companyId: CompanyId,
-            title: LessonPlanTitle,
-            description: LessonPlanDescription,
-            lessonType: LessonType,
-            location: LessonLocation,
-            annualMaxExecutions: Int,
-            images: List<UploadFileId>,
-            educations: LessonPlanEducations,
-            subjects: LessonPlanSubjects,
-            grades: LessonPlanGrades
-        ) = LessonPlan(
-            id = LessonPlanId(0),
-            companyId = companyId,
-            images = emptyList(),
-            createdAt = LocalDateTime.now(),
-            educations = LessonPlanEducations(emptySet()),
-            subjects = LessonPlanSubjects(emptySet()),
-            grades = LessonPlanGrades(emptySet()),
-            title = title,
-            description = description,
-            lessonType = lessonType,
-            location = location,
-            annualMaxExecutions = annualMaxExecutions,
-            lessonPlanDates = Nel.fromListUnsafe(emptyList())
-        )
-    }
-}
+)
 
 class LessonPlanId(override val value: Long) : Identity<Long>(value)
 
