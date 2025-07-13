@@ -27,6 +27,7 @@ import com.spotteacher.teacher.feature.lessonTag.domain.Subject
 import com.spotteacher.teacher.feature.school.domain.SchoolId
 import com.spotteacher.teacher.feature.teacher.domain.TeacherId
 import com.spotteacher.teacher.shared.infra.TransactionAwareDSLContext
+import com.spotteacher.extension.nonBlockingFetch
 import kotlinx.coroutines.reactive.awaitFirstOrNull
 import kotlinx.coroutines.reactive.awaitLast
 import org.springframework.stereotype.Repository
@@ -153,23 +154,23 @@ class LessonScheduleRepositoryImpl(private val dslContext: TransactionAwareDSLCo
     private suspend fun getLessonScheduleEducations(lessonScheduleId: Long?): Set<EducationId> {
         if (lessonScheduleId == null) return emptySet()
 
-        return dslContext.get().select(LESSON_SCHEDULE_EDUCATIONS.EDUCATION_ID)
-            .from(LESSON_SCHEDULE_EDUCATIONS)
-            .where(LESSON_SCHEDULE_EDUCATIONS.LESSON_SCHEDULE_ID.eq(lessonScheduleId))
-            .fetch()
-            .map { EducationId(it.get(LESSON_SCHEDULE_EDUCATIONS.EDUCATION_ID) as Long) }
+        return dslContext.get().nonBlockingFetch(
+            LESSON_SCHEDULE_EDUCATIONS,
+            LESSON_SCHEDULE_EDUCATIONS.LESSON_SCHEDULE_ID.eq(lessonScheduleId)
+        )
+            .map { EducationId(it.educationId) }
             .toSet()
     }
 
     private suspend fun getLessonScheduleSubjects(lessonScheduleId: Long?): Set<Subject> {
         if (lessonScheduleId == null) return emptySet()
 
-        val subjectCodes = dslContext.get().select(LESSON_SCHEDULE_SUBJECTS.SUBJECT_CODE)
-            .from(LESSON_SCHEDULE_SUBJECTS)
-            .where(LESSON_SCHEDULE_SUBJECTS.LESSON_SCHEDULE_ID.eq(lessonScheduleId))
-            .orderBy(LESSON_SCHEDULE_SUBJECTS.DISPLAY_ORDER.asc())
-            .fetch()
-            .map { it.get(LESSON_SCHEDULE_SUBJECTS.SUBJECT_CODE) }
+        val subjectCodes = dslContext.get().nonBlockingFetch(
+            LESSON_SCHEDULE_SUBJECTS,
+            LESSON_SCHEDULE_SUBJECTS.LESSON_SCHEDULE_ID.eq(lessonScheduleId)
+        )
+            .sortedBy { it.displayOrder }
+            .map { it.subjectCode }
 
         return subjectCodes.mapNotNull { code ->
             try {
@@ -183,12 +184,12 @@ class LessonScheduleRepositoryImpl(private val dslContext: TransactionAwareDSLCo
     private suspend fun getLessonScheduleGrades(lessonScheduleId: Long?): Set<Grade> {
         if (lessonScheduleId == null) return emptySet()
 
-        val gradeCodes = dslContext.get().select(LESSON_SCHEDULE_GRADES.GRADE_CODE)
-            .from(LESSON_SCHEDULE_GRADES)
-            .where(LESSON_SCHEDULE_GRADES.LESSON_SCHEDULE_ID.eq(lessonScheduleId))
-            .orderBy(LESSON_SCHEDULE_GRADES.DISPLAY_ORDER.asc())
-            .fetch()
-            .map { it.get(LESSON_SCHEDULE_GRADES.GRADE_CODE) }
+        val gradeCodes = dslContext.get().nonBlockingFetch(
+            LESSON_SCHEDULE_GRADES,
+            LESSON_SCHEDULE_GRADES.LESSON_SCHEDULE_ID.eq(lessonScheduleId)
+        )
+            .sortedBy { it.displayOrder }
+            .map { it.gradeCode }
 
         return gradeCodes.mapNotNull { code ->
             try {
