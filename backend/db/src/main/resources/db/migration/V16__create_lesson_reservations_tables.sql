@@ -4,7 +4,7 @@ CREATE TABLE IF NOT EXISTS lesson_reservations (
     school_id BIGINT NOT NULL,
     teacher_id BIGINT NOT NULL,
     lesson_plan_id BIGINT NOT NULL,
-    title VARCHAR(500),
+    title VARCHAR(500) NOT NULL,
     description VARCHAR(2000) NULL,
     location VARCHAR(500) NULL,
     lesson_type ENUM('ONLINE', 'OFFLINE', 'ONLINE_AND_OFFLINE'),

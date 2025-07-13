@@ -19,6 +19,12 @@ import com.spotteacher.infra.db.tables.LessonReservationEducations
 import com.spotteacher.infra.db.tables.LessonReservationGrades
 import com.spotteacher.infra.db.tables.LessonReservationSubjects
 import com.spotteacher.infra.db.tables.LessonReservations
+import com.spotteacher.infra.db.tables.LessonScheduleCancels
+import com.spotteacher.infra.db.tables.LessonScheduleEducations
+import com.spotteacher.infra.db.tables.LessonScheduleGrades
+import com.spotteacher.infra.db.tables.LessonScheduleReports
+import com.spotteacher.infra.db.tables.LessonScheduleSubjects
+import com.spotteacher.infra.db.tables.LessonSchedules
 import com.spotteacher.infra.db.tables.Products
 import com.spotteacher.infra.db.tables.RefreshTokens
 import com.spotteacher.infra.db.tables.Schools
@@ -98,6 +104,36 @@ val LESSON_RESERVATION_SUBJECTS: LessonReservationSubjects = LessonReservationSu
  * The table <code>lesson_reservations</code>.
  */
 val LESSON_RESERVATIONS: LessonReservations = LessonReservations.LESSON_RESERVATIONS
+
+/**
+ * The table <code>lesson_schedule_cancels</code>.
+ */
+val LESSON_SCHEDULE_CANCELS: LessonScheduleCancels = LessonScheduleCancels.LESSON_SCHEDULE_CANCELS
+
+/**
+ * The table <code>lesson_schedule_educations</code>.
+ */
+val LESSON_SCHEDULE_EDUCATIONS: LessonScheduleEducations = LessonScheduleEducations.LESSON_SCHEDULE_EDUCATIONS
+
+/**
+ * The table <code>lesson_schedule_grades</code>.
+ */
+val LESSON_SCHEDULE_GRADES: LessonScheduleGrades = LessonScheduleGrades.LESSON_SCHEDULE_GRADES
+
+/**
+ * The table <code>lesson_schedule_reports</code>.
+ */
+val LESSON_SCHEDULE_REPORTS: LessonScheduleReports = LessonScheduleReports.LESSON_SCHEDULE_REPORTS
+
+/**
+ * The table <code>lesson_schedule_subjects</code>.
+ */
+val LESSON_SCHEDULE_SUBJECTS: LessonScheduleSubjects = LessonScheduleSubjects.LESSON_SCHEDULE_SUBJECTS
+
+/**
+ * The table <code>lesson_schedules</code>.
+ */
+val LESSON_SCHEDULES: LessonSchedules = LessonSchedules.LESSON_SCHEDULES
 
 /**
  * The table <code>products</code>.

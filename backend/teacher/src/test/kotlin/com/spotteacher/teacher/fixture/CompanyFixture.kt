@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component
 import java.net.URI
 
 @Component
-class CompanyFixture {
+class CompanyFixture{
     @Autowired
     private lateinit var companyRepository: CompanyRepository
 
