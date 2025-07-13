@@ -14,6 +14,7 @@ class SchoolQuery(
     private val findSchoolsUseCase: FindSchoolsUseCase,
     private val findSchoolUseCase: FindSchoolUseCase
 ) : Query {
+    //todo add pagination
     suspend fun schools(): List<SchoolType> {
         val output = findSchoolsUseCase.call()
         return output.schools.map { it.toSchoolType() }
