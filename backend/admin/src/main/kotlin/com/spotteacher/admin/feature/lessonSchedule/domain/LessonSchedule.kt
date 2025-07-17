@@ -82,3 +82,15 @@ data class ScheduleDate(
     val startTime: LocalTime,
     val endTime: Time,
 )
+
+
+data class LessonScheduleError(
+    val message: String,
+    val errorCode : LessonScheduleErrorCode
+)
+
+enum class LessonScheduleErrorCode{
+    LESSON_SCHEDULE_NOT_FOUND,
+    LESSON_SCHEDULE_ALREADY_EXISTS,
+    LESSON_RESERVATION_NOT_FOUND,
+}
