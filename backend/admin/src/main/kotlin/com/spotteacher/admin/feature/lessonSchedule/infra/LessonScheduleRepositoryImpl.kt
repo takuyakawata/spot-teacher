@@ -19,6 +19,8 @@ import com.spotteacher.admin.feature.lessonTag.domain.Subject
 import com.spotteacher.admin.feature.school.domain.SchoolId
 import com.spotteacher.admin.feature.teacher.domain.TeacherId
 import com.spotteacher.admin.shared.infra.TransactionAwareDSLContext
+import com.spotteacher.domain.Pagination
+import com.spotteacher.domain.SortOrder
 import com.spotteacher.extension.nonBlockingFetch
 import com.spotteacher.infra.db.enums.LessonSchedulesLessonType
 import com.spotteacher.infra.db.enums.LessonSchedulesStatus
@@ -27,6 +29,9 @@ import com.spotteacher.infra.db.tables.LessonScheduleGrades.Companion.LESSON_SCH
 import com.spotteacher.infra.db.tables.LessonScheduleSubjects.Companion.LESSON_SCHEDULE_SUBJECTS
 import com.spotteacher.infra.db.tables.LessonSchedules.Companion.LESSON_SCHEDULES
 import com.spotteacher.infra.db.tables.records.LessonSchedulesRecord
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.toList
+import kotlinx.coroutines.reactive.asFlow
 import kotlinx.coroutines.reactive.awaitFirstOrNull
 import kotlinx.coroutines.reactive.awaitLast
 import org.springframework.stereotype.Repository
@@ -145,6 +150,42 @@ class LessonScheduleRepositoryImpl(private val dslContext: TransactionAwareDSLCo
         return when (record.status) {
             LessonSchedulesStatus.DOING -> createDoingLessonSchedule(record, educations, subjects, grades)
             else -> null // For now, we only handle DOING status
+        }
+    }
+
+    override suspend fun getAll(pagination: Pagination<LessonSchedule>): List<LessonSchedule> {
+        val paginationFields = pagination.cursorColumns.mapNotNull {
+            LESSON_SCHEDULES.field(it.getDbColumnName())?.let { column ->
+                when (it.order) {
+                    SortOrder.ASC -> column.asc()
+                    SortOrder.DESC -> column.desc()
+                } to it.getPrimitiveValue()
+            }
+        }
+        
+        val query = dslContext.get().selectFrom(LESSON_SCHEDULES)
+            .orderBy(*paginationFields.map { it.first }.toTypedArray())
+            .seek(*paginationFields.map { it.second }.toTypedArray())
+            .limit(pagination.limit)
+        
+        val records = query.asFlow()
+            .map { it.into(LessonSchedulesRecord::class.java) }
+            .toList()
+        
+        return records.mapNotNull { record ->
+            // Get educations
+            val educations = getLessonScheduleEducations(record.id)
+            
+            // Get subjects
+            val subjects = getLessonScheduleSubjects(record.id)
+            
+            // Get grades
+            val grades = getLessonScheduleGrades(record.id)
+            
+            when (record.status) {
+                LessonSchedulesStatus.DOING -> createDoingLessonSchedule(record, educations, subjects, grades)
+                else -> null // For now, we only handle DOING status
+            }
         }
     }
 
