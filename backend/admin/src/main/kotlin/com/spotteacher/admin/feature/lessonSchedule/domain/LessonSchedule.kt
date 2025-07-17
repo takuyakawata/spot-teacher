@@ -1,6 +1,5 @@
 package com.spotteacher.admin.feature.lessonSchedule.domain
 
-
 import com.spotteacher.admin.feature.lessonPlan.domain.LessonType
 import com.spotteacher.admin.feature.lessonReservation.domain.LessonReservationDescription
 import com.spotteacher.admin.feature.lessonReservation.domain.LessonReservationEducations
