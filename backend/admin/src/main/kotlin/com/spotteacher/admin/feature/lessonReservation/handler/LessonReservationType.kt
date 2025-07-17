@@ -6,8 +6,10 @@ import com.expediagroup.graphql.generator.scalars.ID
 import com.spotteacher.admin.feature.company.domain.CompanyId
 import com.spotteacher.admin.feature.lessonPlan.domain.LessonPlanId
 import com.spotteacher.admin.feature.lessonPlan.domain.LessonType
+import com.spotteacher.admin.feature.lessonReservation.domain.LessonReservationId
 import com.spotteacher.admin.feature.school.domain.SchoolId
 import com.spotteacher.admin.feature.teacher.domain.TeacherId
+import com.spotteacher.graphql.toID
 import java.time.LocalDate
 import java.time.LocalTime
 
@@ -20,8 +22,6 @@ data class LessonReservationType(
     val id: ID,
     @GraphQLIgnore
     val lessonPlanId: LessonPlanId,
-    @GraphQLIgnore
-    val companyId: CompanyId,
     @GraphQLIgnore
     val reservedSchoolId: SchoolId,
     @GraphQLIgnore
@@ -47,3 +47,5 @@ data class LessonReservationDate(
     val startTime: LocalTime,
     val endTime: LocalTime,
 )
+
+fun LessonReservationId.toGraphQLID() = this.toID(LESSON_RESERVATION_TYPE)
