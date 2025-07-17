@@ -7,6 +7,7 @@ import com.spotteacher.admin.feature.lessonTag.domain.EducationId
 import com.spotteacher.admin.feature.lessonTag.domain.Grade
 import com.spotteacher.admin.feature.lessonTag.domain.Subject
 import com.spotteacher.admin.feature.school.domain.SchoolId
+import com.spotteacher.admin.feature.teacher.domain.TeacherId
 import com.spotteacher.util.Identity
 import java.time.LocalDate
 import java.time.LocalTime
@@ -27,8 +28,6 @@ data class LessonReservation(
 )
 
 class LessonReservationId(override val value: Long) : Identity<Long>(value)
-
-class TeacherId(override val value: Long) : Identity<Long>(value)
 
 @JvmInline
 value class LessonReservationEducations(val value: Set<EducationId>)

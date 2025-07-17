@@ -99,4 +99,8 @@ class LessonPlanQuery(
             }
         )
     }
+
+    suspend fun lessonPlans(): List<LessonPlanType> {
+        TODO("add pagination")
+    }
 }

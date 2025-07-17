@@ -12,6 +12,9 @@ import com.spotteacher.util.Identity
 import java.time.LocalDate
 import java.time.LocalTime
 
+//todo 子供人数の追加
+//todo 教員の人数の追加
+//todo その他備考の蘭の追加
 data class LessonReservation(
     val id: LessonReservationId,
     val lessonPlanId: LessonPlanId,

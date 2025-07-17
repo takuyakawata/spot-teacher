@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component
 
 @Component
 class LessonScheduleQuery : Query {
-    suspend fun lessonSchedule(): List<LessonScheduleType> {
+    suspend fun lessonSchedules(): List<LessonScheduleType> {
         return emptyList()
     }
 }

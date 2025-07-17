@@ -144,7 +144,7 @@ class LessonPlanFixture {
     }
 
     // Convert a DraftLessonPlan to PublishedLessonPlan and update it
-    suspend fun publishDraftLessonPlan(draftLessonPlan: DraftLessonPlan): PublishedLessonPlan {
+    suspend fun updatePublishedLessonPlan(draftLessonPlan: DraftLessonPlan): PublishedLessonPlan {
         val publishedLessonPlan = draftLessonPlan.toPublishedLessonPlan()
         lessonPlanRepository.updateStatus(publishedLessonPlan)
         return publishedLessonPlan
