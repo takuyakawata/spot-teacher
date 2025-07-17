@@ -27,54 +27,52 @@ class LessonReservationRepositoryImplTest(
     @Autowired private val lessonPlanFixture: LessonPlanFixture,
     @Autowired private val lessonReservationFixture: LessonReservationFixture,
 ) : DatabaseDescribeSpec({
-
     describe("LessonReservationRepository") {
-        describe("findById") {
+        val school = schoolFixture.createSchool()
+        val teacher = teacherFixture.create(
+            schoolId = school.id
+        )
+        val company = companyFixture.createCompany()
+        val draftLessonPlan = lessonPlanFixture.createDraftLessonPlan(
+            companyId = company.id,
+        )
+        val publishedLessonPlan = lessonPlanFixture.updatePublishedLessonPlan(draftLessonPlan = draftLessonPlan)
+        val reservation = lessonReservationFixture.createLessonReservation(
+            lessonPlanId = publishedLessonPlan.id,
+            reservedSchoolId = school.id,
+            reservedTeacherId = teacher.id,
+        )
 
+        describe("findById") {
             context("when the lesson reservation exists") {
                 it("should return lesson reservation"){
-                    val school = schoolFixture.createSchool()
-                    val teacher = teacherFixture.create(
-                        schoolId = school.id
-                    )
-                    val company = companyFixture.createCompany()
-                    val draftLessonPlan = lessonPlanFixture.createDraftLessonPlan(
-                        companyId = company.id,
-                    )
-                    val publishedLessonPlan = lessonPlanFixture.updatePublishedLessonPlan(draftLessonPlan = draftLessonPlan)
-                    val reservation = lessonReservationFixture.createLessonReservation(
-                        lessonPlanId = publishedLessonPlan.id,
-                        reservedSchoolId = school.id,
-                        reservedTeacherId = teacher.id,
-                    )
-
                     val result = lessonReservationRepository.findById(reservation.id)
                     result shouldBe reservation
                 }
-            }
-            context("when the lesson reservation exists"){
-                it("should return null") {
-                    // Act
-                    val result = lessonReservationRepository.findById(LessonReservationId(999999))
 
-                    // Assert
+            context("when no lesson reservation exists") {
+                it("should return null") {
+                    val result = lessonReservationRepository.findById(LessonReservationId(999999))
                     result shouldBe null
                 }
             }
+            }
+
         }
 
         describe("paginated") {
-            it("should return an empty list when no lesson reservations exist") {
-                // Arrange
-                val pagination = Pagination<LessonReservation>(
-                    limit = 10
-                )
+            context("when no lesson reservations exist") {
+                it("should return  list") {
+                    // Arrange
+                    val pagination = Pagination<LessonReservation>(
+                        limit = 10
+                    )
+                    // Act
+                    val result = lessonReservationRepository.paginated(pagination)
 
-                // Act
-                val result = lessonReservationRepository.paginated(pagination)
-
-                // Assert
-                result shouldBe emptyList()
+                    // Assert
+                    result[0] shouldBe reservation
+                }
             }
 
             it("should handle pagination with cursor columns") {

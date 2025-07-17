@@ -21,11 +21,11 @@ data class LastLessonReservationIdId(
 )
 
 sealed interface LessonReservationQueryOutput
-data class LessonPlanQuerySuccessOutput(
+data class LessonReservationQuerySuccessOutput(
     val lessonPlan: LessonReservationType
 ) : LessonReservationQueryOutput
 
-data class LessonPlanQueryErrorOutput(
+data class LessonReservationQueryErrorOutput(
     val code: LessonPlanErrorCode,
     val message: String
 ) : LessonReservationQueryOutput

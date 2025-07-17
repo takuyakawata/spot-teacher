@@ -84,7 +84,6 @@ class LessonReservationFixture {
     ): LessonReservation {
         // Create a lesson reservation with default values
         val lessonReservation = buildLessonReservation(
-            id = LessonReservationId(0), // ID will be assigned by the database
             lessonPlanId = lessonPlanId,
             reservedSchoolId = reservedSchoolId,
             reservedTeacherId = reservedTeacherId,

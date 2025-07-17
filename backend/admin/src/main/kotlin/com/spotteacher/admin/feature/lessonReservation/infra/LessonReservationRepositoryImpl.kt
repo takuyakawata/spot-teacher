@@ -44,9 +44,7 @@ import java.time.LocalDateTime
 import java.time.LocalTime
 
 @Repository
-class LessonReservationRepositoryImpl(
-    private val dslContext: TransactionAwareDSLContext
-) : LessonReservationRepository {
+class LessonReservationRepositoryImpl(private val dslContext: TransactionAwareDSLContext) : LessonReservationRepository {
     override suspend fun paginated(pagination: Pagination<LessonReservation>): List<LessonReservation> {
         val paginationFields = pagination.cursorColumns.mapNotNull { column ->
             LESSON_RESERVATIONS.field(column.getDbColumnName())?.let { field ->
@@ -70,7 +68,7 @@ class LessonReservationRepositoryImpl(
 
         // Use reactive flow to handle suspension functions properly
         val lessonReservationFlow = paginatedQuery.asFlow()
-            .map { record -> 
+            .map { record ->
                 val recordId = record.id ?: throw IllegalStateException("Lesson reservation ID cannot be null")
                 val dates = getLessonReservationDates(recordId)
                 val educations = getLessonReservationEducations(recordId)
@@ -102,9 +100,9 @@ class LessonReservationRepositoryImpl(
             LESSON_RESERVATION_DATES.LESSON_RESERVATION_ID.eq(lessonReservationId)
         ).map { record ->
             LessonReservationDate(
-                date = record.startDate ?: LocalDate.now(),
-                startTime = record.startTime?.toLocalTime() ?: LocalTime.of(9, 0),
-                endTime = record.endTime?.toLocalTime() ?: LocalTime.of(17, 0)
+                date = record.startDate,
+                startTime = record.startTime.toLocalTime() ?: LocalTime.of(9, 0),
+                endTime = record.endTime.toLocalTime() ?: LocalTime.of(17, 0)
             )
         }
 
