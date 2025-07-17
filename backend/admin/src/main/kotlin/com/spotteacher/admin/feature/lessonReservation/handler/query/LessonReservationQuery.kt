@@ -17,7 +17,7 @@ import com.spotteacher.graphql.toDomainId
 import org.springframework.stereotype.Component
 
 data class LessonReservationsInput(
-    val lastReservationId: LastLessonReservationId?,
+    val lastReservationId: LastLessonReservationId,
     val limit: Int,
 )
 
@@ -62,12 +62,12 @@ class LessonReservationQuery(
     }
 
     suspend fun lessonReservations(input: LessonReservationsInput): List<LessonReservationType> {
-        val lastId = input.lastReservationId?.let {
+        val lastId = input.lastReservationId.let {
             Pair(
                 it.id?.let { id -> id.toDomainId { idValue -> LessonReservationId(idValue) } },
                 it.order
             )
-        } ?: Pair(null, SortOrder.ASC)
+        }
 
         val result = findPaginatedLessonReservationUseCase.call(
             FindPaginatedLessonReservationUseCaseInput(

@@ -79,7 +79,7 @@ class LessonScheduleId(override val value: Long): Identity<Long>(value)
 
 data class ScheduleDate(
     val date: LocalDate,
-    val startTime: LocalTime,
+    val startTime: Time,
     val endTime: Time,
 )
 
@@ -94,3 +94,4 @@ enum class LessonScheduleErrorCode{
     LESSON_SCHEDULE_ALREADY_EXISTS,
     LESSON_RESERVATION_NOT_FOUND,
 }
+

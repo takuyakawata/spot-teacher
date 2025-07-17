@@ -2,6 +2,8 @@ package com.spotteacher.admin.feature.school.handler
 
 import com.expediagroup.graphql.generator.annotations.GraphQLName
 import com.spotteacher.admin.feature.school.domain.SchoolCategory
+import com.spotteacher.admin.feature.school.domain.SchoolId
+import com.spotteacher.graphql.toID
 
 private const val SCHOOL_TYPE = "School"
 
@@ -18,3 +20,5 @@ data class SchoolType(
     val url: String?,
     val phoneNumber: String?,
 )
+
+fun SchoolId.toGraphQLID() = toID(SCHOOL_TYPE)
